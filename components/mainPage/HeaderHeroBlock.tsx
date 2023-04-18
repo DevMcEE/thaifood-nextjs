@@ -9,6 +9,7 @@ export const HeaderHeroBlock = (): JSX.Element => {
     <header className="header-hero-block">
       <div className="header-hero-block__bg">
         <Image
+          priority={true}
           className="header-hero-block__bg-image"
           src={bgImage}
           alt="Thai Food Thai Cook Restaurant"
