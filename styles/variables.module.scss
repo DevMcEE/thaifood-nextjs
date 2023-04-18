@@ -1,0 +1,19 @@
+$primary-color: #dfa123;
+$bg-dark: #000;
+$bg-secondary-color: rgb(191, 191, 191);
+$primary-contrast-color: white;
+
+:export {
+  primaryColor: $primary-color;
+}
+
+$bp-320: 320px;
+$bp-480: 480px;
+$bp-600: 600px;
+$bp-768: 768px;
+$bp-920: 920px;
+$bp-992: 992px;
+$bp-1200: 1200px;
+$bp-1400: 1400px;
+
+$max-width: $bp-1200;

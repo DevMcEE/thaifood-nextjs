@@ -1,0 +1,9 @@
+.menuItem{
+  max-width: 300px;
+  position: relative;
+}
+
+.menuItemImageContainer{
+  position: relative;
+  height: 300px;
+}

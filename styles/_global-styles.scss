@@ -1,0 +1,43 @@
+.content {
+    &-container {
+    max-width: $max-width;
+    margin: 0 auto;
+  }
+
+  &-block {
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+      text-align: center;
+      padding: 2rem;
+      font-size: 2rem;
+      
+      color: $primary-color;
+    }
+
+    &__content {
+      &-text {
+        line-height: 1.5;
+        padding: 1rem 2rem;
+      }
+      &-image {
+        
+        //border-radius: 6px;
+        display: flex;
+        width: 100%;
+        height: auto;
+  
+        &-container {
+          display: flex;
+          align-items: center;
+          padding-bottom: 1rem;
+        }
+      }
+
+      p {
+        padding-bottom: 1rem;
+      } 
+    }
+  }
+}
