@@ -29,10 +29,11 @@ export function MainPageContainer() {
               </div>
               <div className="content-block__content-text">
                <p> Our menu includes traditional Thai soups such as Tom Yam or Tom Kha, curry soups and vegetable soups with meat, seafood and noodles.</p>
-                <p>Very popular fried noodles: Pad Thai and Pad Seyu.</p>
+                <p>Very popular fried noodles: Pad Thai and Pad Se-ew.</p>
                 <p>Large selection of dishes with rice, many different salads with seafood</p>
                 <p>We also offer very specific dishes for true lovers of Asian cuisine: chicken feet, pork&apos;s ear and others.</p>
                 <p>Most of our dishes are spicy. There are 3 levels of spiciness offered: low, medium and super spicy. This is not a European, but a Thai measure of spiciness, so Super Spicy is a level that will be very spicy for the Thais themselves.</p>
+                <p>See the full menu on <a href="https://wolt.com/et/est/tallinn/restaurant/thai-food-thai-cook" target="_blank"  rel="noreferrer">Wolt</a></p>
               </div>
             </div>
           </div>
