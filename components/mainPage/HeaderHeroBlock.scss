@@ -74,9 +74,13 @@
       &-address {
         display: flex;
         padding: 0.5rem;
+        &-text {
+          padding-left: 0.5rem;
+        }
       }
       &-link {
         padding-right: 0.5rem;
+        display: flex;
       }
       &-icon {
         height: 20px;

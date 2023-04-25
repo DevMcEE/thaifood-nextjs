@@ -29,23 +29,27 @@ export const HeaderHeroBlock = (): JSX.Element => {
         </div>
         <div className="header-hero-block__content-contacts">
           <p className="header-hero-block__content-contacts-address">
-            <a href="https://goo.gl/maps/Z5iabpug6X7DUppJ8" 
+            <a
+              href="https://goo.gl/maps/Z5iabpug6X7DUppJ8"
               target="_blank"
-              className="header-hero-block__content-contacts-link" rel="noreferrer">
+              className="header-hero-block__content-contacts-link"
+              rel="noreferrer"
+            >
               <Image
                 className="header-hero-block__content-contacts-icon"
                 src={mapPin}
                 alt="Thai Food Thai Cook address"
               />
+              <span className='header-hero-block__content-contacts-address-text'>Gonsiori 12a, Tallinn</span> 
             </a>
-            Gonsiori 12a, Tallinn
           </p>
           <p className="header-hero-block__content-contacts-address">
-            <a href="tel:0037258805065" 
-              className="header-hero-block__content-contacts-telephone">
-                 (+372) 5880 5065
+            <a
+              href="tel:0037258805065"
+              className="header-hero-block__content-contacts-telephone"
+            >
+              (+372) 5880 5065
             </a>
-           
           </p>
         </div>
       </div>
