@@ -25,7 +25,7 @@ export const FooterBlock = () => {
         <div className="page-footer__block">
           <h2>Opening hours</h2>
           <div className="page-footer__block-content">
-            <p>Monday - Friday: 11:00 - 19:30</p>
+            <p>Monday - Friday: 11:00 - 12:30</p>
             <p>Saturday: 12:00 - 20:30</p>
             <p>Sunday: 12:00 - 20:00</p>
           </div>
