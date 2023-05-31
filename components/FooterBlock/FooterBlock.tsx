@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import wolt from '../../public/assets/images/footer/wolt-logo.png';
+import bolt from '../../public/assets/images/footer/bolt-logo-white.svg';
 
 export const FooterBlock = () => {
   const thisYear = new Date().getFullYear();
@@ -32,18 +33,29 @@ export const FooterBlock = () => {
         </div>
         <div className="page-footer__block">
           <h2>Delivery</h2>
-          <a
-            href="https://wolt.com/et/est/tallinn/restaurant/thai-food-thai-cook"
-            target="_blank"
-            rel="noreferrer"
-            className="page-footer__block-delivery-wolt-link"
-          >
+          <div className='ptb-1'>
             <Image
               className="page-footer__block-delivery-wolt-link-image"
-              src={wolt}
+              src={bolt}
+              height={50}
               alt="Thai Food Thai Cook at Wolt"
             />
-          </a>
+          </div>
+          <div>
+            <a
+              href="https://wolt.com/et/est/tallinn/restaurant/thai-food-thai-cook"
+              target="_blank"
+              rel="noreferrer"
+              className="page-footer__block-delivery-wolt-link"
+            >
+              <Image
+                className="page-footer__block-delivery-wolt-link-image"
+                src={wolt}
+                height={50}
+                alt="Thai Food Thai Cook at Wolt"
+              />
+            </a>
+          </div>
         </div>
       </div>
       <div className="page-footer__rigths">
