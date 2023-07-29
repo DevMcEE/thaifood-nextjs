@@ -57,7 +57,8 @@
 
   &-blank-space {
     margin-right: 5px;
-    border-bottom: 2px dotted white;
+    border-color: inherit;
+    border-bottom: 2px dotted;
     flex-grow: 1;
   }
   
