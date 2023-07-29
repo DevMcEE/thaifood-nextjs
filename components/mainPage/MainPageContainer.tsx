@@ -5,6 +5,7 @@ import interior from '../../public/assets/images/landing/interior1_opt.jpg';
 import jenWithFood from '../../public/assets/images/landing/thaiFood.jpg';
 import food from '../../public/assets/images/landing/combo_thai_food_thai_cook.jpg';
 import kentmani from '../../public/assets/images/landing/kentmani.jpg';
+import Link from 'next/link';
 import { FooterBlock } from '../FooterBlock';
 
 export function MainPageContainer() {
@@ -33,7 +34,7 @@ export function MainPageContainer() {
                 <p>Large selection of dishes with rice, many different salads with seafood</p>
                 <p>We also offer very specific dishes for true lovers of Asian cuisine: chicken feet, pork&apos;s ear and others.</p>
                 <p>Most of our dishes are spicy. There are 3 levels of spiciness offered: low, medium and super spicy. This is not a European, but a Thai measure of spiciness, so Super Spicy is a level that will be very spicy for the Thais themselves.</p>
-                <p>See the full menu on <a href="https://wolt.com/et/est/tallinn/restaurant/thai-food-thai-cook" target="_blank" style={{textDecoration: 'underline'}}  rel="noreferrer">Wolt</a></p>
+                <p>See the full menu on <Link style={{textDecoration: 'underline'}} href="/menu">Menu</Link> page</p>
               </div>
             </div>
           </div>
