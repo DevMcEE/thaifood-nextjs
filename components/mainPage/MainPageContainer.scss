@@ -14,7 +14,7 @@
     &__content {
 
       padding-bottom: 1rem;
-      @media (min-width: $bp-992) {
+      @media (min-width: $bp-992) { 
         display: grid;
         grid-template-columns: 1fr 1fr;
 
