@@ -2,11 +2,11 @@ import { GetServerSideProps } from 'next';
 import { FooterBlock } from '../../components/FooterBlock';
 import { Meta } from '../../components/Meta';
 import { Toolbar } from '../../components/Toolbar';
-import { MenuGroup } from '../../menu/menu.type';
-import { MenuGroupBlock } from '../../components/MenuGroupBlock';
+import { IMenuGroup } from '../../menu/menu.type';
+import { MenuGroup } from '../../components/MenuGroup';
 
 interface MenuPageProps {
-  menu: MenuGroup[];
+  menu: IMenuGroup[];
 }
 
 export default function Menu({ menu }: MenuPageProps) {
@@ -21,8 +21,8 @@ export default function Menu({ menu }: MenuPageProps) {
               <h2>Menu</h2>
             </div>
             <div className="menu-content-block__content">{
-              menu.map((menuGroup) => {
-                return (<MenuGroupBlock menuGroup={menuGroup} key={menuGroup._id} />)
+              menu.map((menuGroupData) => {
+                return (<MenuGroup menuGroupData={menuGroupData} key={menuGroupData._id} />)
               })
             }</div>
           </div>
