@@ -3,6 +3,7 @@ import { FooterBlock } from '../../components/FooterBlock';
 import { Meta } from '../../components/Meta';
 import { Toolbar } from '../../components/Toolbar';
 import { MenuGroup } from '../../menu/menu.type';
+import { MenuGroupBlock } from '../../components/MenuGroupBlock';
 
 interface MenuPageProps {
   menu: MenuGroup[];
@@ -20,27 +21,11 @@ export default function Menu({ menu }: MenuPageProps) {
               <h2>Menu</h2>
             </div>
             <div className="menu-content-block__content">{
-              menu.map(({ name, items, _id }) => {
-                return (<div className="menu-group" key={_id}>
-                  <h3>{name}</h3>
-                  <div>
-                    {items.map(({ code, name, price }) => {
-                      return (
-                        <div className="menu-item" key={code}>
-                          <span className="item-code">{code}</span>
-                          <span className="item-name">{name}</span>
-                          <span className="item-blank-space"></span>
-                          <span className="item-price">{price}</span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>)
+              menu.map((menuGroup) => {
+                return (<MenuGroupBlock menuGroup={menuGroup} key={menuGroup._id} />)
               })
             }</div>
-
           </div>
-
         </main>
         <FooterBlock />
       </div>

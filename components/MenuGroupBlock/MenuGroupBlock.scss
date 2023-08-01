@@ -1,0 +1,13 @@
+.menu-group {
+  align-items: center;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 960px;
+
+  h3 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+}
