@@ -1,0 +1,27 @@
+.menu-item {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.item {
+  &-code {
+    margin-right: 1rem;
+  }
+
+  &-price {
+    padding-left: 5px;
+  }
+
+  &-name {
+    margin-right: 5px;
+  }
+
+  &-spacer {
+    margin-right: 5px;
+    border-bottom: 2px dotted;
+    flex-grow: 1;
+  }
+
+}

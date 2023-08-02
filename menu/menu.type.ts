@@ -1,4 +1,4 @@
-export interface MenuItem {
+export interface IMenuItem {
   _id: string;
   name: string;
   description: string;
@@ -9,9 +9,9 @@ export interface MenuItem {
   groupId: string;
 }
 
-export interface MenuGroup {
+export interface IMenuGroup {
   _id: string;
   name: string;
   description: string;
-  items: MenuItem[];
+  items: IMenuItem[];
 }
