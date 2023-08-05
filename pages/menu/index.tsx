@@ -35,6 +35,6 @@ export default function Menu({ menu }: MenuPageProps) {
 
 export const getServerSideProps: GetServerSideProps<MenuPageProps> = async () => {
   const res = await fetch('https://api.milicity.eu/resto/v1/menu')
-  const { data } = await res.json();
+  const data = await res.json();
   return { props: { menu: data || [] } }
 }
