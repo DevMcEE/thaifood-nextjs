@@ -1,5 +1,5 @@
 export interface IMenuItem {
-  _id: string;
+  id: string;
   name: string;
   description: string;
   hidden: boolean;
@@ -10,7 +10,7 @@ export interface IMenuItem {
 }
 
 export interface IMenuGroup {
-  _id: string;
+  id: string;
   name: string;
   description: string;
   items: IMenuItem[];

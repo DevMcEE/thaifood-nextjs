@@ -1,9 +1,10 @@
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetServerSidePropsResult } from 'next';
 import { FooterBlock } from '../../components/FooterBlock';
 import { Meta } from '../../components/Meta';
 import { Toolbar } from '../../components/Toolbar';
 import { IMenuGroup } from '../../menu/menu.type';
 import { MenuGroup } from '../../components/MenuGroup';
+import { Maintenance } from '../../components/Maintenance/Maintenance';
 
 interface MenuPageProps {
   menu: IMenuGroup[];
@@ -21,9 +22,11 @@ export default function Menu({ menu }: MenuPageProps) {
               <h2>Menu</h2>
             </div>
             <div className="menu-content-block__content">{
-              menu.map((menuGroupData) => {
-                return (<MenuGroup menuGroupData={menuGroupData} key={menuGroupData._id} />)
-              })
+              menu
+              ? menu.map((menuGroupData) => {
+                return (<MenuGroup menuGroupData={menuGroupData} key={menuGroupData.id} />)
+               })
+              : <Maintenance/>
             }</div>
           </div>
         </main>
@@ -34,7 +37,7 @@ export default function Menu({ menu }: MenuPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps<MenuPageProps> = async () => {
-  const res = await fetch('https://api.milicity.eu/resto/v1/menu')
-  const { data } = await res.json();
-  return { props: { menu: data || [] } }
-}
+    const res = await fetch('https://api.milicity.eu/resto/v1/menu');
+    const data = await res.json();
+    return { props: { menu: data || [] } };
+};
