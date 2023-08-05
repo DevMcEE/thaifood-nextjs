@@ -34,7 +34,7 @@ export function MainPageContainer() {
                 <p>Large selection of dishes with rice, many different salads with seafood</p>
                 <p>We also offer very specific dishes for true lovers of Asian cuisine: chicken feet, pork&apos;s ear and others.</p>
                 <p>Most of our dishes are spicy. There are 3 levels of spiciness offered: low, medium and super spicy. This is not a European, but a Thai measure of spiciness, so Super Spicy is a level that will be very spicy for the Thais themselves.</p>
-                <p>See the full menu on <Link style={{textDecoration: 'underline'}} href="/menu">Menu</Link> page</p>
+                {/* <p>See the full menu on <Link style={{textDecoration: 'underline'}} href="/menu">Menu</Link> page</p> */}
               </div>
             </div>
           </div>
