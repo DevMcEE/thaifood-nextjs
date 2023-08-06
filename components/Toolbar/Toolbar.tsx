@@ -1,20 +1,14 @@
 import Image from 'next/image';
 import logo from '../../public/assets/images/logo/logo_contrast_small.svg';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { setDefaultLocale } from '../../utils/helpers';
 
 export const Toolbar = () => {
 
   const router = useRouter();
 
   const handleImageClick = (): void => {
-    router.push(
-      {
-        pathname: "/",
-      },
-      null,
-      { locale: 'en' }
-    )
+    setDefaultLocale(router);
   }
 
 

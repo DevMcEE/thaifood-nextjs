@@ -1,15 +1,18 @@
 import Image from 'next/image';
 import thai from '../../public/assets/images/maintenance/thai_cook_400px.svg'
-import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
+import { setDefaultLocale } from '../../utils/helpers';
 
 export const Maintenance = (): JSX.Element => {
-  const  { locale } = useRouter();
-  const { t } = useTranslation('common');
+
+  const { t } = useTranslation();
   
+  const router = useRouter();
+
+  const handleButtonClick = (): void => {
+    return setDefaultLocale(router);
+  }
 
   return (
     <div className="maintenance-body-container">
@@ -21,11 +24,9 @@ export const Maintenance = (): JSX.Element => {
           <p>IT SHOULD ONLY TAKE A FEW MINUTES</p>
         </div>
         <div className="maintenance-message-button">
-          <Link href="/" locale={locale}>
-            <button className="home-button">
+            <button onClick={handleButtonClick} className="home-button">
               <h3>{t('home')}</h3>
             </button>
-          </Link>
         </div>
       </div>
       <div className="maintenance-image-block">

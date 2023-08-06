@@ -4,7 +4,7 @@ import { Meta } from '../../components/Meta';
 import { Toolbar } from '../../components/Toolbar';
 import { IMenuGroup } from '../../menu/menu.type';
 import { MenuGroup } from '../../components/MenuGroup';
-import { Maintenance } from '../../components/Maintenance/Maintenance';
+import { Maintenance } from '../../components/Maintenance';
 import { LanguageSwitcher } from '../../components/LanguageSwitcher';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -17,8 +17,8 @@ interface MenuPageProps {
 export default function Menu({ menu }: MenuPageProps) {
   const { t } = useTranslation();
   const router = useRouter();
-  const  {locales, locale} = useRouter();
-  menu = null;
+  const  { locales } = useRouter();
+  
   return (
     <>
       <Meta />
@@ -56,13 +56,3 @@ export const getServerSideProps: GetServerSideProps<MenuPageProps> = async (cont
     } 
   }  
 }
-
-
-
-// export async function getStaticProps ({locale}) {
-//   return {
-//     props: {
-//       ...(await serverSideTranslations(locale, ['common']))
-//     },
-//   }
-// }
