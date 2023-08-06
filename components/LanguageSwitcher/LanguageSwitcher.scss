@@ -1,0 +1,27 @@
+.language {
+  padding: 0.5rem;
+  list-style-type: none;
+  transition: 0.3s background-color;
+  cursor: pointer;
+
+  &-switcher {
+
+    &-button-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+
+    &-main-block {
+      display: flex;
+      flex-direction: row;
+      padding-bottom: 2rem;
+    }
+  }
+}
+  
+.language:hover{
+  background-color: $bg-secondary-color;
+}

@@ -4,7 +4,6 @@ import logo from '../../public/assets/images/logo/logo_contrast.svg';
 import mapPin from '../../public/assets/images/icons/map-pin.svg';
 
 export const HeaderHeroBlock = (): JSX.Element => {
-  console.log(bgImage);
   return (
     <header className="header-hero-block">
       <div className="header-hero-block__bg">
