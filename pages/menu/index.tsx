@@ -22,7 +22,7 @@ export default function Menu({ menu }: MenuPageProps) {
               <h2>Menu</h2>
             </div>
             <div className="menu-content-block__content">{
-              menu
+              menu.length
               ? menu.map((menuGroupData) => {
                 return (<MenuGroup menuGroupData={menuGroupData} key={menuGroupData.id} />)
                })
@@ -37,7 +37,12 @@ export default function Menu({ menu }: MenuPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps<MenuPageProps> = async () => {
+  try {
     const res = await fetch('https://api.milicity.eu/resto/v1/menu');
     const data = await res.json();
     return { props: { menu: data || [] } };
-};
+  } catch (error) {
+    console.error('Error fetching menu:', error);
+    return { props: { menu: [] } };
+  }
+}
