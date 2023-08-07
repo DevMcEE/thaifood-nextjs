@@ -38,12 +38,18 @@ export default function Menu({ menu }: MenuPageProps) {
 
 export const getServerSideProps: GetServerSideProps<MenuPageProps> = async () => {
 
+  let data: IMenuGroup[] = [];
+
   try {
     const res = await fetch('https://api.milicity.eu/resto/v1/menu');
-    const data = await res.json();
-    return { props: { menu: data || [] } };
+    data = await res.json();
   } catch (error) {
     console.error('Error fetching menu:', error);
-    return { props: { menu: [] } };
   }
-}
+
+  return {
+    props: {
+      menu: data || [],
+    },
+  };
+};
