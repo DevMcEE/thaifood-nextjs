@@ -27,24 +27,31 @@
       flex-direction: column;
       justify-content: center;
 
+      div {
+        white-space: pre;
+      }
+
     }
 
     &-button {
+      margin-left: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 1rem;
+      border: none;
+      border-radius: .4rem;
+      width: 10rem;
+      height: 3rem;
+      background-color: $primary-color;
+      transition: background-color 0.3s ease;
 
-      button {
-        border: none;
-        border-radius: .4rem;
-        width: 10rem;
-        height: 3rem;
-        background-color: $primary-color;
-        transition: background-color 0.3s ease;
-      }
-
-      button:hover {
-        background-color: $bg-secondary-color;
-      }
     }
+
+    &-button:hover {
+      background-color: $bg-secondary-color;
+    }
+
   }
 }
 
@@ -54,9 +61,14 @@
   }
 
   .maintenance {
-    &-message-button {
-      display: flex;
-      justify-content: space-around;
+    &-message {
+      &-container {
+        align-items: center;
+      }
+
+      &-button {
+        margin: 1rem;
+      }
     }
 
     &-body-container {

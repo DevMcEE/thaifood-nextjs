@@ -1,26 +1,20 @@
 import Image from 'next/image';
 import logo from '../../public/assets/images/logo/logo_contrast_small.svg';
 import { useRouter } from 'next/router';
-import { setDefaultLocale } from '../../utils/helpers';
+import Link from 'next/link';
 
 export const Toolbar = () => {
-
-  const router = useRouter();
-
-  const handleImageClick = (): void => {
-    setDefaultLocale(router);
-  }
-
+  const {locale} = useRouter();
 
   return (
     <div className="toolbar-block">
       <div className="toolbar-logo-block">
-        <Image
-          onClick={handleImageClick}
-          className="toolbar-block__logo-image"
-          src={logo}
-          alt="Thai Food Thai Cook Restaurant"
-        />
+        <Link href='/' locale={locale}>
+          <Image
+            className="toolbar-block__logo-image"
+            src={logo}
+            alt="Thai Food Thai Cook Restaurant"
+          /></Link>
       </div>
     </div>
   );

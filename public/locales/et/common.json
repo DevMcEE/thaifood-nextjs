@@ -1,4 +1,8 @@
 {
   "menu": "Menü",
-  "home": "Avalehele"
+  "home": "AVALAHELE",
+  "maintenance": {
+    "greetings":"Hei, hei!",
+    "message": "ME UUENDAME OMA MENÜÜD..\nPALUME VEIDI KANNATLIKKUST!\nSEE VÕTAB AINULT PAAR MINUTID!"
+  }
 }

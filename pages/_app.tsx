@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import '../styles/app.scss';
+import  NextJsI18NConfig from '../next-i18next.config'
 import { appWithTranslation} from 'next-i18next';
 import type { AppProps } from 'next/app';
 import { Roboto } from 'next/font/google'
@@ -17,4 +18,4 @@ export function App({ Component, pageProps }: AppProps) {
   )
 }
 
-export default appWithTranslation(App);
+export default appWithTranslation(App, NextJsI18NConfig);
