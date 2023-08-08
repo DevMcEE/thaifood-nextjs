@@ -13,7 +13,7 @@ export const MenuItem = ({ menuItemData }: MenuItemProps): JSX.Element => {
         <span className="item-code">{code}</span>
         <span className="item-name">{name}</span>
         <span className="item-spacer"></span>
-        <span className="item-price">{price}</span>
+        <span className="item-price">{price} €</span>
       </div>
     </div>
   );

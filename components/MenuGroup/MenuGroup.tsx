@@ -13,7 +13,7 @@ export const MenuGroup = ({ menuGroupData }: MenuGroupProps): JSX.Element => {
       <h3>{name}</h3>
       <div>
         {items.map((item) => {
-          return <MenuItem key={item._id} menuItemData={item} />
+          return <MenuItem key={item.id} menuItemData={item} />
         })}
       </div>
     </div>
