@@ -9,7 +9,7 @@ export const LanguageSwitcher = (): JSX.Element => {
       {locales.map((language: string, index: number) => {
         return (
           <div className="language-switcher-button-wrapper" key={language}>
-            <Link className="language-switcher-link" href="/menu" locale={language}>{language.toUpperCase()}</Link>
+            <Link className="language-switcher-link" href="/menu" locale={language}>{language}</Link>
           </div>
         )
       })}

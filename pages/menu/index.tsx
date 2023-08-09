@@ -15,7 +15,7 @@ interface MenuPageProps {
 
 export default function Menu({ menu }: MenuPageProps) {
   const { t } = useTranslation();
-  menu = []
+ 
   return (
     <>
       <Meta />

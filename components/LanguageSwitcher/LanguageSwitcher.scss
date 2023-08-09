@@ -6,6 +6,7 @@
       transition: 0.3s background-color;
       cursor: pointer;
       position: relative;
+      text-transform: uppercase;
 
       &:hover {
         background-color: $bg-secondary-color;
