@@ -4,7 +4,8 @@ module.exports = {
       name: 'thaifood',
       script: 'npm run start',
       autorestart: true,
-      instances: 2
+      instances: 2,
+      max_memory_restart: "300M",
     },
   ],
 
@@ -16,6 +17,7 @@ module.exports = {
       ref: 'origin/master',
       repo: 'git@github.com:devmc-ee/thaifood-nextjs.git',
       path: '/data01/virt98592/nodeapp/thaifood',
+      exec_mode: "cluster_mode",
       'ssh_options': 'ForwardAgent=yes',
       'pre-deploy-local': '',
       'post-deploy':
