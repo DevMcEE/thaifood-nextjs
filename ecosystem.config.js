@@ -4,6 +4,7 @@ module.exports = {
       name: 'thaifood',
       script: 'npm run start',
       autorestart: true,
+      instances: 2
     },
   ],
 
