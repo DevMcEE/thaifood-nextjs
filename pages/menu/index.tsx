@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { FooterBlock } from '../../components/FooterBlock';
 import { Meta } from '../../components/Meta';
 import { Toolbar } from '../../components/Toolbar';
@@ -42,7 +42,7 @@ export default function Menu({ menu }: MenuPageProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps<MenuPageProps> = async (context) => {
+export const getServerSideProps: GetServerSideProps<MenuPageProps> = async (context) => {
   let data: IMenuGroup[] = [];
 
   const { locale } = context;
