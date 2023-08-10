@@ -1,0 +1,8 @@
+{
+  "menu": "Menu",
+  "home": "HOME PAGE",
+  "maintenance": {
+    "greetings":"Hi there!",
+    "message": "WE ARE UPDATING OUR MENU...\nPLEASE, BEAR WITH US!\nTHIS SHOULD ONLY TAKE A FEW MINUTES"
+  }
+}

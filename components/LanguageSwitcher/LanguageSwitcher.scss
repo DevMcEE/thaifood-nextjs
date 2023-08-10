@@ -1,0 +1,44 @@
+.language {
+  &-switcher {
+
+    &-link {
+      padding: 0 0.5rem;
+      transition: 0.3s background-color;
+      cursor: pointer;
+      position: relative;
+      text-transform: uppercase;
+
+      &:hover {
+        background-color: $bg-secondary-color;
+      }
+
+      &:after {
+        content: "|";
+        display: block;
+        position:absolute;
+        right: -2px;
+        top: -1px;
+      }
+
+    }
+
+    &-button-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+    &:last-child .language-switcher-link:after{
+        content: "";
+      }
+    }
+
+
+    &-main-block {
+      display: flex;
+      flex-direction: row;
+      padding-bottom: 2rem;
+    }
+  }
+}
+
