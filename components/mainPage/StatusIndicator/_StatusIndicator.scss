@@ -1,0 +1,17 @@
+.status-indicator-block {
+  position: relative;;  
+  display:flex;
+    &-icon{
+      width: 18px;
+      height: 18px;
+      margin: 5px;
+    }
+    &--gray::before{
+      display: block;
+      content:' ';
+      height: 18px;
+      width: 18px;
+      background-color: gray;
+      position: absolute;
+    }
+}
