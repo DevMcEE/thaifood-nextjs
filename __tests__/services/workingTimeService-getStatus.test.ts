@@ -9,9 +9,9 @@ dayjs.extend(UTC)
 dayjs.extend(timeZone)
 dayjs.tz.setDefault("Europe/Tallinn");
 
-describe('workingTimeServices', () => {
+describe('WorkingTimeService.getStatus', () => {
   const workingTimeService = new WorkingTimeService(workingTime)
-  describe('when time 13:00 in the middle of working day on monday', () => {
+  describe('1.1 when time 13:00 in the middle of working day on monday', () => {
     beforeAll(() => {
       const dateTime = dayjs().day(1).hour(13).minute(0)
       jest
@@ -26,18 +26,33 @@ describe('workingTimeServices', () => {
       })
     })
   })
-  describe('when time 13:00 in the middle of working day on monday', () => {
+  describe('1.2 when time is 2 hours before close (monday)', () => {
     beforeAll(() => {
       const dateTime = dayjs().day(1).hour(18).minute(15)
       jest
         .useFakeTimers()
         .setSystemTime(dateTime.toDate());
     })
-    it('should show open status', () => {
+    it('should show open status and closes in 2 hours', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: true,
         message: 'open (closes at 20:15, in 2 hours)',
         statusColor: WorkingStatusColor.green
+      })
+    })
+  })
+  describe('1.3 when time is less than 1 hour before close (monday)', () => {
+    beforeAll(() => {
+      const dateTime = dayjs().day(1).hour(20).minute(0)
+      jest
+        .useFakeTimers()
+        .setSystemTime(dateTime.toDate());
+    })
+    it('should show open status and closes in 15 minutes', () => {
+      expect(workingTimeService.getStatus()).toMatchObject({
+        isOpen: true,
+        message: 'open (closes at 20:15, in 15 minutes)',
+        statusColor: WorkingStatusColor.yellow
       })
     })
   })
@@ -104,7 +119,6 @@ describe('workingTimeServices', () => {
       jest
         .useFakeTimers()
         .setSystemTime(dateTime.toDate());
-      console.log('day', dayjs().day())
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
@@ -130,11 +144,9 @@ describe('workingTimeServices', () => {
           message: 'public holiday'
         }
       })
-      console.log(testData)
       workingTimeService = new WorkingTimeService(testData)
     })
     it('should show closed status', () => {
-      console.log(workingTimeService.getStatus())
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
         message: 'closed (public holiday), opens at 12:00, on saturday',
@@ -157,11 +169,9 @@ describe('workingTimeServices', () => {
             : weekdayData.isOpen
         }
       })
-      console.log(testData)
       workingTimeService = new WorkingTimeService(testData)
     })
     it('should show closed status', () => {
-      console.log(workingTimeService.getStatus())
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
         message: 'closed (public holiday), opens at 11:00, monday',
@@ -170,3 +180,4 @@ describe('workingTimeServices', () => {
     })
   })
 })
+
