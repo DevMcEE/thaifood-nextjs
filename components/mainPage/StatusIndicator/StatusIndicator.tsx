@@ -8,8 +8,8 @@ export const StatusIndicator = () => {
 
   return (
     <div className="status-indicator-block">
-      <InfoIcon fill={status.statusColor} classes={`status-indicator-block--${status.statusColor}`} />
-      <span>{status.message}</span>
+      <InfoIcon fill={status.statusColor} />
+      <span className='status-indicator-block__message'>{status.message}</span>
     </div>
   )
 }

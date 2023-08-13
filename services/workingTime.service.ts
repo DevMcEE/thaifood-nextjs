@@ -1,5 +1,5 @@
 import workingTimeData from '../assets/workingTime';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import UTC from 'dayjs/plugin/utc';
 import timeZone from 'dayjs/plugin/timezone';
 import {
@@ -11,6 +11,12 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import duration from 'dayjs/plugin/duration';
+import {
+  DurationTimeUnit,
+  IBuildStatusProps,
+  MessageSplitter,
+} from './workingTimeService.type';
+import { capitalize } from '../utils/text.utils';
 
 dayjs.extend(UTC);
 dayjs.extend(timeZone);
@@ -21,94 +27,194 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(duration);
 
 export class WorkingTimeService {
-  constructor(private workingTime: IWorkingTime[] = workingTimeData) {}
-  getStatus(): IWorkingStatus {
-    const currentWeekdayIndex = dayjs().day();
+  private workingStartDateTime: Dayjs;
+  private workingEndDateTime: Dayjs;
+  private currentWorkingTimeData: IWorkingTime;
+  private workingDays: IWorkingTime[];
+  private currentWeekdayIndex: number;
+  private nextWorkingTimeDate: IWorkingTime;
 
-    let workingTimeData: IWorkingTime = this.workingTime.find(({ index }) => {
-      return index === currentWeekdayIndex;
+  constructor(private workingTime: IWorkingTime[] = workingTimeData) {}
+
+  getStatus(): IWorkingStatus {
+    this.currentWeekdayIndex = dayjs().day();
+
+    this.workingDays = this.workingTime.filter(({ isOpen }) => isOpen);
+
+    this.currentWorkingTimeData = this.workingTime.find(({ index }) => {
+      return index === this.currentWeekdayIndex;
     });
 
-    const [startHours, startMinutes] = workingTimeData.start.split(':');
-    const workingStartDateTime = dayjs()
+    const [startHours, startMinutes] =
+      this.currentWorkingTimeData.start.split(':');
+    this.workingStartDateTime = dayjs()
       .clone()
       .hour(parseInt(startHours))
       .minute(parseInt(startMinutes));
-    
-    const [endHours, endMinutes] = workingTimeData.end.split(':');
-    const workingEndDateTime = dayjs()
+
+    const [endHours, endMinutes] = this.currentWorkingTimeData.end.split(':');
+    this.workingEndDateTime = dayjs()
       .clone()
       .hour(parseInt(endHours))
       .minute(parseInt(endMinutes));
 
-    // day is cLosed or time after end
-    if (!workingTimeData.isOpen || dayjs().isSameOrAfter(workingEndDateTime)) {
-      const workingDays: IWorkingTime[] = this.workingTime.filter(
-        ({ isOpen }) => isOpen
-      );
+    if (!this.workingDays.length) {
+      return this.getStatusOnAllDaysClosed();
+    }
 
-      let nextWorkingDateMessage = '';
-      let nextWorkingDayData = workingDays.find(
-        ({ index }) => index > currentWeekdayIndex || index === 0
-      );
+    if (!this.currentWorkingTimeData.isOpen) {
+      return this.getStatusOnClosedState();
+    }
 
-      if (nextWorkingDayData) {
-        const weekdaysIndexDiff =
-          nextWorkingDayData.index - currentWeekdayIndex;
-        let isItTomorrow = weekdaysIndexDiff === 1 || weekdaysIndexDiff === -6;
-        nextWorkingDateMessage = isItTomorrow
-          ? `opens tomorrow at ${nextWorkingDayData.start}`
-          : `opens at ${nextWorkingDayData.start}, on ${nextWorkingDayData.weekday}`;
-      } else {
-        nextWorkingDateMessage = `opens at ${workingDays[0].start}, ${workingDays[0].weekday}`;
-      }
-      return {
-        isOpen: false,
-        message: `closed${
-          workingTimeData.message ? ` (${workingTimeData.message})` : ''
-        }, ${nextWorkingDateMessage}`,
-        statusColor: workingTimeData.isOpen
-          ? WorkingStatusColor.gray
-          : WorkingStatusColor.red,
+    if (dayjs().isSameOrBefore(this.workingStartDateTime)) {
+      return this.getStatusOnOpenStateTimeBefore();
+    }
+
+    if (dayjs().isBetween(this.workingStartDateTime, this.workingEndDateTime)) {
+      return this.getStatusOnOpenStateTimeBetween();
+    }
+
+    if (dayjs().isSameOrAfter(this.workingEndDateTime)) {
+      return this.getStatusOnOpenStateTimeAfter();
+    }
+  }
+
+  getStatusOnAllDaysClosed() {
+    return {
+      isOpen: false,
+      message: this.buildStatusMessage({
+        isOpenNow: false,
+        hasNextWorkingDay: false,
+        nextStatusTime: '',
+      }),
+      statusColor: WorkingStatusColor.red,
+    };
+  }
+
+  getStatusOnOpenStateTimeBefore() {
+    const timeDiff = this.workingStartDateTime.diff(dayjs());
+    const timeDiffHours = dayjs.duration(timeDiff).asHours();
+
+    return {
+      isOpen: false,
+      message: this.buildStatusMessage({
+        isOpenNow: false,
+        nextStatusTime: this.currentWorkingTimeData.start,
+        nextStatusDetails: {
+          duration: timeDiffHours,
+          unit: DurationTimeUnit.hours,
+        },
+      }),
+      statusColor: WorkingStatusColor.yellow,
+    };
+  }
+
+  getStatusOnOpenStateTimeBetween() {
+    const timeDiff = this.workingEndDateTime.diff(dayjs());
+    const timeDiffAmountHours = Math.round(dayjs.duration(timeDiff).asHours());
+    const timeDiffAmountMinutes = dayjs.duration(timeDiff).asMinutes();
+
+    let timeDiffAmount = timeDiffAmountHours;
+    let timeDiffUnit = DurationTimeUnit.hours;
+
+    const isLessThan1Hour = timeDiffAmountHours < 1;
+
+    if (isLessThan1Hour) {
+      timeDiffAmount = timeDiffAmountMinutes;
+      timeDiffUnit = DurationTimeUnit.minutes;
+    }
+
+    let nextStatusDetails;
+
+    if (timeDiffAmountHours <= 3 || isLessThan1Hour) {
+      nextStatusDetails = {
+        duration: timeDiffAmount,
+        unit: timeDiffUnit,
       };
     }
 
-    if (dayjs().isSameOrBefore(workingStartDateTime)) {
-      const timeDiff = workingStartDateTime.diff(dayjs());
-      const timeDiffHours = dayjs.duration(timeDiff).asHours();
-  
-      return {
-        isOpen: false,
-        message: `closed, opens at ${workingTimeData.start} (in ${timeDiffHours} hours)`,
-        statusColor: WorkingStatusColor.yellow,
-      };
+    return {
+      isOpen: true,
+      message: this.buildStatusMessage({
+        isOpenNow: true,
+        nextStatusTime: this.currentWorkingTimeData.end,
+        nextStatusDetails,
+      }),
+      statusColor: isLessThan1Hour
+        ? WorkingStatusColor.yellow
+        : WorkingStatusColor.green,
+    };
+  }
+
+  getStatusOnOpenStateTimeAfter() {
+    this.nextWorkingTimeDate = this.workingDays.find(
+      ({ index }) => index > this.currentWeekdayIndex || index === 0
+    );
+    let isItTomorrow = false;
+
+    if (this.nextWorkingTimeDate) {
+      const weekdaysIndexDiff = this.nextWorkingTimeDate.index - this.currentWeekdayIndex;
+      isItTomorrow = weekdaysIndexDiff === 1 || weekdaysIndexDiff === -6;
+    } else {
+      // set first working day
+      this.nextWorkingTimeDate = this.workingDays[0];
     }
 
-    if (dayjs().isBetween(workingStartDateTime, workingEndDateTime)) {
-      const timeDiff = workingEndDateTime.diff(dayjs());
+    return {
+      isOpen: false,
+      message: this.buildStatusMessage({
+        isOpenNow: false,
+        nextStatusTime: this.nextWorkingTimeDate.start,
+        isItTomorrow,
+      }),
+      statusColor: this.currentWorkingTimeData.isOpen
+        ? WorkingStatusColor.gray
+        : WorkingStatusColor.red,
+    };
+  }
 
-      const timeDiffAmountHours = dayjs.duration(timeDiff).asHours();
-      const timeDiffAmountMinutes = dayjs.duration(timeDiff).asMinutes()
-      
-      let timeDiffAmount = timeDiffAmountHours;
-      let timeDiffUnit = ' hours';
-      
-      const isLessThan1Hour = timeDiffAmountHours < 1;
+  getStatusOnClosedState() {
+    return this.getStatusOnOpenStateTimeAfter();
+  }
 
-      if (isLessThan1Hour) {
-        timeDiffAmount = timeDiffAmountMinutes;
-        timeDiffUnit = ' minutes';
-      }
-    
-      return {
-        isOpen: true,
-        message: `open (closes at ${workingTimeData.end}${
-          timeDiffAmountHours <= 3 || isLessThan1Hour ? `, in ${timeDiffAmount}${timeDiffUnit}` : ''
-        })`,
-        statusColor: isLessThan1Hour 
-          ? WorkingStatusColor.yellow
-          : WorkingStatusColor.green,
-      };
+  buildStatusMessage({
+    isOpenNow,
+    nextStatusDetails = null,
+    nextStatusTime = '',
+    splitter = MessageSplitter.dot,
+    isItTomorrow = false,
+    hasNextWorkingDay = true,
+  }: IBuildStatusProps) {
+    const openStatus = isOpenNow ? 'open' : 'closed';
+    const nextStatus = isOpenNow ? 'closes' : 'opens';
+
+    let openStatusMessage = '';
+
+    if (
+      !this.currentWorkingTimeData.isOpen &&
+      this.currentWorkingTimeData.message
+    ) {
+      openStatusMessage = ` (${this.currentWorkingTimeData.message})`;
     }
+
+    let nextStatusDitailsMessage = '';
+
+    if (nextStatusDetails) {
+      nextStatusDitailsMessage = `, in ${Object.values(nextStatusDetails).join(' ')}`;
+    }
+
+    if (!nextStatusDitailsMessage && this.nextWorkingTimeDate) {
+      nextStatusDitailsMessage = `, ${capitalize(
+        this.nextWorkingTimeDate.weekday
+      )}`;
+    }
+
+    const nextStatusMessage = isItTomorrow
+      ? `${nextStatus} ${nextStatusTime}, tomorrow`
+      : `${nextStatus} ${nextStatusTime}${nextStatusDitailsMessage}`;
+
+    return hasNextWorkingDay
+      ? `${openStatus}${openStatusMessage} ${splitter} ${nextStatusMessage}`
+      : `${openStatus}${openStatusMessage}`;
   }
 }
