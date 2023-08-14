@@ -5,7 +5,7 @@ import {
   IWorkingStatus,
   IWeekdayWorkingData,
   WorkingStatusColor,
-} from '../pages/mainPage.type';
+} from '../components/mainPage/mainPage.type';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';

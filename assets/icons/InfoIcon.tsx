@@ -1,4 +1,4 @@
-import { WorkingStatusColor } from "../../pages/mainPage.type";
+import { WorkingStatusColor } from "../../components/mainPage/mainPage.type";
 
 interface InfoIconProps{
   fill: WorkingStatusColor,
