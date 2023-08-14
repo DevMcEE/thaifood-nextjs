@@ -136,6 +136,40 @@ describe('WorkingTimeService.getStatus', () => {
       })
     })
   })
+  describe('when time 1h 15min before start on thursday', () => {
+    let workingTimeService;
+    beforeAll(() => {
+      const dateTime = dayjs().day(4).hour(9).minute(45)
+      jest
+        .useFakeTimers()
+        .setSystemTime(dateTime.toDate());
+      workingTimeService = new WorkingTimeService()
+    });
+    it('should show closed status', () => {
+      expect(workingTimeService.getStatus()).toMatchObject({
+        isOpen: false,
+        message: 'closed · opens 11:00, in 1 hours',
+        statusColor: WorkingStatusColor.yellow
+      })
+    })
+  })
+  describe('when time 25min before start on thursday', () => {
+    let workingTimeService;
+    beforeAll(() => {
+      const dateTime = dayjs().day(4).hour(10).minute(45)
+      jest
+        .useFakeTimers()
+        .setSystemTime(dateTime.toDate());
+      workingTimeService = new WorkingTimeService()
+    });
+    it('should show closed status', () => {
+      expect(workingTimeService.getStatus()).toMatchObject({
+        isOpen: false,
+        message: 'closed · opens 11:00, in 15 minutes',
+        statusColor: WorkingStatusColor.yellow
+      })
+    })
+  })
   describe('when it is closed due to public holiday', () => {
     beforeAll(() => {
       const dateTime = dayjs().day(5).hour(13).minute(0)

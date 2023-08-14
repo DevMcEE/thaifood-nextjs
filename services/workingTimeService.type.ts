@@ -10,11 +10,13 @@ export enum MessageSplitter {
 export interface IBuildStatusProps {
   isOpenNow: boolean;
   nextStatusTime: string;
-  nextStatusDetails?: {
-    duration: number;
-    unit: DurationTimeUnit;
-  };
+  nextStatusDetails?:INextStatusDatails;
   splitter?: string;
   isItTomorrow?: boolean;
   hasNextWorkingDay?: boolean;
+}
+
+export interface INextStatusDatails {
+  duration: number;
+  unit: DurationTimeUnit;
 }

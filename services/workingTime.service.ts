@@ -14,6 +14,7 @@ import duration from 'dayjs/plugin/duration';
 import {
   DurationTimeUnit,
   IBuildStatusProps,
+  INextStatusDatails,
   MessageSplitter,
 } from './workingTimeService.type';
 import { capitalize } from '../utils/text.utils';
@@ -74,7 +75,7 @@ export class WorkingTimeService {
     }
   }
 
-  getStatusOnAllDaysClosed() {
+  private getStatusOnAllDaysClosed(): IWorkingStatus {
     return {
       isOpen: false,
       message: this.buildStatusMessage({
@@ -86,47 +87,26 @@ export class WorkingTimeService {
     };
   }
 
-  getStatusOnOpenStateTimeBefore() {
-    const timeDiff = this.currentWorkingStartDateTime.diff(dayjs());
-    const timeDiffHours = dayjs.duration(timeDiff).asHours();
+  private getStatusOnOpenStateTimeBefore() {
+    let nextStatusDetails = this.getNextStatusDetails(this.currentWorkingStartDateTime, 2);
+    const isLessThanHour = nextStatusDetails && nextStatusDetails.unit === DurationTimeUnit.minutes;
 
     return {
       isOpen: false,
       message: this.buildStatusMessage({
         isOpenNow: false,
         nextStatusTime: this.currentWorkingDayData.start,
-        nextStatusDetails: {
-          duration: timeDiffHours,
-          unit: DurationTimeUnit.hours,
-        },
+        nextStatusDetails,
       }),
-      statusColor: WorkingStatusColor.yellow,
+      statusColor: nextStatusDetails 
+        ? WorkingStatusColor.yellow
+        : WorkingStatusColor.gray,
     };
   }
 
-  getStatusOnOpenStateTimeBetween() {
-    const timeDiff = this.currentWorkingEndDateTime.diff(dayjs());
-    const timeDiffAmountHours = Math.round(dayjs.duration(timeDiff).asHours());
-    const timeDiffAmountMinutes = dayjs.duration(timeDiff).asMinutes();
-
-    let timeDiffAmount = timeDiffAmountHours;
-    let timeDiffUnit = DurationTimeUnit.hours;
-
-    const isLessThanHour = timeDiffAmountHours < 1;
-
-    if (isLessThanHour) {
-      timeDiffAmount = timeDiffAmountMinutes;
-      timeDiffUnit = DurationTimeUnit.minutes;
-    }
-
-    let nextStatusDetails;
-
-    if (timeDiffAmountHours <= 3 || isLessThanHour) {
-      nextStatusDetails = {
-        duration: timeDiffAmount,
-        unit: timeDiffUnit,
-      };
-    }
+  private getStatusOnOpenStateTimeBetween(): IWorkingStatus {
+    let nextStatusDetails = this.getNextStatusDetails(this.currentWorkingEndDateTime);
+    const isLessThanHour = nextStatusDetails && nextStatusDetails.unit === DurationTimeUnit.minutes;
 
     return {
       isOpen: true,
@@ -141,7 +121,7 @@ export class WorkingTimeService {
     };
   }
 
-  getStatusOnOpenStateTimeAfter() {
+  private getStatusOnOpenStateTimeAfter(): IWorkingStatus {
     this.nextWorkingDayData = this.allOpenWorkingDaysDataArray.find(
       ({ index }) => index > this.todaysWeekdayIndex || index === 0
     );
@@ -168,18 +148,44 @@ export class WorkingTimeService {
     };
   }
 
-  getStatusOnClosedState() {
+  private getStatusOnClosedState(): IWorkingStatus {
     return this.getStatusOnOpenStateTimeAfter();
   }
 
-  buildStatusMessage({
+  private getNextStatusDetails(nextStatusDateTime: Dayjs, hoursBeforeToStartShowingDetails = 3): INextStatusDatails | undefined {
+    const timeDiff = nextStatusDateTime.diff(dayjs());
+    const timeDiffAmountHours = Math.round(dayjs.duration(timeDiff).asHours());
+    const timeDiffAmountMinutes =  Math.round(dayjs.duration(timeDiff).asMinutes());
+
+    let timeDiffAmount = timeDiffAmountHours;
+    let timeDiffUnit = DurationTimeUnit.hours;
+
+    const isLessThanHour = timeDiffAmountHours < 1;
+
+    if (isLessThanHour) {
+      timeDiffAmount = timeDiffAmountMinutes;
+      timeDiffUnit = DurationTimeUnit.minutes;
+    }
+
+    let nextStatusDetails: INextStatusDatails;
+
+    if (timeDiffAmountHours <= hoursBeforeToStartShowingDetails) {
+      nextStatusDetails = {
+        duration: timeDiffAmount,
+        unit: timeDiffUnit,
+      };
+    }
+
+    return nextStatusDetails;
+  }
+  private buildStatusMessage({
     isOpenNow,
     nextStatusDetails = null,
     nextStatusTime = '',
     splitter = MessageSplitter.dot,
     isItTomorrow = false,
     hasNextWorkingDay = true,
-  }: IBuildStatusProps) {
+  }: IBuildStatusProps): string {
     const openStatus = isOpenNow ? 'open' : 'closed';
     const nextStatus = isOpenNow ? 'closes' : 'opens';
 
