@@ -12,7 +12,8 @@
     "opens": "открывается",
     "inBefore": "через ",
     "inAfter": "",
-    "hours": "час(а)",
-    "minutes": "минут(ы)"
+    "hours": "ч",
+    "minutes": "мин",
+    "tomorrow": "завтра"
   }
 }

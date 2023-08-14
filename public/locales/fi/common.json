@@ -11,8 +11,9 @@
     "closes": "sulkee",
     "opens": "avautuu",
     "inBefore": "",
-    "inAfter": "",
-    "hours": "t.",
-    "minutes": "min."
+    "inAfter": " kuluttua",
+    "hours": "t",
+    "minutes": "min",
+    "tomorrow": "huomenna"
   }
 }

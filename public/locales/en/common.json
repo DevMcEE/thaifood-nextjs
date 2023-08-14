@@ -12,7 +12,8 @@
     "opens": "opens",
     "inBefore": "in ",
     "inAfter": "",
-    "hours": "hours",
-    "minutes": "minutes"
+    "hours": "h",
+    "minutes": "min",
+    "tomorrow": "tomorrow"
   }
 }

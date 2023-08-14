@@ -10,7 +10,10 @@
     "open": "เปิด",
     "closes": "ปิด",
     "opens": "เปิด",
-    "inBefore": "h.",
-    "inAfter": "min."
+    "inBefore": "อีก ",
+    "inAfter": "",
+    "hours": "ชม",
+    "minutes": "นาที",
+    "tomorrow": "พรุ่งนี้"
   }
 }

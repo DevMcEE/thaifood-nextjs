@@ -162,18 +162,17 @@ export class WorkingTimeService {
     hoursBeforeToStartShowingDetails = 3
   ): INextStatusDatails | undefined {
     const timeDiff = nextStatusDateTime.diff(dayjs());
-    const timeDiffAmountHours = Math.round(dayjs.duration(timeDiff).asHours());
-    const timeDiffAmountMinutes = Math.round(
-      dayjs.duration(timeDiff).asMinutes()
-    );
+    const timeDiffAmountHours = dayjs.duration(timeDiff).asHours();
 
-    let timeDiffAmount = timeDiffAmountHours;
+    let timeDiffAmount = Math.round(timeDiffAmountHours);
     let timeDiffUnit = DurationTimeUnit.hours;
 
     const isLessThanHour = timeDiffAmountHours < 1;
 
     if (isLessThanHour) {
-      timeDiffAmount = timeDiffAmountMinutes;
+      const timeDiffAmountMinutes = dayjs.duration(timeDiff).asMinutes();
+      
+      timeDiffAmount =  Math.round(timeDiffAmountMinutes);
       timeDiffUnit = DurationTimeUnit.minutes;
     }
 
@@ -224,7 +223,7 @@ export class WorkingTimeService {
     }
 
     const nextStatusMessage = isItTomorrow
-      ? `${nextStatus} ${nextStatusTime}, tomorrow`
+      ? `${nextStatus} ${nextStatusTime}, ${this.t('tomorrow')}`
       : `${nextStatus} ${nextStatusTime}${nextStatusDetailsMessage}`;
 
     return hasNextWorkingDay

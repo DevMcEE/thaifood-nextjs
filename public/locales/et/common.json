@@ -12,7 +12,8 @@
     "opens": "avatakse",
     "inBefore": "",
     "inAfter": " pärast",
-    "hours": "t.",
-    "minutes": "min."
+    "hours": "t",
+    "minutes": "min",
+    "tomorrow": "homme"
   }
 }
