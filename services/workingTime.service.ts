@@ -37,28 +37,23 @@ export class WorkingTimeService {
   constructor(
     private workingWeekDataArray: IWeekdayWorkingData[],
     private translator?: (key: string) => string
-    ) {
-      if (!Array.isArray(workingWeekDataArray)) {
-        throw new TypeError('Invalid workingWeekDataArray type');
-      }
+  ) {
+    if (!Array.isArray(workingWeekDataArray)) {
+      throw new TypeError('Invalid workingWeekDataArray type');
     }
+  }
 
   getStatus(): IWorkingStatus {
     this.todaysWeekdayIndex = dayjs().day();
-    this.allOpenWorkingDaysDataArray = this.workingWeekDataArray.filter(({ isOpen }) => isOpen);
-    this.currentWorkingDayData = this.workingWeekDataArray.find(({ index }) => index === this.todaysWeekdayIndex);
+    this.allOpenWorkingDaysDataArray = this.workingWeekDataArray.filter(
+      ({ isOpen }) => isOpen
+    );
+    this.currentWorkingDayData = this.workingWeekDataArray.find(
+      ({ index }) => index === this.todaysWeekdayIndex
+    );
 
-    const [startHours, startMinutes] = this.currentWorkingDayData.start.split(':');
-    this.currentWorkingStartDateTime = dayjs()
-      .clone()
-      .hour(parseInt(startHours))
-      .minute(parseInt(startMinutes));
-
-    const [endHours, endMinutes] = this.currentWorkingDayData.end.split(':');
-    this.currentWorkingEndDateTime = dayjs()
-      .clone()
-      .hour(parseInt(endHours))
-      .minute(parseInt(endMinutes));
+    this.currentWorkingStartDateTime = this.getCurrentDateTime(this.currentWorkingDayData.start);
+    this.currentWorkingEndDateTime = this.getCurrentDateTime(this.currentWorkingDayData.end); 
 
     if (!this.allOpenWorkingDaysDataArray.length) {
       return this.getStatusOnAllDaysClosed();
@@ -72,7 +67,12 @@ export class WorkingTimeService {
       return this.getStatusOnOpenStateTimeBefore();
     }
 
-    if (dayjs().isBetween(this.currentWorkingStartDateTime, this.currentWorkingEndDateTime)) {
+    if (
+      dayjs().isBetween(
+        this.currentWorkingStartDateTime,
+        this.currentWorkingEndDateTime
+      )
+    ) {
       return this.getStatusOnOpenStateTimeBetween();
     }
 
@@ -95,7 +95,6 @@ export class WorkingTimeService {
 
   private getStatusOnOpenStateTimeBefore() {
     let nextStatusDetails = this.getNextStatusDetails(this.currentWorkingStartDateTime, 2);
-    const isLessThanHour = nextStatusDetails && nextStatusDetails.unit === DurationTimeUnit.minutes;
 
     return {
       isOpen: false,
@@ -104,7 +103,7 @@ export class WorkingTimeService {
         nextStatusTime: this.currentWorkingDayData.start,
         nextStatusDetails,
       }),
-      statusColor: nextStatusDetails 
+      statusColor: nextStatusDetails
         ? WorkingStatusColor.yellow
         : WorkingStatusColor.gray,
     };
@@ -158,10 +157,15 @@ export class WorkingTimeService {
     return this.getStatusOnOpenStateTimeAfter();
   }
 
-  private getNextStatusDetails(nextStatusDateTime: Dayjs, hoursBeforeToStartShowingDetails = 3): INextStatusDatails | undefined {
+  private getNextStatusDetails(
+    nextStatusDateTime: Dayjs,
+    hoursBeforeToStartShowingDetails = 3
+  ): INextStatusDatails | undefined {
     const timeDiff = nextStatusDateTime.diff(dayjs());
     const timeDiffAmountHours = Math.round(dayjs.duration(timeDiff).asHours());
-    const timeDiffAmountMinutes =  Math.round(dayjs.duration(timeDiff).asMinutes());
+    const timeDiffAmountMinutes = Math.round(
+      dayjs.duration(timeDiff).asMinutes()
+    );
 
     let timeDiffAmount = timeDiffAmountHours;
     let timeDiffUnit = DurationTimeUnit.hours;
@@ -184,6 +188,7 @@ export class WorkingTimeService {
 
     return nextStatusDetails;
   }
+
   private buildStatusMessage({
     isOpenNow,
     nextStatusDetails = null,
@@ -193,7 +198,7 @@ export class WorkingTimeService {
     hasNextWorkingDay = true,
   }: IBuildStatusProps): string {
     const openStatus = isOpenNow ? this.t('open') : this.t('closed');
-    const nextStatus = isOpenNow ?  this.t('closes') :  this.t('opens');
+    const nextStatus = isOpenNow ? this.t('closes') : this.t('opens');
 
     let openStatusMessage = '';
 
@@ -207,7 +212,9 @@ export class WorkingTimeService {
     let nextStatusDetailsMessage = '';
 
     if (nextStatusDetails) {
-      nextStatusDetailsMessage = `, ${this.t('inBefore')}${Object.values(nextStatusDetails).join(' ')}${this.t('inAfter')}`.trim();
+      nextStatusDetailsMessage = `, ${this.t('inBefore')}${Object.values(
+        nextStatusDetails
+      ).join(' ')}${this.t('inAfter')}`.trim();
     }
 
     if (!nextStatusDetailsMessage && this.nextWorkingDayData) {
@@ -226,10 +233,18 @@ export class WorkingTimeService {
   }
 
   private t(key: string) {
-    if(this.translator) {
+    if (this.translator) {
       return this.translator(`workingTime.${key}`);
     }
 
     return key;
+  }
+
+  private getCurrentDateTime(time: string): Dayjs {
+    const [endHours, endMinutes] = time.split(':');
+    return dayjs()
+      .clone()
+      .hour(parseInt(endHours))
+      .minute(parseInt(endMinutes));
   }
 }
