@@ -4,5 +4,16 @@
   "maintenance": {
     "greetings":"Hei siellä!",
     "message": "UUDISTAMME VALIKKOJAMME...\nPYYDÄMME HETKEN KÄRISTILLISYYTTÄ!\nTÄMÄ VETÄÄ VAIN MUUTTA MINUUTTIA!"
+  },
+  "workingTime": {
+    "closed": "suljettu",
+    "open": "avoin",
+    "closes": "sulkee",
+    "opens": "avautuu",
+    "inBefore": "",
+    "inAfter": " kuluttua",
+    "hours": "t",
+    "minutes": "min",
+    "tomorrow": "huomenna"
   }
 }

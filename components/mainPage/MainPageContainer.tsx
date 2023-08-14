@@ -7,10 +7,8 @@ import food from '../../public/assets/images/landing/combo_thai_food_thai_cook.j
 import kentmani from '../../public/assets/images/landing/kentmani.jpg';
 import Link from 'next/link';
 import { FooterBlock } from '../FooterBlock';
-import { useRouter } from 'next/router';
 
 export function MainPageContainer() {
-  const {locale} = useRouter();
   return (
     <>
       <Meta />
