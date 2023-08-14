@@ -1,4 +1,3 @@
-import workingTimeData from '../assets/workingTime';
 import dayjs, { Dayjs } from 'dayjs';
 import UTC from 'dayjs/plugin/utc';
 import timeZone from 'dayjs/plugin/timezone';
@@ -35,7 +34,14 @@ export class WorkingTimeService {
   private todaysWeekdayIndex: number;
   private nextWorkingDayData: IWeekdayWorkingData;
 
-  constructor(private workingWeekDataArray: IWeekdayWorkingData[] = workingTimeData) {}
+  constructor(
+    private workingWeekDataArray: IWeekdayWorkingData[],
+    private translator?: (key: string) => string
+    ) {
+      if (!Array.isArray(workingWeekDataArray)) {
+        throw new TypeError('Invalid workingWeekDataArray type');
+      }
+    }
 
   getStatus(): IWorkingStatus {
     this.todaysWeekdayIndex = dayjs().day();
@@ -172,7 +178,7 @@ export class WorkingTimeService {
     if (timeDiffAmountHours <= hoursBeforeToStartShowingDetails) {
       nextStatusDetails = {
         duration: timeDiffAmount,
-        unit: timeDiffUnit,
+        unit: this.t(timeDiffUnit) as DurationTimeUnit,
       };
     }
 
@@ -186,8 +192,8 @@ export class WorkingTimeService {
     isItTomorrow = false,
     hasNextWorkingDay = true,
   }: IBuildStatusProps): string {
-    const openStatus = isOpenNow ? 'open' : 'closed';
-    const nextStatus = isOpenNow ? 'closes' : 'opens';
+    const openStatus = isOpenNow ? this.t('open') : this.t('closed');
+    const nextStatus = isOpenNow ?  this.t('closes') :  this.t('opens');
 
     let openStatusMessage = '';
 
@@ -201,7 +207,7 @@ export class WorkingTimeService {
     let nextStatusDetailsMessage = '';
 
     if (nextStatusDetails) {
-      nextStatusDetailsMessage = `, in ${Object.values(nextStatusDetails).join(' ')}`;
+      nextStatusDetailsMessage = `, ${this.t('inBefore')}${Object.values(nextStatusDetails).join(' ')}${this.t('inAfter')}`.trim();
     }
 
     if (!nextStatusDetailsMessage && this.nextWorkingDayData) {
@@ -217,5 +223,13 @@ export class WorkingTimeService {
     return hasNextWorkingDay
       ? `${openStatus}${openStatusMessage} ${splitter} ${nextStatusMessage}`
       : `${openStatus}${openStatusMessage}`;
+  }
+
+  private t(key: string) {
+    if(this.translator) {
+      return this.translator(`workingTime.${key}`);
+    }
+
+    return key;
   }
 }

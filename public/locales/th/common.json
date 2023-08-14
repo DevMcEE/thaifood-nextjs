@@ -4,5 +4,13 @@
   "maintenance": {
     "greetings":"สวัสดี!",
     "message": "เรากำลังอัปเดตเมนูของเรา...\nโปรดอดทนรอด้วย!\nใช้เวลาเพียงไม่กี่นาทีเท่านั้น"
+  },
+  "workingTime": {
+    "closed": "ปิด",
+    "open": "เปิด",
+    "closes": "ปิด",
+    "opens": "เปิด",
+    "inBefore": "h.",
+    "inAfter": "min."
   }
 }

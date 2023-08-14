@@ -4,5 +4,15 @@
   "maintenance": {
     "greetings":"Hei, hei!",
     "message": "ME UUENDAME OMA MENÜÜD..\nPALUME VEIDI KANNATLIKKUST!\nSEE VÕTAB AINULT PAAR MINUTID!"
+  },
+  "workingTime": {
+    "closed": "suletud",
+    "open": "avatud",
+    "closes": "suletakse",
+    "opens": "avatakse",
+    "inBefore": "",
+    "inAfter": " pärast",
+    "hours": "t.",
+    "minutes": "min."
   }
 }

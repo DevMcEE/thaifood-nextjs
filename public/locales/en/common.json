@@ -4,5 +4,15 @@
   "maintenance": {
     "greetings":"Hi there!",
     "message": "WE ARE UPDATING OUR MENU...\nPLEASE, BEAR WITH US!\nTHIS SHOULD ONLY TAKE A FEW MINUTES"
+  },
+  "workingTime": {
+    "closed": "closed",
+    "open": "open",
+    "closes": "closes",
+    "opens": "opens",
+    "inBefore": "in ",
+    "inAfter": "",
+    "hours": "hours",
+    "minutes": "minutes"
   }
 }

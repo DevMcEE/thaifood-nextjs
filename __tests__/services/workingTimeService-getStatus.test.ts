@@ -9,10 +9,20 @@ dayjs.extend(UTC)
 dayjs.extend(timeZone)
 dayjs.tz.setDefault("Europe/Tallinn");
 
+// mock
+const translator = (key: string) => {
+  const [_, text] = key.split('.');
+
+  if (text === 'inBefore') return 'in ';
+  if (text === 'inAfter') return '';
+
+  return text;
+}
+
 describe('WorkingTimeService.getStatus', () => {
   let workingTimeService;
   beforeEach(() =>{
-    workingTimeService = new WorkingTimeService(workingTime)
+    workingTimeService = new WorkingTimeService(workingTime, translator)
   });
   afterEach(() =>{
     workingTimeService = undefined;
@@ -109,7 +119,7 @@ describe('WorkingTimeService.getStatus', () => {
         }
       });
 
-      workingTimeService = new WorkingTimeService(testData)
+      workingTimeService = new WorkingTimeService(testData,  translator)
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
@@ -126,7 +136,7 @@ describe('WorkingTimeService.getStatus', () => {
       jest
         .useFakeTimers()
         .setSystemTime(dateTime.toDate());
-      workingTimeService = new WorkingTimeService()
+      workingTimeService = new WorkingTimeService(workingTime, translator)
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
@@ -143,7 +153,7 @@ describe('WorkingTimeService.getStatus', () => {
       jest
         .useFakeTimers()
         .setSystemTime(dateTime.toDate());
-      workingTimeService = new WorkingTimeService()
+      workingTimeService = new WorkingTimeService(workingTime, translator)
     });
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
@@ -160,7 +170,7 @@ describe('WorkingTimeService.getStatus', () => {
       jest
         .useFakeTimers()
         .setSystemTime(dateTime.toDate());
-      workingTimeService = new WorkingTimeService()
+      workingTimeService = new WorkingTimeService(workingTime, translator)
     });
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
@@ -201,7 +211,7 @@ describe('WorkingTimeService.getStatus', () => {
           message: 'public holiday'
         }
       })
-      workingTimeService = new WorkingTimeService(testData)
+      workingTimeService = new WorkingTimeService(testData, translator)
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
@@ -226,7 +236,7 @@ describe('WorkingTimeService.getStatus', () => {
             : weekdayData.isOpen
         }
       })
-      workingTimeService = new WorkingTimeService(testData)
+      workingTimeService = new WorkingTimeService(testData, translator)
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
@@ -249,7 +259,7 @@ describe('WorkingTimeService.getStatus', () => {
           isOpen: false
         }
       })
-      workingTimeService = new WorkingTimeService(testData)
+      workingTimeService = new WorkingTimeService(testData, translator)
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
