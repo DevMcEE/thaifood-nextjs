@@ -1,4 +1,4 @@
-import { IWeekdayWorkingData } from "../../pages/mainPage.type";
+import { IWeekdayWorkingData } from "../../components/mainPage/mainPage.type";
 
 export default [
   {

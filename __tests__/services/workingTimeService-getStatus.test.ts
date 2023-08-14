@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import UTC from 'dayjs/plugin/utc';
 import timeZone from 'dayjs/plugin/timezone';
 import workingTime from '../../__mocks__/dataSets/workingTime';
-import { WorkingStatusColor } from "../../pages/mainPage.type";
+import { WorkingStatusColor } from "../../components/mainPage/mainPage.type";
 import { WorkingTimeService } from "../../services/workingTime.service"
 
 dayjs.extend(UTC)
