@@ -4,7 +4,7 @@ import UTC from 'dayjs/plugin/utc';
 import timeZone from 'dayjs/plugin/timezone';
 import {
   IWorkingStatus,
-  IWorkingTime,
+  IWeekdayWorkingData,
   WorkingStatusColor,
 } from '../pages/mainPage.type';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -27,54 +27,49 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(duration);
 
 export class WorkingTimeService {
-  private workingStartDateTime: Dayjs;
-  private workingEndDateTime: Dayjs;
-  private currentWorkingTimeData: IWorkingTime;
-  private workingDays: IWorkingTime[];
-  private currentWeekdayIndex: number;
-  private nextWorkingTimeDate: IWorkingTime;
+  private currentWorkingStartDateTime: Dayjs;
+  private currentWorkingEndDateTime: Dayjs;
+  private currentWorkingDayData: IWeekdayWorkingData;
+  private allOpenWorkingDaysDataArray: IWeekdayWorkingData[];
+  private todaysWeekdayIndex: number;
+  private nextWorkingDayData: IWeekdayWorkingData;
 
-  constructor(private workingTime: IWorkingTime[] = workingTimeData) {}
+  constructor(private workingWeekDataArray: IWeekdayWorkingData[] = workingTimeData) {}
 
   getStatus(): IWorkingStatus {
-    this.currentWeekdayIndex = dayjs().day();
+    this.todaysWeekdayIndex = dayjs().day();
+    this.allOpenWorkingDaysDataArray = this.workingWeekDataArray.filter(({ isOpen }) => isOpen);
+    this.currentWorkingDayData = this.workingWeekDataArray.find(({ index }) => index === this.todaysWeekdayIndex);
 
-    this.workingDays = this.workingTime.filter(({ isOpen }) => isOpen);
-
-    this.currentWorkingTimeData = this.workingTime.find(({ index }) => {
-      return index === this.currentWeekdayIndex;
-    });
-
-    const [startHours, startMinutes] =
-      this.currentWorkingTimeData.start.split(':');
-    this.workingStartDateTime = dayjs()
+    const [startHours, startMinutes] = this.currentWorkingDayData.start.split(':');
+    this.currentWorkingStartDateTime = dayjs()
       .clone()
       .hour(parseInt(startHours))
       .minute(parseInt(startMinutes));
 
-    const [endHours, endMinutes] = this.currentWorkingTimeData.end.split(':');
-    this.workingEndDateTime = dayjs()
+    const [endHours, endMinutes] = this.currentWorkingDayData.end.split(':');
+    this.currentWorkingEndDateTime = dayjs()
       .clone()
       .hour(parseInt(endHours))
       .minute(parseInt(endMinutes));
 
-    if (!this.workingDays.length) {
+    if (!this.allOpenWorkingDaysDataArray.length) {
       return this.getStatusOnAllDaysClosed();
     }
 
-    if (!this.currentWorkingTimeData.isOpen) {
+    if (!this.currentWorkingDayData.isOpen) {
       return this.getStatusOnClosedState();
     }
 
-    if (dayjs().isSameOrBefore(this.workingStartDateTime)) {
+    if (dayjs().isSameOrBefore(this.currentWorkingStartDateTime)) {
       return this.getStatusOnOpenStateTimeBefore();
     }
 
-    if (dayjs().isBetween(this.workingStartDateTime, this.workingEndDateTime)) {
+    if (dayjs().isBetween(this.currentWorkingStartDateTime, this.currentWorkingEndDateTime)) {
       return this.getStatusOnOpenStateTimeBetween();
     }
 
-    if (dayjs().isSameOrAfter(this.workingEndDateTime)) {
+    if (dayjs().isSameOrAfter(this.currentWorkingEndDateTime)) {
       return this.getStatusOnOpenStateTimeAfter();
     }
   }
@@ -92,14 +87,14 @@ export class WorkingTimeService {
   }
 
   getStatusOnOpenStateTimeBefore() {
-    const timeDiff = this.workingStartDateTime.diff(dayjs());
+    const timeDiff = this.currentWorkingStartDateTime.diff(dayjs());
     const timeDiffHours = dayjs.duration(timeDiff).asHours();
 
     return {
       isOpen: false,
       message: this.buildStatusMessage({
         isOpenNow: false,
-        nextStatusTime: this.currentWorkingTimeData.start,
+        nextStatusTime: this.currentWorkingDayData.start,
         nextStatusDetails: {
           duration: timeDiffHours,
           unit: DurationTimeUnit.hours,
@@ -110,23 +105,23 @@ export class WorkingTimeService {
   }
 
   getStatusOnOpenStateTimeBetween() {
-    const timeDiff = this.workingEndDateTime.diff(dayjs());
+    const timeDiff = this.currentWorkingEndDateTime.diff(dayjs());
     const timeDiffAmountHours = Math.round(dayjs.duration(timeDiff).asHours());
     const timeDiffAmountMinutes = dayjs.duration(timeDiff).asMinutes();
 
     let timeDiffAmount = timeDiffAmountHours;
     let timeDiffUnit = DurationTimeUnit.hours;
 
-    const isLessThan1Hour = timeDiffAmountHours < 1;
+    const isLessThanHour = timeDiffAmountHours < 1;
 
-    if (isLessThan1Hour) {
+    if (isLessThanHour) {
       timeDiffAmount = timeDiffAmountMinutes;
       timeDiffUnit = DurationTimeUnit.minutes;
     }
 
     let nextStatusDetails;
 
-    if (timeDiffAmountHours <= 3 || isLessThan1Hour) {
+    if (timeDiffAmountHours <= 3 || isLessThanHour) {
       nextStatusDetails = {
         duration: timeDiffAmount,
         unit: timeDiffUnit,
@@ -137,37 +132,37 @@ export class WorkingTimeService {
       isOpen: true,
       message: this.buildStatusMessage({
         isOpenNow: true,
-        nextStatusTime: this.currentWorkingTimeData.end,
+        nextStatusTime: this.currentWorkingDayData.end,
         nextStatusDetails,
       }),
-      statusColor: isLessThan1Hour
+      statusColor: isLessThanHour
         ? WorkingStatusColor.yellow
         : WorkingStatusColor.green,
     };
   }
 
   getStatusOnOpenStateTimeAfter() {
-    this.nextWorkingTimeDate = this.workingDays.find(
-      ({ index }) => index > this.currentWeekdayIndex || index === 0
+    this.nextWorkingDayData = this.allOpenWorkingDaysDataArray.find(
+      ({ index }) => index > this.todaysWeekdayIndex || index === 0
     );
     let isItTomorrow = false;
 
-    if (this.nextWorkingTimeDate) {
-      const weekdaysIndexDiff = this.nextWorkingTimeDate.index - this.currentWeekdayIndex;
+    if (this.nextWorkingDayData) {
+      const weekdaysIndexDiff = this.nextWorkingDayData.index - this.todaysWeekdayIndex;
       isItTomorrow = weekdaysIndexDiff === 1 || weekdaysIndexDiff === -6;
     } else {
       // set first working day
-      this.nextWorkingTimeDate = this.workingDays[0];
+      this.nextWorkingDayData = this.allOpenWorkingDaysDataArray[0];
     }
 
     return {
       isOpen: false,
       message: this.buildStatusMessage({
         isOpenNow: false,
-        nextStatusTime: this.nextWorkingTimeDate.start,
+        nextStatusTime: this.nextWorkingDayData.start,
         isItTomorrow,
       }),
-      statusColor: this.currentWorkingTimeData.isOpen
+      statusColor: this.currentWorkingDayData.isOpen
         ? WorkingStatusColor.gray
         : WorkingStatusColor.red,
     };
@@ -191,27 +186,27 @@ export class WorkingTimeService {
     let openStatusMessage = '';
 
     if (
-      !this.currentWorkingTimeData.isOpen &&
-      this.currentWorkingTimeData.message
+      !this.currentWorkingDayData.isOpen &&
+      this.currentWorkingDayData.message
     ) {
-      openStatusMessage = ` (${this.currentWorkingTimeData.message})`;
+      openStatusMessage = ` (${this.currentWorkingDayData.message})`;
     }
 
-    let nextStatusDitailsMessage = '';
+    let nextStatusDetailsMessage = '';
 
     if (nextStatusDetails) {
-      nextStatusDitailsMessage = `, in ${Object.values(nextStatusDetails).join(' ')}`;
+      nextStatusDetailsMessage = `, in ${Object.values(nextStatusDetails).join(' ')}`;
     }
 
-    if (!nextStatusDitailsMessage && this.nextWorkingTimeDate) {
-      nextStatusDitailsMessage = `, ${capitalize(
-        this.nextWorkingTimeDate.weekday
+    if (!nextStatusDetailsMessage && this.nextWorkingDayData) {
+      nextStatusDetailsMessage = `, ${capitalize(
+        this.nextWorkingDayData.weekday
       )}`;
     }
 
     const nextStatusMessage = isItTomorrow
       ? `${nextStatus} ${nextStatusTime}, tomorrow`
-      : `${nextStatus} ${nextStatusTime}${nextStatusDitailsMessage}`;
+      : `${nextStatus} ${nextStatusTime}${nextStatusDetailsMessage}`;
 
     return hasNextWorkingDay
       ? `${openStatus}${openStatusMessage} ${splitter} ${nextStatusMessage}`

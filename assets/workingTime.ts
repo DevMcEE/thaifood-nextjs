@@ -1,4 +1,4 @@
-import { IWorkingTime } from "../pages/mainPage.type";
+import { IWeekdayWorkingData } from "../pages/mainPage.type";
 
 export default [
   {
@@ -57,4 +57,4 @@ export default [
     "end": "20:00",
     "message": ""
   }
-] as IWorkingTime[];
+] as IWeekdayWorkingData[];

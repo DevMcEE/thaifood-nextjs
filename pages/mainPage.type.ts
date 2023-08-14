@@ -7,7 +7,7 @@ export enum WeekDay {
   Saturday = 'saturday',
   Sunday = 'sunday'
 }
-export interface IWorkingTime {
+export interface IWeekdayWorkingData {
   index: number,
   isOpen: boolean,
   start: string,
@@ -15,7 +15,7 @@ export interface IWorkingTime {
   message: string,
   weekday: WeekDay
 }
-export type WorkingTimesType = Record<WeekDay, IWorkingTime>
+export type WorkingTimesType = Record<WeekDay, IWeekdayWorkingData>
 export enum WorkingStatusColor {
   green = 'green',
   yellow = 'yellow',

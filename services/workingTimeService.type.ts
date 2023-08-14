@@ -6,6 +6,7 @@ export enum DurationTimeUnit {
 export enum MessageSplitter {
   dot = '·',
 }
+
 export interface IBuildStatusProps {
   isOpenNow: boolean;
   nextStatusTime: string;
