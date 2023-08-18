@@ -3,7 +3,7 @@ import UTC from 'dayjs/plugin/utc';
 import timeZone from 'dayjs/plugin/timezone';
 import workingTime from '../../__mocks__/dataSets/workingTime';
 import { WorkingStatusColor } from "../../components/mainPage/mainPage.type";
-import { WorkingTimeService } from "../../services/workingTime.service"
+import { WorkingStatusService } from '../../services/workingStatus.service';
 
 dayjs.extend(UTC)
 dayjs.extend(timeZone)
@@ -22,7 +22,7 @@ const translator = (key: string) => {
 describe('WorkingTimeService.getStatus', () => {
   let workingTimeService;
   beforeEach(() =>{
-    workingTimeService = new WorkingTimeService(workingTime, translator)
+    workingTimeService = new WorkingStatusService(workingTime, translator)
   });
   afterEach(() =>{
     workingTimeService = undefined;
@@ -37,7 +37,7 @@ describe('WorkingTimeService.getStatus', () => {
     it('should show open status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: true,
-        message: 'open · closes 20:15',
+        comment: 'open · closes 20:15',
         statusColor: WorkingStatusColor.green
       })
     })
@@ -52,7 +52,7 @@ describe('WorkingTimeService.getStatus', () => {
     it('should show open status and closes in 2 hours', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: true,
-        message: 'open · closes 20:15, in 2 hours',
+        comment: 'open · closes 20:15, in 2 hours',
         statusColor: WorkingStatusColor.green
       })
     })
@@ -67,7 +67,7 @@ describe('WorkingTimeService.getStatus', () => {
     it('should show open status and closes in 3 hours', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: true,
-        message: 'open · closes 20:15, in 3 hours',
+        comment: 'open · closes 20:15, in 3 hours',
         statusColor: WorkingStatusColor.green
       })
     })
@@ -82,7 +82,7 @@ describe('WorkingTimeService.getStatus', () => {
     it('should show open status and closes in 15 minutes', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: true,
-        message: 'open · closes 20:15, in 15 minutes',
+        comment: 'open · closes 20:15, in 15 minutes',
         statusColor: WorkingStatusColor.yellow
       })
     })
@@ -97,7 +97,7 @@ describe('WorkingTimeService.getStatus', () => {
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
-        message: 'closed · opens 11:00, tomorrow',
+        comment: 'closed · opens 11:00, tomorrow',
         statusColor: WorkingStatusColor.gray
       })
     })
@@ -115,16 +115,16 @@ describe('WorkingTimeService.getStatus', () => {
           isOpen: [2, 3].includes(weekdayData.index)
             ? false
             : weekdayData.isOpen,
-          message: ![2, 3].includes(weekdayData.index) && weekdayData.isOpen ? 'Public holiday' : weekdayData.comment
+          comment: ![2, 3].includes(weekdayData.index) && weekdayData.isOpen ? 'Public holiday' : weekdayData.comment
         }
       });
 
-      workingTimeService = new WorkingTimeService(testData,  translator)
+      workingTimeService = new WorkingStatusService(testData,  translator)
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
-        message: 'closed · opens 11:00, Thursday',
+        comment: 'closed · opens 11:00, Thursday',
         statusColor: WorkingStatusColor.gray
       })
     })
@@ -136,12 +136,12 @@ describe('WorkingTimeService.getStatus', () => {
       jest
         .useFakeTimers()
         .setSystemTime(dateTime.toDate());
-      workingTimeService = new WorkingTimeService(workingTime, translator)
+      workingTimeService = new WorkingStatusService(workingTime, translator)
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
-        message: 'closed · opens 11:00, in 2 hours',
+        comment: 'closed · opens 11:00, in 2 hours',
         statusColor: WorkingStatusColor.yellow
       })
     })
@@ -153,12 +153,12 @@ describe('WorkingTimeService.getStatus', () => {
       jest
         .useFakeTimers()
         .setSystemTime(dateTime.toDate());
-      workingTimeService = new WorkingTimeService(workingTime, translator)
+      workingTimeService = new WorkingStatusService(workingTime, translator)
     });
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
-        message: 'closed · opens 11:00, in 1 hours',
+        comment: 'closed · opens 11:00, in 1 hours',
         statusColor: WorkingStatusColor.yellow
       })
     })
@@ -170,12 +170,12 @@ describe('WorkingTimeService.getStatus', () => {
       jest
         .useFakeTimers()
         .setSystemTime(dateTime.toDate());
-      workingTimeService = new WorkingTimeService(workingTime, translator)
+      workingTimeService = new WorkingStatusService(workingTime, translator)
     });
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
-        message: 'closed · opens 11:00, in 15 minutes',
+        comment: 'closed · opens 11:00, in 15 minutes',
         statusColor: WorkingStatusColor.yellow
       })
     })
@@ -190,7 +190,7 @@ describe('WorkingTimeService.getStatus', () => {
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
-        message: 'closed (public holiday) · opens 12:00, tomorrow',
+        comment: 'closed (public holiday) · opens 12:00, tomorrow',
         statusColor: WorkingStatusColor.red
       })
     })
@@ -208,15 +208,15 @@ describe('WorkingTimeService.getStatus', () => {
           isOpen: [4, 5].includes(weekdayData.index)
             ? false
             : weekdayData.isOpen,
-          message: 'public holiday'
+            comment: 'public holiday'
         }
       })
-      workingTimeService = new WorkingTimeService(testData, translator)
+      workingTimeService = new WorkingStatusService(testData, translator)
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
-        message: 'closed (public holiday) · opens 12:00, Saturday',
+        comment: 'closed (public holiday) · opens 12:00, Saturday',
         statusColor: WorkingStatusColor.red
       })
     })
@@ -236,12 +236,12 @@ describe('WorkingTimeService.getStatus', () => {
             : weekdayData.isOpen
         }
       })
-      workingTimeService = new WorkingTimeService(testData, translator)
+      workingTimeService = new WorkingStatusService(testData, translator)
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
-        message: 'closed (public holiday) · opens 11:00, Monday',
+        comment: 'closed (public holiday) · opens 11:00, Monday',
         statusColor: WorkingStatusColor.red
       })
     })
@@ -259,12 +259,12 @@ describe('WorkingTimeService.getStatus', () => {
           isOpen: false
         }
       })
-      workingTimeService = new WorkingTimeService(testData, translator)
+      workingTimeService = new WorkingStatusService(testData, translator)
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
-        message: 'closed (public holiday)',
+        comment: 'closed (public holiday)',
         statusColor: WorkingStatusColor.red
       })
     })

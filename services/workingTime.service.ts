@@ -5,6 +5,7 @@ import {
 import { capitalize } from '../utils/text.utils';
 
 export class WorkingTimeService {
+  [x: string]: any;
   constructor(
     private workingWeekDataArray: IWeekdayWorkingData[],
     private translator?: (key: string) => string

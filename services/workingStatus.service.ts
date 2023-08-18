@@ -25,9 +25,11 @@ dayjs.extend(isSameOrBefore);
 dayjs.extend(isBetween);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(duration);
-// TODO: rename to workingStatusService
-// TODO: rename file to workingStatusService
+
 export class WorkingStatusService {
+  static getStatus() {
+    throw new Error("Method not implemented.");
+  }
   private currentWorkingStartDateTime: Dayjs;
   private currentWorkingEndDateTime: Dayjs;
   private currentWorkingDayData: IWeekdayWorkingData;
@@ -85,7 +87,7 @@ export class WorkingStatusService {
   private getStatusOnAllDaysClosed(): IWorkingStatus {
     return {
       isOpen: false,
-      message: this.buildStatusMessage({
+      comment: this.buildStatusMessage({
         isOpenNow: false,
         hasNextWorkingDay: false,
         nextStatusTime: '',
@@ -94,12 +96,12 @@ export class WorkingStatusService {
     };
   }
 
-  private getStatusOnOpenStateTimeBefore() {
+  private getStatusOnOpenStateTimeBefore(): IWorkingStatus {
     let nextStatusDetails = this.getNextStatusDetails(this.currentWorkingStartDateTime, 2);
 
     return {
       isOpen: false,
-      message: this.buildStatusMessage({
+      comment: this.buildStatusMessage({
         isOpenNow: false,
         nextStatusTime: this.currentWorkingDayData.start,
         nextStatusDetails,
@@ -116,7 +118,7 @@ export class WorkingStatusService {
 
     return {
       isOpen: true,
-      message: this.buildStatusMessage({
+      comment: this.buildStatusMessage({
         isOpenNow: true,
         nextStatusTime: this.currentWorkingDayData.end,
         nextStatusDetails,
@@ -143,7 +145,7 @@ export class WorkingStatusService {
 
     return {
       isOpen: false,
-      message: this.buildStatusMessage({
+      comment: this.buildStatusMessage({
         isOpenNow: false,
         nextStatusTime: this.nextWorkingDayData.start,
         isItTomorrow,
