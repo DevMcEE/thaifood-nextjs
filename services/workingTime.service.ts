@@ -1,39 +1,10 @@
-import dayjs, { Dayjs } from 'dayjs';
-import UTC from 'dayjs/plugin/utc';
-import timeZone from 'dayjs/plugin/timezone';
+import { time } from 'console';
 import {
-  IWorkingStatus,
-  IWeekdayWorkingData,
-  WorkingStatusColor,
+  IWeekdayWorkingData, IWorkingTime
 } from '../components/mainPage/mainPage.type';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import isBetween from 'dayjs/plugin/isBetween';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import duration from 'dayjs/plugin/duration';
-import {
-  DurationTimeUnit,
-  IBuildStatusProps,
-  INextStatusDatails,
-  MessageSplitter,
-} from './workingTimeService.type';
 import { capitalize } from '../utils/text.utils';
 
-dayjs.extend(UTC);
-dayjs.extend(timeZone);
-dayjs.tz.setDefault('Europe/Tallinn');
-dayjs.extend(isSameOrBefore);
-dayjs.extend(isBetween);
-dayjs.extend(isSameOrAfter);
-dayjs.extend(duration);
-
 export class WorkingTimeService {
-  private currentWorkingStartDateTime: Dayjs;
-  private currentWorkingEndDateTime: Dayjs;
-  private currentWorkingDayData: IWeekdayWorkingData;
-  private allOpenWorkingDaysDataArray: IWeekdayWorkingData[];
-  private todaysWeekdayIndex: number;
-  private nextWorkingDayData: IWeekdayWorkingData;
-
   constructor(
     private workingWeekDataArray: IWeekdayWorkingData[],
     private translator?: (key: string) => string
@@ -43,194 +14,29 @@ export class WorkingTimeService {
     }
   }
 
-  getStatus(): IWorkingStatus {
-    this.todaysWeekdayIndex = dayjs().day();
-    this.allOpenWorkingDaysDataArray = this.workingWeekDataArray.filter(
-      ({ isOpen }) => isOpen
-    );
-    this.currentWorkingDayData = this.workingWeekDataArray.find(
-      ({ index }) => index === this.todaysWeekdayIndex
-    );
+  getList(): IWorkingTime[] {
+    const differencesBetweenAllTimeRangesArray = this.getDifferencesBetweenAllTimeRanges();
+    const weekdaysInformation = []
 
-    this.currentWorkingStartDateTime = this.getCurrentDateTime(this.currentWorkingDayData.start);
-    this.currentWorkingEndDateTime = this.getCurrentDateTime(this.currentWorkingDayData.end); 
+    const lenghtOfallTimeRangesAndWeekDays = differencesBetweenAllTimeRangesArray.types.length
 
-    if (!this.allOpenWorkingDaysDataArray.length) {
-      return this.getStatusOnAllDaysClosed();
+    for (let i = 0; i < lenghtOfallTimeRangesAndWeekDays; i++) {
+      let comment = differencesBetweenAllTimeRangesArray.types[i].comment;
+      let information: string;
+      let weekdays = differencesBetweenAllTimeRangesArray.types[i].weekdays;
+      let timeRange = differencesBetweenAllTimeRangesArray.types[i].timeRange;
+      let weekdaysLength = differencesBetweenAllTimeRangesArray.types[i].weekdays.length;
+      if (timeRange === undefined) {
+        information = `${weekdaysLength !== 1 ? weekdays[0] + ' - ' + weekdays[weekdaysLength - 1] : weekdays[0]}: ${comment === 'closed' ? 'closed' : 'closed ' + '(' + comment + ')'}`;
+        weekdaysInformation.push(information);
+      } else {
+        information = `${weekdaysLength !== 1 ? weekdays[0] + ' - ' + weekdays[weekdaysLength - 1] : weekdays[0]}: ${timeRange}`;
+        weekdaysInformation.push(information);
+      }
+
     }
-
-    if (!this.currentWorkingDayData.isOpen) {
-      return this.getStatusOnClosedState();
-    }
-
-    if (dayjs().isSameOrBefore(this.currentWorkingStartDateTime)) {
-      return this.getStatusOnOpenStateTimeBefore();
-    }
-
-    if (
-      dayjs().isBetween(
-        this.currentWorkingStartDateTime,
-        this.currentWorkingEndDateTime
-      )
-    ) {
-      return this.getStatusOnOpenStateTimeBetween();
-    }
-
-    if (dayjs().isSameOrAfter(this.currentWorkingEndDateTime)) {
-      return this.getStatusOnOpenStateTimeAfter();
-    }
+    return weekdaysInformation;
   }
-
-  private getStatusOnAllDaysClosed(): IWorkingStatus {
-    return {
-      isOpen: false,
-      message: this.buildStatusMessage({
-        isOpenNow: false,
-        hasNextWorkingDay: false,
-        nextStatusTime: '',
-      }),
-      statusColor: WorkingStatusColor.red,
-    };
-  }
-
-  private getStatusOnOpenStateTimeBefore() {
-    let nextStatusDetails = this.getNextStatusDetails(this.currentWorkingStartDateTime, 2);
-
-    return {
-      isOpen: false,
-      message: this.buildStatusMessage({
-        isOpenNow: false,
-        nextStatusTime: this.currentWorkingDayData.start,
-        nextStatusDetails,
-      }),
-      statusColor: nextStatusDetails
-        ? WorkingStatusColor.yellow
-        : WorkingStatusColor.gray,
-    };
-  }
-
-  private getStatusOnOpenStateTimeBetween(): IWorkingStatus {
-    let nextStatusDetails = this.getNextStatusDetails(this.currentWorkingEndDateTime);
-    const isLessThanHour = nextStatusDetails && nextStatusDetails.unit === DurationTimeUnit.minutes;
-
-    return {
-      isOpen: true,
-      message: this.buildStatusMessage({
-        isOpenNow: true,
-        nextStatusTime: this.currentWorkingDayData.end,
-        nextStatusDetails,
-      }),
-      statusColor: isLessThanHour
-        ? WorkingStatusColor.yellow
-        : WorkingStatusColor.green,
-    };
-  }
-
-  private getStatusOnOpenStateTimeAfter(): IWorkingStatus {
-    this.nextWorkingDayData = this.allOpenWorkingDaysDataArray.find(
-      ({ index }) => index > this.todaysWeekdayIndex || index === 0
-    );
-    let isItTomorrow = false;
-
-    if (this.nextWorkingDayData) {
-      const weekdaysIndexDiff = this.nextWorkingDayData.index - this.todaysWeekdayIndex;
-      isItTomorrow = weekdaysIndexDiff === 1 || weekdaysIndexDiff === -6;
-    } else {
-      // set first working day
-      this.nextWorkingDayData = this.allOpenWorkingDaysDataArray[0];
-    }
-
-    return {
-      isOpen: false,
-      message: this.buildStatusMessage({
-        isOpenNow: false,
-        nextStatusTime: this.nextWorkingDayData.start,
-        isItTomorrow,
-      }),
-      statusColor: this.currentWorkingDayData.isOpen
-        ? WorkingStatusColor.gray
-        : WorkingStatusColor.red,
-    };
-  }
-
-  private getStatusOnClosedState(): IWorkingStatus {
-    return this.getStatusOnOpenStateTimeAfter();
-  }
-
-  private getNextStatusDetails(
-    nextStatusDateTime: Dayjs,
-    hoursBeforeToStartShowingDetails = 3
-  ): INextStatusDatails | undefined {
-    const timeDiff = nextStatusDateTime.diff(dayjs());
-    const timeDiffAmountHours = dayjs.duration(timeDiff).asHours();
-
-    let timeDiffAmount = Math.round(timeDiffAmountHours);
-    let timeDiffUnit = DurationTimeUnit.hours;
-
-    const isLessThanHour = timeDiffAmountHours < 1;
-
-    if (isLessThanHour) {
-      const timeDiffAmountMinutes = dayjs.duration(timeDiff).asMinutes();
-      
-      timeDiffAmount =  Math.round(timeDiffAmountMinutes);
-      timeDiffUnit = DurationTimeUnit.minutes;
-    }
-
-    let nextStatusDetails: INextStatusDatails;
-
-    if (timeDiffAmountHours <= hoursBeforeToStartShowingDetails) {
-      nextStatusDetails = {
-        duration: timeDiffAmount,
-        unit: this.t(timeDiffUnit) as DurationTimeUnit,
-      };
-    }
-
-    return nextStatusDetails;
-  }
-
-  private buildStatusMessage({
-    isOpenNow,
-    nextStatusDetails = null,
-    nextStatusTime = '',
-    splitter = MessageSplitter.dot,
-    isItTomorrow = false,
-    hasNextWorkingDay = true,
-  }: IBuildStatusProps): string {
-    const openStatus = isOpenNow ? this.t('open') : this.t('closed');
-    const nextStatus = isOpenNow ? this.t('closes') : this.t('opens');
-
-    let openStatusMessage = '';
-
-    if (
-      !this.currentWorkingDayData.isOpen &&
-      this.currentWorkingDayData.message
-    ) {
-      openStatusMessage = ` (${this.currentWorkingDayData.message})`;
-    }
-
-    let nextStatusDetailsMessage = '';
-
-    if (nextStatusDetails) {
-      nextStatusDetailsMessage = `, ${this.t('inBefore')}${Object.values(
-        nextStatusDetails
-      ).join(' ')}${this.t('inAfter')}`.trim();
-    }
-
-    if (!nextStatusDetailsMessage && this.nextWorkingDayData) {
-      nextStatusDetailsMessage = `, ${capitalize(
-        this.nextWorkingDayData.weekday
-      )}`;
-    }
-
-    const nextStatusMessage = isItTomorrow
-      ? `${nextStatus} ${nextStatusTime}, ${this.t('tomorrow')}`
-      : `${nextStatus} ${nextStatusTime}${nextStatusDetailsMessage}`;
-
-    return hasNextWorkingDay
-      ? `${openStatus}${openStatusMessage} ${splitter} ${nextStatusMessage}`
-      : `${openStatus}${openStatusMessage}`;
-  }
-
   private t(key: string) {
     if (this.translator) {
       return this.translator(`workingTime.${key}`);
@@ -238,12 +44,62 @@ export class WorkingTimeService {
 
     return key;
   }
+  private getAllTimeRangesOfWeekdays() {
+    let arrayNumber = 0;
+    let timeRange: string;
+    let comment: string;
+    let timeRangesOfAllWeekdays = [];
+    for (arrayNumber; arrayNumber < 7; arrayNumber++) {
+      if (this.workingWeekDataArray[arrayNumber].isOpen !== false) {
+        timeRange = this.workingWeekDataArray[arrayNumber].start + '-' + this.workingWeekDataArray[arrayNumber].end;
 
-  private getCurrentDateTime(time: string): Dayjs {
-    const [endHours, endMinutes] = time.split(':');
-    return dayjs()
-      .clone()
-      .hour(parseInt(endHours))
-      .minute(parseInt(endMinutes));
+        timeRangesOfAllWeekdays.push({
+          weekday: this.workingWeekDataArray[arrayNumber].weekday,
+          timeRange: timeRange
+        });
+      } else {
+        comment = this.workingWeekDataArray[arrayNumber].comment
+        timeRangesOfAllWeekdays.push({
+          weekday: this.workingWeekDataArray[arrayNumber].weekday,
+          comment: comment
+        });
+      }
+    }
+    return timeRangesOfAllWeekdays;
+  }
+  private getDifferencesBetweenAllTimeRanges() {
+    let allTimeRangesAndWeekDays = {
+      types: [
+        {
+          weekdays: [],
+          timeRange: '',
+          comment: ''
+        }
+      ],
+    }
+    let currentArrayNumber: number = 0;
+    const timeRangesOfAllWeekdaysLength = this.getAllTimeRangesOfWeekdays().length
+    for (let i = 0; i < timeRangesOfAllWeekdaysLength; i++) {
+      if (allTimeRangesAndWeekDays.types[currentArrayNumber].weekdays.length === 0) {
+        allTimeRangesAndWeekDays.types[currentArrayNumber].weekdays.push(this.getAllTimeRangesOfWeekdays()[i].weekday)
+        allTimeRangesAndWeekDays.types[currentArrayNumber].timeRange = this.getAllTimeRangesOfWeekdays()[i].timeRange;
+        allTimeRangesAndWeekDays.types[currentArrayNumber].comment = this.getAllTimeRangesOfWeekdays()[i].comment;
+      } else if
+
+        (allTimeRangesAndWeekDays.types[currentArrayNumber].timeRange === this.getAllTimeRangesOfWeekdays()[i].timeRange && allTimeRangesAndWeekDays.types[currentArrayNumber].comment === this.getAllTimeRangesOfWeekdays()[i].comment) {
+        allTimeRangesAndWeekDays.types[currentArrayNumber].weekdays.push(this.getAllTimeRangesOfWeekdays()[i].weekday);
+      } else {
+        currentArrayNumber = currentArrayNumber + 1;
+        allTimeRangesAndWeekDays.types.push({
+          weekdays: [],
+          timeRange: '',
+          comment: ''
+        });
+        allTimeRangesAndWeekDays.types[currentArrayNumber].weekdays.push(this.getAllTimeRangesOfWeekdays()[i].weekday);
+        allTimeRangesAndWeekDays.types[currentArrayNumber].timeRange = this.getAllTimeRangesOfWeekdays()[i].timeRange;
+        allTimeRangesAndWeekDays.types[currentArrayNumber].comment = this.getAllTimeRangesOfWeekdays()[i].comment === '' ? 'closed' : this.getAllTimeRangesOfWeekdays()[i].comment;
+      }
+    }
+    return allTimeRangesAndWeekDays;
   }
 }

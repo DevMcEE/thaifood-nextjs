@@ -115,7 +115,7 @@ describe('WorkingTimeService.getStatus', () => {
           isOpen: [2, 3].includes(weekdayData.index)
             ? false
             : weekdayData.isOpen,
-          message: ![2, 3].includes(weekdayData.index) && weekdayData.isOpen ? 'Public holiday' : weekdayData.message
+          message: ![2, 3].includes(weekdayData.index) && weekdayData.isOpen ? 'Public holiday' : weekdayData.comment
         }
       });
 
