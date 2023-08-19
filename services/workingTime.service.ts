@@ -3,6 +3,7 @@ import {
   IWeekdayWorkingData, IWorkingTime
 } from '../components/mainPage/mainPage.type';
 import { capitalize } from '../utils/text.utils';
+import { RuleSetQuery } from 'webpack';
 
 export class WorkingTimeService {
   [x: string]: any;
@@ -14,31 +15,51 @@ export class WorkingTimeService {
       throw new TypeError('Invalid workingWeekDataArray type');
     }
   }
-
+  
   getList(): IWorkingTime[] {
-    const differencesBetweenAllTimeRangesArray = this.getDifferencesBetweenAllTimeRanges();
-    const weekdaysInformation = []
-
-    const lenghtOfallTimeRangesAndWeekDays = differencesBetweenAllTimeRangesArray.types.length
-
-    for (let i = 0; i < lenghtOfallTimeRangesAndWeekDays; i++) {
-      let comment = differencesBetweenAllTimeRangesArray.types[i].comment;
-      let information: string;
-      let weekdays = differencesBetweenAllTimeRangesArray.types[i].weekdays;
-      let timeRange = differencesBetweenAllTimeRangesArray.types[i].timeRange;
-      let weekdaysLength = differencesBetweenAllTimeRangesArray.types[i].weekdays.length;
-      if (timeRange === undefined) {
-        information = `${weekdaysLength !== 1 ? weekdays[0] + ' - ' + weekdays[weekdaysLength - 1] : weekdays[0]}: ${comment === 'closed' ? 'closed' : 'closed ' + '(' + comment + ')'}`;
-        weekdaysInformation.push(information);
+    let allTimeRangesAndWeekdays = []
+    let currentArrayNumber: number = 0;
+    let allWeekdays = []
+    const timeRangesOfAllWeekdaysLength = this.getAllTimeRangesOfWeekdays().length
+    for (let i = 0; i < timeRangesOfAllWeekdaysLength; i++) {
+      if (allTimeRangesAndWeekdays.length === 0) {
+        allTimeRangesAndWeekdays.push({
+          weekdays: '',
+          timeRange: '',
+          comment: '',
+        })
+        allWeekdays.push({
+          weekdays: []
+        })
+        allWeekdays[currentArrayNumber].weekdays.push(this.getAllTimeRangesOfWeekdays()[i].weekday);
+        allTimeRangesAndWeekdays[currentArrayNumber].timeRange = this.getAllTimeRangesOfWeekdays()[i].timeRange;
+        allTimeRangesAndWeekdays[currentArrayNumber].comment = this.getAllTimeRangesOfWeekdays()[i].comment;
+      } else if (this.getAllTimeRangesOfWeekdays()[i].timeRange === allTimeRangesAndWeekdays[currentArrayNumber].timeRange && this.getAllTimeRangesOfWeekdays()[i].comment === allTimeRangesAndWeekdays[currentArrayNumber].comment) {
+        allWeekdays[currentArrayNumber].weekdays.push(this.getAllTimeRangesOfWeekdays()[i].weekday);
       } else {
-        information = `${weekdaysLength !== 1 ? weekdays[0] + ' - ' + weekdays[weekdaysLength - 1] : weekdays[0]}: ${timeRange}`;
-        weekdaysInformation.push(information);
+        currentArrayNumber += 1
+        allTimeRangesAndWeekdays.push({
+          weekdays: '',
+          timeRange: '',
+          comment: '',
+        })
+        allWeekdays.push({
+          weekdays: []
+        })
+        allWeekdays[currentArrayNumber].weekdays.push(this.getAllTimeRangesOfWeekdays()[i].weekday);
+        allTimeRangesAndWeekdays[currentArrayNumber].timeRange = this.getAllTimeRangesOfWeekdays()[i].timeRange;
+        allTimeRangesAndWeekdays[currentArrayNumber].comment = this.getAllTimeRangesOfWeekdays()[i].comment;
       }
-
     }
-    return weekdaysInformation;
+    const lenghtOfallTimeRangesAndWeekDays = allWeekdays.length
+    for (let i = 0; i < lenghtOfallTimeRangesAndWeekDays; i++) {
+      let arrayWeekdays = allWeekdays[i].weekdays
+      let weekdaysLength = allWeekdays[i].weekdays.length;
+      allTimeRangesAndWeekdays[i].weekdays = `${weekdaysLength !== 1 ? arrayWeekdays[0] + ' - ' + arrayWeekdays[weekdaysLength - 1] : arrayWeekdays[0]}`;
   }
-  private t(key: string) {
+  return allTimeRangesAndWeekdays;
+  }
+  private t(key: string): string {
     if (this.translator) {
       return this.translator(`workingTime.${key}`);
     }
@@ -46,61 +67,26 @@ export class WorkingTimeService {
     return key;
   }
   private getAllTimeRangesOfWeekdays() {
-    let arrayNumber = 0;
     let timeRange: string;
     let comment: string;
     let timeRangesOfAllWeekdays = [];
-    for (arrayNumber; arrayNumber < 7; arrayNumber++) {
-      if (this.workingWeekDataArray[arrayNumber].isOpen !== false) {
-        timeRange = this.workingWeekDataArray[arrayNumber].start + '-' + this.workingWeekDataArray[arrayNumber].end;
-
+    for (let i = 0; i < 7; i++) {
+      if (this.workingWeekDataArray[i].isOpen !== false) {
+        timeRange = this.workingWeekDataArray[i].start + ' - ' + this.workingWeekDataArray[i].end;
         timeRangesOfAllWeekdays.push({
-          weekday: this.workingWeekDataArray[arrayNumber].weekday,
-          timeRange: timeRange
+          weekday: this.workingWeekDataArray[i].weekday,
+          timeRange: timeRange,
+          comment: ''
         });
       } else {
-        comment = this.workingWeekDataArray[arrayNumber].comment
+        comment = this.workingWeekDataArray[i].comment
         timeRangesOfAllWeekdays.push({
-          weekday: this.workingWeekDataArray[arrayNumber].weekday,
+          weekday: this.workingWeekDataArray[i].weekday,
+          timeRange: 'closed',
           comment: comment
         });
       }
     }
     return timeRangesOfAllWeekdays;
-  }
-  private getDifferencesBetweenAllTimeRanges() {
-    let allTimeRangesAndWeekDays = {
-      types: [
-        {
-          weekdays: [],
-          timeRange: '',
-          comment: ''
-        }
-      ],
-    }
-    let currentArrayNumber: number = 0;
-    const timeRangesOfAllWeekdaysLength = this.getAllTimeRangesOfWeekdays().length
-    for (let i = 0; i < timeRangesOfAllWeekdaysLength; i++) {
-      if (allTimeRangesAndWeekDays.types[currentArrayNumber].weekdays.length === 0) {
-        allTimeRangesAndWeekDays.types[currentArrayNumber].weekdays.push(this.getAllTimeRangesOfWeekdays()[i].weekday)
-        allTimeRangesAndWeekDays.types[currentArrayNumber].timeRange = this.getAllTimeRangesOfWeekdays()[i].timeRange;
-        allTimeRangesAndWeekDays.types[currentArrayNumber].comment = this.getAllTimeRangesOfWeekdays()[i].comment;
-      } else if
-
-        (allTimeRangesAndWeekDays.types[currentArrayNumber].timeRange === this.getAllTimeRangesOfWeekdays()[i].timeRange && allTimeRangesAndWeekDays.types[currentArrayNumber].comment === this.getAllTimeRangesOfWeekdays()[i].comment) {
-        allTimeRangesAndWeekDays.types[currentArrayNumber].weekdays.push(this.getAllTimeRangesOfWeekdays()[i].weekday);
-      } else {
-        currentArrayNumber = currentArrayNumber + 1;
-        allTimeRangesAndWeekDays.types.push({
-          weekdays: [],
-          timeRange: '',
-          comment: ''
-        });
-        allTimeRangesAndWeekDays.types[currentArrayNumber].weekdays.push(this.getAllTimeRangesOfWeekdays()[i].weekday);
-        allTimeRangesAndWeekDays.types[currentArrayNumber].timeRange = this.getAllTimeRangesOfWeekdays()[i].timeRange;
-        allTimeRangesAndWeekDays.types[currentArrayNumber].comment = this.getAllTimeRangesOfWeekdays()[i].comment === '' ? 'closed' : this.getAllTimeRangesOfWeekdays()[i].comment;
-      }
-    }
-    return allTimeRangesAndWeekDays;
   }
 }
