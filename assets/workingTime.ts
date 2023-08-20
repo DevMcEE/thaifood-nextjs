@@ -52,9 +52,9 @@ export default [
   {
     "index": 0,
     "weekday":"sunday",
-    "isOpen": true,
+    "isOpen": false,
     "start": "12:00",
     "end": "20:00",
-    "message": ""
+    "message": "Day of Restoration of Independence"
   }
 ] as IWeekdayWorkingData[];
