@@ -34,7 +34,6 @@ describe('WorkingTimeService.getList', () => {
     })
     it('should show all weekdays as a single group', () => {
       const list = workingTimeService.getList();
-      // ['']
       expect(list.length).toBe(1);
       expect(list[0]).toMatchObject({
         weekdays: 'monday - sunday',
