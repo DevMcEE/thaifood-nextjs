@@ -14,6 +14,13 @@
     "inAfter": " kuluttua",
     "hours": "t",
     "minutes": "min",
-    "tomorrow": "huomenna"
+    "tomorrow": "huomenna",
+    "monday":"maanantai",
+    "tuesday":"tiistai",
+    "wednesday":"keskiviikko",
+    "thursday":"torstai",
+    "friday":"perjantai",
+    "saturday":"lauantai",
+    "sunday":"sunnuntai"
   }
 }
