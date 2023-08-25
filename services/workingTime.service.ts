@@ -14,21 +14,19 @@ export class WorkingTimeService {
       throw new TypeError('Invalid workingWeekDataArray type');
     }
   }
-
+  
   getList(): IWorkingTime[] {
     const targetArray = [];
 
     for (const workingDay of this.workingWeekDataArray) {
       const { isOpen, start, end, comment, weekday } = workingDay;
-
+      
       const newElement = {
-        weekdays: this.t(weekday),
+        weekdays: this.t(weekday) ,
         timeRange: isOpen ? `${start} - ${end}` : this.t('closed'),
         comment: isOpen ? '' : comment
       };
-      console.log({newElement})
       const targetElement = targetArray.pop() || newElement;
-
       if (targetElement.timeRange === newElement.timeRange &&
         targetElement.comment === newElement.comment) {
         const oldWeekDaysRangeStart = targetElement.weekdays.split(' - ')[0];
@@ -37,7 +35,6 @@ export class WorkingTimeService {
         targetArray.push(targetElement);
         continue;
       }
-
       targetArray.push(targetElement);
       targetArray.push(newElement);
     }

@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import wolt from '../../public/assets/images/footer/wolt-logo.png';
 import bolt from '../../public/assets/images/footer/bolt-logo-white.svg';
+import { WorkingTime } from './WorkingTime';
 
 export const FooterBlock = () => {
   const thisYear = new Date().getFullYear();
@@ -26,9 +27,7 @@ export const FooterBlock = () => {
         <div className="page-footer__block">
           <h2>Opening hours</h2>
           <div className="page-footer__block-content">
-            <p>Monday - Friday: 11:00 - 20:15</p>
-            <p>Saturday: 12:00 - 20:15</p>
-            <p>Sunday: 12:00 - 20:00</p>
+         <WorkingTime/> 
           </div>
         </div>
         <div className="page-footer__block">
