@@ -1,5 +1,5 @@
 .menu {
-  &-body-container{
+  &-body-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -7,17 +7,53 @@
   }
 
   &-content-block {
-    align-items: center;
     display: flex;
     flex-direction: column;
-    width: 100%;
     max-width: 960px;
     margin: 0 auto;
 
-    &__content {
-      width:95%;
+    &__menu-list {
+      display: flex;
+      flex-direction: row-reverse;
+      width: 100%;
+      padding: 0rem 2rem 2rem 2rem;
+      justify-content: center;
     }
+
+    &__menu-content {
+      width: 100%;
+    }
+
   }
-  
 }
 
+
+@media screen and (max-width: 768px) {
+  .menu {
+
+    &-content-block {
+
+      &__menu-list {
+        flex-direction: column;
+        padding: 0rem 1.2rem 2rem 1.2rem;
+      }
+
+      &__navigation {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        background-color: $primary-contrast-color;
+        z-index: 3;
+      }
+    }
+
+  }
+
+  .content-block__title {
+    padding: 1rem 2rem;
+  }
+
+}

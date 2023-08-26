@@ -1,6 +1,5 @@
 .menu-group {
-  align-items: center;
-  margin-bottom: 2rem;
+  padding-top: 2rem;
   width: 100%;
   max-width: 960px;
 
@@ -10,4 +9,21 @@
     justify-content: center;
     margin-bottom: 1rem;
   }
+
+  &__anchor-element{
+    display: block;
+    position: relative;
+    top: -5rem;
+    visibility: hidden;
+  }
+
+}
+
+@media screen and (max-width: 768px) {
+  .menu-group {
+    padding-top: 1rem;
+    width: 100%;
+    max-width: 960px;
+  }
+
 }

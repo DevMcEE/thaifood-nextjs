@@ -9,7 +9,7 @@
       text-transform: uppercase;
 
       &:hover {
-        background-color: $bg-secondary-color;
+        background-color: $primary-color;
       }
 
       &:after {
@@ -24,9 +24,9 @@
 
     &-button-wrapper {
       display: flex;
-      flex-direction: row;
       justify-content: space-between;
       align-items: center;
+      color: $primary-contrast-color;
 
     &:last-child .language-switcher-link:after{
         content: "";
@@ -36,8 +36,8 @@
 
     &-main-block {
       display: flex;
-      flex-direction: row;
-      padding-bottom: 2rem;
+      justify-content: center ;
+      padding-bottom: 1rem;
     }
   }
 }

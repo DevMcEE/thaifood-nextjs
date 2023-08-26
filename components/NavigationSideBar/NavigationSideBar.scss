@@ -1,0 +1,43 @@
+.nav-side-bar {
+  display: flex;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  margin: 0 2rem;
+  padding: 1rem 0;
+
+  &__list {
+    list-style: none;
+
+    &-item {
+      padding: 0.5rem;
+
+      &-active {
+        color: $primary-color;
+        background-color: #dfa02311;
+        border-radius: 1rem;
+      }
+    }
+
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .nav-side-bar {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin: 0;
+
+    &__list {
+      overflow-x: scroll;
+      display: flex;
+      flex-direction: row;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+    }
+  }
+}

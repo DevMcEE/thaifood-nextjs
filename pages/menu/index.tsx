@@ -5,16 +5,113 @@ import { Toolbar } from '../../components/Toolbar';
 import { IMenuGroup } from '../../menu/menu.type';
 import { MenuGroup } from '../../components/MenuGroup';
 import { Maintenance } from '../../components/Maintenance';
-import { LanguageSwitcher } from '../../components/LanguageSwitcher';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { NavigationSideBar } from '../../components/NavigationSideBar';
+import { useEffect, useRef, useState } from 'react';
+import { useRefStorage } from '../../hooks/useRefStorage';
 
 interface MenuPageProps {
   menu: IMenuGroup[];
 }
 
 export default function Menu({ menu }: MenuPageProps) {
+  const replaceBlankSpace = (itemName: string): string => itemName.replace(/\s+/g, '-');
+  const menuGroupNames:string[] = menu.map(category => replaceBlankSpace(category.name));
   const { t } = useTranslation();
+  const clickedRef = useRef(false);
+  const unsetClickedRef = useRef(null);
+  const [screenWidth, setScreenWidth] = useState<number | undefined>(0);
+  const minScreenWidth: number = 768;
+  const [inFocusMenuGroup, setInFocusMenuGroup] = useState<string | null>(null);
+  const { refCollection: menuGroupsRefs, addToRefs: addDivsToRefs} = useRefStorage();
+  const { refCollection: refLinks, addToRefs: addLinksToRefs } = useRefStorage(); 
+
+  const scrollToLeft = (groupID: string) => {
+    const activeElement: HTMLElement | undefined = refLinks.current.find(item => item.id === groupID);
+    if (activeElement) {
+      const containerElement = activeElement.parentElement; 
+      containerElement.scrollTo({
+        left: activeElement.offsetLeft - 5, 
+        behavior: "smooth"
+    })
+    }
+  }
+
+  const updateScreenWidth = () => {
+    setScreenWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', updateScreenWidth);
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', updateScreenWidth);
+      }
+    };
+  }, []);
+
+  const handleClick = (groupName: string) => {
+    clickedRef.current = true;
+    unsetClickedRef.current = setTimeout(() => {
+      clickedRef.current = false;      
+    }, 100);
+  
+    if (inFocusMenuGroup !== groupName) {
+      setInFocusMenuGroup(groupName);
+      if(screenWidth <= minScreenWidth) {
+        scrollToLeft(groupName);
+      }
+      
+    }
+  };
+
+  useEffect(
+    () => () => {
+      clearTimeout(unsetClickedRef.current);
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const observerCallback = (entries: IntersectionObserverEntry[]) => {
+        if (clickedRef.current) {
+          return;
+        }
+        entries.forEach((entry) => {
+          const {isIntersecting, intersectionRatio } = entry;
+          if (isIntersecting && intersectionRatio > 0.1) {
+            const groupID = entry.target.id;
+            if (inFocusMenuGroup !== groupID) {
+              setInFocusMenuGroup(groupID);
+              if (screenWidth <= minScreenWidth) {
+                scrollToLeft(groupID);
+              }
+            }
+          }
+        });
+      };
+
+    const observerOptions: IntersectionObserverInit = {
+      rootMargin: "0% 0% -89% 0%",
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    menuGroupsRefs.current.forEach((group: HTMLElement) => {
+      observer.observe(group);
+    });
+ 
+    return () => {
+      observer.disconnect();
+    };
+  }
+  }, [menuGroupsRefs, screenWidth]);
+
 
   return (
     <>
@@ -23,24 +120,30 @@ export default function Menu({ menu }: MenuPageProps) {
       <div className="menu-body-container">
         <main className="menu-content-container menu-page__content">
           <div className="menu-content-block">
-            <div className="content-block__title">
+            <div className="menu-content-block__title content-block__title">
               <h2>{t('menu')}</h2>
             </div>
-            <LanguageSwitcher />
-            <div className="menu-content-block__content">{
-              menu.length
-                ? menu.map((menuGroupData) => {
-                  return (<MenuGroup menuGroupData={menuGroupData} key={menuGroupData.id} />)
-                })
-                : <Maintenance />
-            }</div>
+            <div className="menu-content-block__menu-list">
+            <div className="menu-content-block__navigation">
+                <NavigationSideBar addToRefs={addLinksToRefs} menuGroupNames={menuGroupNames} selectedMenuGroup={inFocusMenuGroup} setGroupName={handleClick} />
+              </div>
+              <div className="menu-content-block__menu-content">{
+                menu.length
+                  ? menu.map((menuGroupData) => {
+                    return (<MenuGroup addToRefs={addDivsToRefs} menuGroupData={menuGroupData} key={menuGroupData.id} />)
+                  })
+                  : <Maintenance />
+              }
+              </div>
+            </div>
           </div>
-        </main>
+        </main >
         <FooterBlock />
-      </div>
+      </div >
     </>
   );
 }
+
 
 export const getServerSideProps: GetServerSideProps<MenuPageProps> = async (context) => {
   let data: IMenuGroup[] = [];
@@ -63,4 +166,3 @@ export const getServerSideProps: GetServerSideProps<MenuPageProps> = async (cont
     }
   }
 };
-
