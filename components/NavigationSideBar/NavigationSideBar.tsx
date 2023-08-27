@@ -1,14 +1,13 @@
-import Link from "next/link";
+import { MenuItemLink } from "../MenuItemLink"; 
 
 interface NavigationSideBarProps {
   menuGroupNames: string[];
   selectedMenuGroup: string;
   setGroupName: (menuGroupId: string) => void;
-  addToRefs: (element: HTMLElement) => void;
+  addToRefs: (element: HTMLLIElement) => void;
 }
 
 export const NavigationSideBar = ({ menuGroupNames, selectedMenuGroup, setGroupName, addToRefs}: NavigationSideBarProps): JSX.Element => {
-  
   const handleClick = (menuGroupName: string): void => {
     setGroupName(menuGroupName);
   };
@@ -16,14 +15,14 @@ export const NavigationSideBar = ({ menuGroupNames, selectedMenuGroup, setGroupN
   return (
     <nav aria-label="Navigation of menu categories" className="nav-side-bar">
       <ul className="nav-side-bar__list">
-        {menuGroupNames.map((menuGroupName) => {
+        {menuGroupNames.map((menuGroupName) => { 
           return (
-            <Link ref={addToRefs} key={menuGroupName} href={`#${menuGroupName}`} id={menuGroupName} scroll={true} >
-              <li onClick={()=> handleClick(menuGroupName)} className={selectedMenuGroup === menuGroupName ? "nav-side-bar__list-item nav-side-bar__list-item-active" : "nav-side-bar__list-item"}>{menuGroupName}</li>
-            </Link>)
-        })}
-    </ul>
+            <MenuItemLink key={menuGroupName} href={menuGroupName} className={selectedMenuGroup === menuGroupName ? "nav-side-bar__list-item nav-side-bar__list-item-active" : "nav-side-bar__list-item"} onClick={()=>handleClick(menuGroupName)} addToRefs={addToRefs}/>
+          )})
+        }
+      </ul>
     </nav >
-
   )
 }
+
+

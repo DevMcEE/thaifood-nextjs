@@ -10,29 +10,31 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { NavigationSideBar } from '../../components/NavigationSideBar';
 import { useEffect, useRef, useState } from 'react';
 import { useRefStorage } from '../../hooks/useRefStorage';
+import { removeSpaces } from '../../utils/text.utils';
 
 interface MenuPageProps {
   menu: IMenuGroup[];
 }
 
 export default function Menu({ menu }: MenuPageProps) {
-  const replaceBlankSpace = (itemName: string): string => itemName.replace(/\s+/g, '-');
-  const menuGroupNames:string[] = menu.map(category => replaceBlankSpace(category.name));
+  
+  const menuGroupNames:string[] = menu.map(category => removeSpaces(category.name));
   const { t } = useTranslation();
   const clickedRef = useRef(false);
   const unsetClickedRef = useRef(null);
   const [screenWidth, setScreenWidth] = useState<number | undefined>(0);
   const minScreenWidth: number = 768;
   const [inFocusMenuGroup, setInFocusMenuGroup] = useState<string | null>(null);
-  const { refCollection: menuGroupsRefs, addToRefs: addDivsToRefs} = useRefStorage();
+  const { refCollection: menuGroupsRefs, addToRefs: addDivToRefs} = useRefStorage();
   const { refCollection: refLinks, addToRefs: addLinksToRefs } = useRefStorage(); 
 
   const scrollToLeft = (groupID: string) => {
-    const activeElement: HTMLElement | undefined = refLinks.current.find(item => item.id === groupID);
+    const activeElement: HTMLElement | undefined = refLinks.current.find(item => item.id === `${groupID}-nav-link`);
+
     if (activeElement) {
-      const containerElement = activeElement.parentElement; 
-      containerElement.scrollTo({
-        left: activeElement.offsetLeft - 5, 
+      const containerElement = activeElement.parentElement;
+      containerElement?.scrollTo({
+        left: activeElement?.offsetLeft - 5, 
         behavior: "smooth"
     })
     }
@@ -43,11 +45,13 @@ export default function Menu({ menu }: MenuPageProps) {
   };
 
   useEffect(() => {
+
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', updateScreenWidth);
     }
 
     return () => {
+
       if (typeof window !== 'undefined') {
         window.removeEventListener('resize', updateScreenWidth);
       }
@@ -60,12 +64,10 @@ export default function Menu({ menu }: MenuPageProps) {
       clickedRef.current = false;      
     }, 100);
   
-    if (inFocusMenuGroup !== groupName) {
-      setInFocusMenuGroup(groupName);
-      if(screenWidth <= minScreenWidth) {
-        scrollToLeft(groupName);
-      }
+    setInFocusMenuGroup(groupName);
       
+    if(screenWidth <= minScreenWidth) {
+      scrollToLeft(groupName);
     }
   };
 
@@ -77,23 +79,30 @@ export default function Menu({ menu }: MenuPageProps) {
   );
 
   useEffect(() => {
+   
     if (typeof window !== 'undefined') {
       const observerCallback = (entries: IntersectionObserverEntry[]) => {
+
         if (clickedRef.current) {
           return;
         }
+
         entries.forEach((entry) => {
           const {isIntersecting, intersectionRatio } = entry;
+          
+          const groupID = entry.target.id;
+
           if (isIntersecting && intersectionRatio > 0.1) {
-            const groupID = entry.target.id;
-            if (inFocusMenuGroup !== groupID) {
-              setInFocusMenuGroup(groupID);
-              if (screenWidth <= minScreenWidth) {
-                scrollToLeft(groupID);
+            setInFocusMenuGroup(groupID);
+
+            if (screenWidth <= minScreenWidth) {
+              scrollToLeft(groupID);
               }
-            }
-          }
-        });
+
+          } 
+          
+        }
+        );
       };
 
     const observerOptions: IntersectionObserverInit = {
@@ -130,11 +139,12 @@ export default function Menu({ menu }: MenuPageProps) {
               <div className="menu-content-block__menu-content">{
                 menu.length
                   ? menu.map((menuGroupData) => {
-                    return (<MenuGroup addToRefs={addDivsToRefs} menuGroupData={menuGroupData} key={menuGroupData.id} />)
+                    return (<MenuGroup addToRefs={addDivToRefs} menuGroupData={menuGroupData} key={menuGroupData.id} />)
                   })
                   : <Maintenance />
               }
               </div>
+             
             </div>
           </div>
         </main >

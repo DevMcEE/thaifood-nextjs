@@ -1,0 +1,14 @@
+.status-indicator-block {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &-icon {
+    width: 18px;
+    height: 18px;
+    margin: 5px;
+  }
+  &__message {
+    padding-left: 0.5rem;
+  }
+}

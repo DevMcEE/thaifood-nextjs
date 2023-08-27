@@ -2,6 +2,7 @@ import Image from 'next/image';
 import bgImage from '../../public/assets/images/landing/tomYamShrimp.png';
 import logo from '../../public/assets/images/logo/logo_contrast.svg';
 import mapPin from '../../public/assets/images/icons/map-pin.svg';
+import { StatusIndicator } from './StatusIndicator';
 
 export const HeaderHeroBlock = (): JSX.Element => {
   return (
@@ -40,8 +41,10 @@ export const HeaderHeroBlock = (): JSX.Element => {
                 alt="Thai Food Thai Cook address"
               />
               <span className='header-hero-block__content-contacts-address-text'>Gonsiori 12a, Tallinn</span> 
+              
             </a>
           </p>
+          <StatusIndicator/>
           <p className="header-hero-block__content-contacts-address">
             <a
               href="tel:0037258805065"

@@ -6,7 +6,7 @@ export const LanguageSwitcher = (): JSX.Element => {
 
   return (
     <div className="language-switcher-main-block">
-      {locales.map((language: string, index: number) => {
+      {locales.map((language: string) => {
         return (
           <div className="language-switcher-button-wrapper" key={language}>
             <Link className="language-switcher-link" href="/menu" locale={language}>{language}</Link>
