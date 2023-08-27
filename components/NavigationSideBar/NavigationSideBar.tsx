@@ -1,26 +1,26 @@
-import { MenuItemLink } from "../MenuItemLink"; 
+import { useMemo } from 'react';
+import { IMenuGroupBase, IMenuNavGroup } from '../../menu/menu.type';
+import { MenuItemLink } from "../MenuItemLink";
 
 interface NavigationSideBarProps {
-  menuGroupNames: string[];
-  selectedMenuGroup: string;
-  setGroupName: (menuGroupId: string) => void;
-  addToRefs: (element: HTMLLIElement) => void;
+  menuGroups: IMenuNavGroup[];
+  activeId: string;
+  setActiveId: (menuGroupId: string, event) => void;
+  addToRefs: (element: HTMLAnchorElement) => void;
 }
 
-export const NavigationSideBar = ({ menuGroupNames, selectedMenuGroup, setGroupName, addToRefs}: NavigationSideBarProps): JSX.Element => {
-  const handleClick = (menuGroupName: string): void => {
-    setGroupName(menuGroupName);
-  };
-
+export const NavigationSideBar = ({ menuGroups, activeId, setActiveId, addToRefs }: NavigationSideBarProps): JSX.Element => {
+  const navMenu = useMemo(() => menuGroups.map(({ id, name, href }) => {
+    return (
+      <MenuItemLink key={id} href={href} title={name} className={`nav-side-bar__list-item ${ id === activeId ? 'nav-side-bar__list-item-active':''}`}
+        onClick={(event) => setActiveId(id, event)}
+        addToRefs={addToRefs} />
+    )
+  }), [menuGroups, activeId]);
+  
   return (
     <nav aria-label="Navigation of menu categories" className="nav-side-bar">
-      <ul className="nav-side-bar__list">
-        {menuGroupNames.map((menuGroupName) => { 
-          return (
-            <MenuItemLink key={menuGroupName} href={menuGroupName} className={selectedMenuGroup === menuGroupName ? "nav-side-bar__list-item nav-side-bar__list-item-active" : "nav-side-bar__list-item"} onClick={()=>handleClick(menuGroupName)} addToRefs={addToRefs}/>
-          )})
-        }
-      </ul>
+      {navMenu}
     </nav >
   )
 }

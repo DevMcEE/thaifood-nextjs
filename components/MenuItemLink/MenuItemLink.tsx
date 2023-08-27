@@ -1,23 +1,23 @@
 import Link from 'next/link';
 
 interface MenuLinkProps {
-  onClick: (menuGroupId: string) => void;
+  onClick: (event) => void;
   href: string;
+  title: string;
   className: string;
-  addToRefs: (element: HTMLLIElement) => void;
+  addToRefs: (element: HTMLAnchorElement) => void;
 }
 
-export const MenuItemLink = ({ onClick, href, className, addToRefs }: MenuLinkProps): JSX.Element => {
+export const MenuItemLink = ({ onClick, href, title, className, addToRefs }: MenuLinkProps): JSX.Element => {
   return (
-    <Link href={`#${href}`} legacyBehavior>
-      <li
+      <Link
         id={`${href}-nav-link`}
         ref={addToRefs} 
-        onClick={() => onClick(href)}
+        href={`#${href}`}
+        onClick={onClick}
         className={className}
       >
-        {href}
-      </li>
-    </Link>
+        {title}
+      </Link>
   );
 };
