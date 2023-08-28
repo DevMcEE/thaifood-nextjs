@@ -96,41 +96,6 @@ export function MainPageContainer() {
      
             </div>
           </div>
-
-          {/*<div className="content-block">
-            <div className="content-block__title">
-              <h2>Жаренная лапша</h2>
-            </div>
-            <div className="content-block__content">
-              <div className="content-block__content-image">imagae</div>
-              <div className="content-block__content-text">
-                Популярнейшее блюдо из жаренной лапши: Пад Тхай и Пад Сею
-              </div>
-            </div>
-          </div>
-          <div className="content-block">
-            <div className="content-block__title">
-              <h2>Блюда с рисом</h2>
-            </div>
-            <div className="content-block__content">
-              <div className="content-block__content-text">
-                Различные блюда с вареным и жаренным рисом: Пад Кра Пао, Кхао
-                Пад
-              </div>
-              <div className="content-block__content-image">imagae</div>
-            </div>
-          </div>
-          <div className="content-block">
-            <div className="content-block__title">
-              <h2>Салаты</h2>
-            </div>
-            <div className="content-block__content">
-              <div className="content-block__content-image">image</div>
-              <div className="content-block__content-text">
-                Традиционные тайские салаты: Сом Там,
-              </div>
-            </div>
-          </div> */}
         </main>
         <FooterBlock />
       </div>

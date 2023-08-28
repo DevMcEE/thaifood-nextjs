@@ -12,7 +12,7 @@ export interface IWeekdayWorkingData {
   isOpen: boolean,
   start: string,
   end: string,
-  message: string,
+  comment: string,
   weekday: WeekDay
 }
 export type WorkingTimesType = Record<WeekDay, IWeekdayWorkingData>
@@ -24,6 +24,11 @@ export enum WorkingStatusColor {
 }
 export interface IWorkingStatus {
   isOpen: boolean,
-  message: string,
+  comment: string,
   statusColor: WorkingStatusColor
+}
+export interface IWorkingTime {
+  weekdays: string;
+  timeRange: string;
+  comment?: string;
 }

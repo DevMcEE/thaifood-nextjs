@@ -7,7 +7,7 @@ export default [
     "isOpen": true,
     "start": "11:00",
     "end": "20:15",
-    "message": ""
+    "comment": ""
   },
   {
     "index": 2,
@@ -15,7 +15,7 @@ export default [
     "isOpen": true,
     "start": "11:00",
     "end": "20:15",
-    "message": ""
+    "comment": ""
   },
   {
     "index": 3,
@@ -23,7 +23,7 @@ export default [
     "isOpen": true,
     "start": "11:00",
     "end": "17:00",
-    "message": ""
+    "comment": ""
   },
   {
     "index": 4,
@@ -31,7 +31,7 @@ export default [
     "isOpen": true,
     "start": "11:00",
     "end": "20:15",
-    "message": ""
+    "comment": ""
   },
   {
     "index": 5,
@@ -39,7 +39,7 @@ export default [
     "isOpen": false,
     "start": "12:00",
     "end": "20:15",
-    "message": "public holiday",
+    "comment": "public holiday",
   }, 
   {
     "index": 6,
@@ -47,7 +47,7 @@ export default [
     "isOpen": true,
     "start": "12:00",
     "end": "20:15",
-    "message": ""
+    "comment": ""
   },
   {
     "index": 0,
@@ -55,6 +55,6 @@ export default [
     "isOpen": true,
     "start": "12:00",
     "end": "20:00",
-    "message": ""
+    "comment": ""
   }
 ] as IWeekdayWorkingData[];

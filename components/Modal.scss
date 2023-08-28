@@ -1,0 +1,26 @@
+.modal-content{
+  background-color: $primary-contrast-color;
+  margin: 1rem;
+  width: 400px;
+  padding: 22px;
+
+  &-title {
+    font-size: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__icon-button {
+      transform: translateX(10px);
+    }
+  }
+} 
+.modal-container{
+  display:flex;
+  align-items: center;
+}
+.MuiModal-root{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
