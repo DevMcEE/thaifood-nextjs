@@ -12,31 +12,41 @@ export class WorkingTimeService {
       throw new TypeError('Invalid workingWeekDataArray type');
     }
   }
-  
+
   getList(): IWorkingTime[] {
     const targetArray = [];
 
     for (const workingDay of this.workingWeekDataArray) {
       const { isOpen, start, end, comment, weekday } = workingDay;
-      
+
       const newElement = {
-        weekdays: this.t(weekday) ,
+        weekdays: this.t(weekday),
         timeRange: isOpen ? `${start} - ${end}` : this.t('closed'),
         comment: isOpen ? '' : comment
       };
 
-      const targetElement = targetArray.pop() || newElement;
+      const lastElement = targetArray.pop();
 
-      if (targetElement.timeRange === newElement.timeRange &&
-        targetElement.comment === newElement.comment) {
-        const oldWeekDaysRangeStart = targetElement.weekdays.split(' - ')[0];
-        targetElement.weekdays = [oldWeekDaysRangeStart, newElement.weekdays].join(' - ');
+      if (
+        lastElement &&
+        lastElement.timeRange === newElement.timeRange &&
+        lastElement.comment === newElement.comment
+      ) {
+        // merge last element with new one
+        // split the first part of weekdays range
+        const oldWeekDaysRangeStart = lastElement.weekdays.split(' - ')[0];
+        // join with new elements single weekday
+        lastElement.weekdays = [oldWeekDaysRangeStart, newElement.weekdays].join(' - ');
 
-        targetArray.push(targetElement);
+        targetArray.push(lastElement);
+
         continue;
       }
 
-      targetArray.push(targetElement);
+      if (lastElement) {
+        targetArray.push(lastElement);
+      }
+
       targetArray.push(newElement);
     }
 

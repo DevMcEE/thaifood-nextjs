@@ -9,7 +9,7 @@ const translator = (key: string) => {
 }
 
 describe('WorkingTimeService.getList', () => {
-  let workingTimeService:WorkingTimeService, testData;
+  let workingTimeService: WorkingTimeService, testData;
   beforeAll(() => {
     testData = workingTime.map((weekdayData) => {
       return {
@@ -21,16 +21,12 @@ describe('WorkingTimeService.getList', () => {
       }
     });
   })
-  beforeEach(() =>{
-   // workingTimeService = new WorkingTimeService(testData, translator)
-  });
-  afterEach(() =>{
+  afterEach(() => {
     workingTimeService = undefined;
   });
   describe('1. when all weekdays have same start and end times', () => {
     beforeAll(() => {
-     
-      workingTimeService = new WorkingTimeService(testData,  translator)
+      workingTimeService = new WorkingTimeService(testData, translator)
     })
     it('should show all weekdays as a single group', () => {
       const list = workingTimeService.getList();
@@ -64,7 +60,7 @@ describe('WorkingTimeService.getList', () => {
           end,
         }
       });
-      workingTimeService = new WorkingTimeService(newTestData,  translator)
+      workingTimeService = new WorkingTimeService(newTestData, translator)
     })
     it('should show sat and sun as separate groups', () => {
       const list = workingTimeService.getList();
@@ -94,7 +90,7 @@ describe('WorkingTimeService.getList', () => {
           isOpen: weekdayData.weekday !== 'sunday',
         }
       });
-      workingTimeService = new WorkingTimeService(newTestData,  translator)
+      workingTimeService = new WorkingTimeService(newTestData, translator)
     })
     it('should show sun as a separate group', () => {
       const list = workingTimeService.getList();
@@ -120,7 +116,7 @@ describe('WorkingTimeService.getList', () => {
           comment: weekdayData.weekday + ' comment'
         }
       });
-      workingTimeService = new WorkingTimeService(newTestData,  translator)
+      workingTimeService = new WorkingTimeService(newTestData, translator)
     })
     it('should show sat and sun separate groups', () => {
       const list = workingTimeService.getList();
@@ -151,7 +147,7 @@ describe('WorkingTimeService.getList', () => {
           comment: weekdayData.weekday + ' comment'
         }
       });
-      workingTimeService = new WorkingTimeService(newTestData,  translator)
+      workingTimeService = new WorkingTimeService(newTestData, translator)
     })
     it('should show wed and sat separate groups', () => {
       const list = workingTimeService.getList();
@@ -192,7 +188,7 @@ describe('WorkingTimeService.getList', () => {
           comment: weekdayData.weekday !== 'saturday' && weekdayData.weekday !== 'sunday' ? weekdayData.weekday + ' comment' : 'weekend comment'
         }
       });
-      workingTimeService = new WorkingTimeService(newTestData,  translator)
+      workingTimeService = new WorkingTimeService(newTestData, translator)
     })
     it('should show sat and sun separate groups', () => {
       const list = workingTimeService.getList();
@@ -227,7 +223,7 @@ describe('WorkingTimeService.getList', () => {
           end,
         }
       });
-      workingTimeService = new WorkingTimeService(newTestData,  translator)
+      workingTimeService = new WorkingTimeService(newTestData, translator)
     })
     it('should show separate wen and sun, other - grouped', () => {
       const list = workingTimeService.getList();
@@ -253,6 +249,43 @@ describe('WorkingTimeService.getList', () => {
       })
     })
   })
-  
+  describe('8. when tue is different', () => {
+    beforeAll(() => {
+      const newTestData = testData.map((weekdayData) => {
+        let start = weekdayData.start;
+        let end = weekdayData.end;
+        if (weekdayData.weekday === 'tuesday') {
+          start = '15:15';
+          end = '20:20';
+        }
+
+        return {
+          ...weekdayData,
+          start,
+          end,
+        }
+      });
+      workingTimeService = new WorkingTimeService(newTestData, translator)
+    })
+    it('should show separate mon, tue and other - grouped', () => {
+      const list = workingTimeService.getList();
+      expect(list.length).toBe(3);
+      expect(list[0]).toMatchObject({
+        weekdays: 'monday',
+        timeRange: '11:00 - 20:15',
+        comment: '',
+      })
+      expect(list[1]).toMatchObject({
+        weekdays: 'tuesday',
+        timeRange: '15:15 - 20:20',
+        comment: '',
+      })
+      expect(list[2]).toMatchObject({
+        weekdays: 'wednesday - sunday',
+        timeRange: '11:00 - 20:15',
+      })
+    })
+  })
+
 })
 

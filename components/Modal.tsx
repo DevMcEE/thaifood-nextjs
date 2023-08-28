@@ -1,27 +1,31 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MUIModal from '@mui/material/Modal';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface IModalProps {
-  open: boolean,
-  toggleOpen: () => void,
+  isOpen: boolean,
+  close: () => void,
   title: string,
   children: JSX.Element
 }
 
-export const Modal = ({ open, toggleOpen, title, children }: IModalProps) => {
-
+export const Modal = ({ isOpen, close, title, children }: IModalProps) => {
   return (
     <MUIModal
-      open={open}
-      onClose={toggleOpen}
+      open={isOpen}
+      onClose={close}
       className="modal-container"
     >
       <Box className="modal-content">
-        <Typography className="modal-content-title"  variant="h5" component="h3">
-          {title}
+        <Typography className="modal-content-title" variant="h5" component="h3">
+          {title} 
+          <IconButton disableFocusRipple={true} className='modal-content-title__icon-button' onClick={close}>
+            <CloseIcon />
+          </IconButton>
         </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        <Typography component="div" id="modal-modal-description" sx={{ mt: 2 }}>
           {children}
         </Typography>
       </Box>

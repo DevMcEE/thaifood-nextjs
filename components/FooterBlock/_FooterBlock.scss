@@ -1,5 +1,4 @@
 .page-footer {
-
   background-color: $bg-dark;
   color: $primary-contrast-color;
   & .content-container {
@@ -13,12 +12,19 @@
     }
   }
 
-
   &__block {
     padding: 0 1rem;
 
     @media (min-width: $bp-920) {
       padding: 0rem;
+    }
+
+    @media (min-width: $bp-768) {
+      width: 30%;
+
+      &--right-aligned{
+        text-align: right;
+      }
     }
 
     h3, h2 {

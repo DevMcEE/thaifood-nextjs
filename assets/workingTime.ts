@@ -20,7 +20,7 @@ export default [
   {
     "index": 3,
     "weekday":"wednesday",
-    "isOpen": false,
+    "isOpen": true,
     "start": "11:00",
     "end": "20:15",
     "comment": ""
@@ -44,10 +44,10 @@ export default [
   {
     "index": 6,
     "weekday":"saturday",
-    "isOpen": false,
+    "isOpen": true,
     "start": "12:00",
     "end": "20:15",
-    "comment": "public holiday"
+    "comment": ""
   },
   {
     "index": 0,
