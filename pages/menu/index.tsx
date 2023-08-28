@@ -64,11 +64,16 @@ export default function Menu({ menu }: MenuPageProps) {
   }, [menu]);
 
   useEffect(() => {
-    updateScreenWidth();
-
-    if (typeof window !== 'undefined') {
-      window.addEventListener('resize', updateScreenWidth);
+    if (typeof window === 'undefined') {
+      return;
     }
+    
+    updateScreenWidth();
+    // reset all scrolls
+    // TODO: investigate the reason why Link doesn't scroll to top automatically as it should, when new page is opened after click
+    document.body.scroll({ top: 0 });
+
+    window.addEventListener('resize', updateScreenWidth);
   
     return () => window.removeEventListener('resize', updateScreenWidth);
     ;
@@ -77,15 +82,15 @@ export default function Menu({ menu }: MenuPageProps) {
   const handleClick = (id: string, event: SyntheticEvent<HTMLAnchorElement>) => {
     event.preventDefault();
 
-    setActiveGroupId(() => id)
+    setActiveGroupId(() => id);
 
     const menuGroup = menuGroups.find(({ id: menuGroupId }) => menuGroupId === id);
-    const menuGroupHref = menuGroupsRefs.current.find((item) => item.id === menuGroup.href)
+    const menuGroupHref = menuGroupsRefs.current.find((item) => item.id === menuGroup.href);
 
     document.body.scrollTo({
       top: menuGroupHref.offsetTop - 70,
       behavior: 'smooth',
-    })
+    });
 
     if (isSmallScreenWidth) {
       scrollToLeft(menuGroup.name);
