@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 
 export const useRefStorage = () => {
-  const refCollection = useRef<HTMLElement[]>([]);
+  const refCollection = useRef<HTMLAnchorElement[]>([]);
 
-  const addToRefs = (element: HTMLElement | null) => {
+  const addToRefs = (element: HTMLAnchorElement | null) => {
     if (element && !refCollection.current.includes(element)) {
       refCollection.current.push(element);
     }
