@@ -37,6 +37,8 @@ export class WorkingStatusService {
   private todaysWeekdayIndex: number;
   private nextWorkingDayData: IWeekdayWorkingData;
 
+  private detailedTimeoutBeforeWorkingStatusChangedHours = +process.env.DETAILED_TIMEOUT_BEFORE_WORKING_STATUS_CHANGED_STARTS_BEFORE_HOURS || 3;
+
   constructor(
     private workingWeekDataArray: IWeekdayWorkingData[],
     private translator?: (key: string) => string
@@ -56,7 +58,7 @@ export class WorkingStatusService {
     );
 
     this.currentWorkingStartDateTime = this.getCurrentDateTime(this.currentWorkingDayData.start);
-    this.currentWorkingEndDateTime = this.getCurrentDateTime(this.currentWorkingDayData.end); 
+    this.currentWorkingEndDateTime = this.getCurrentDateTime(this.currentWorkingDayData.end);
 
     if (!this.allOpenWorkingDaysDataArray.length) {
       return this.getStatusOnAllDaysClosed();
@@ -97,7 +99,7 @@ export class WorkingStatusService {
   }
 
   private getStatusOnOpenStateTimeBefore(): IWorkingStatus {
-    let nextStatusDetails = this.getNextStatusDetails(this.currentWorkingStartDateTime, 2);
+    let nextStatusDetails = this.getNextStatusDetails(this.currentWorkingStartDateTime);
 
     return {
       isOpen: false,
@@ -162,7 +164,7 @@ export class WorkingStatusService {
 
   private getNextStatusDetails(
     nextStatusDateTime: Dayjs,
-    hoursBeforeToStartShowingDetails = 3
+    hoursBeforeToStartShowingDetails = this.detailedTimeoutBeforeWorkingStatusChangedHours
   ): INextStatusDatails | undefined {
     const timeDiff = nextStatusDateTime.diff(dayjs());
     const timeDiffAmountHours = dayjs.duration(timeDiff).asHours();
@@ -174,8 +176,8 @@ export class WorkingStatusService {
 
     if (isLessThanHour) {
       const timeDiffAmountMinutes = dayjs.duration(timeDiff).asMinutes();
-      
-      timeDiffAmount =  Math.round(timeDiffAmountMinutes);
+
+      timeDiffAmount = Math.round(timeDiffAmountMinutes);
       timeDiffUnit = DurationTimeUnit.minutes;
     }
 
