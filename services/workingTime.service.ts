@@ -1,8 +1,6 @@
-import { time } from 'console';
 import {
   IWeekdayWorkingData, IWorkingTime
 } from '../components/mainPage/mainPage.type';
-import { capitalize } from '../utils/text.utils';
 
 export class WorkingTimeService {
   [x: string]: any;
@@ -26,7 +24,9 @@ export class WorkingTimeService {
         timeRange: isOpen ? `${start} - ${end}` : this.t('closed'),
         comment: isOpen ? '' : comment
       };
+
       const targetElement = targetArray.pop() || newElement;
+
       if (targetElement.timeRange === newElement.timeRange &&
         targetElement.comment === newElement.comment) {
         const oldWeekDaysRangeStart = targetElement.weekdays.split(' - ')[0];
@@ -35,12 +35,14 @@ export class WorkingTimeService {
         targetArray.push(targetElement);
         continue;
       }
+
       targetArray.push(targetElement);
       targetArray.push(newElement);
     }
 
     return targetArray;
   }
+
   private t(key: string): string {
     if (this.translator) {
       return this.translator(`workingTime.${key}`);
