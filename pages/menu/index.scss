@@ -1,5 +1,5 @@
 .menu {
-  &-body-container{
+  &-body-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -7,17 +7,58 @@
   }
 
   &-content-block {
-    align-items: center;
     display: flex;
     flex-direction: column;
-    width: 100%;
     max-width: 960px;
     margin: 0 auto;
 
-    &__content {
-      width:95%;
+    &__menu-list {
+      display: flex;
+      flex-direction: row-reverse;
+      width: 100%;
+      justify-content: center;
     }
+
+    &__menu-content {
+      width: 100%;
+      padding: 0rem 2rem 2rem 2rem;
+    }
+
   }
-  
 }
 
+@media screen and (max-width: 768px) {
+  .menu {
+
+    &-content-block {
+
+      &__menu-list {
+        overflow: visible;
+        flex-direction: column;
+      }
+
+      &__menu-content {
+        padding: 0rem 1.2rem 2rem 1.2rem;
+      }
+
+      &__navigation {
+        padding: 0 1rem;
+        position: sticky;
+        top: 0;
+        width: 100vw;
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        background-color: $primary-contrast-color;
+        z-index: 1;
+      }
+    }
+
+  }
+
+  .content-block__title {
+    padding: 1rem 2rem;
+  }
+
+}

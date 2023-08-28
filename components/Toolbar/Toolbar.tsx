@@ -2,6 +2,7 @@ import Image from 'next/image';
 import logo from '../../public/assets/images/logo/logo_contrast_small.svg';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { LanguageSwitcher } from '../LanguageSwitcher';
 
 export const Toolbar = () => {
   const {locale} = useRouter();
@@ -15,6 +16,7 @@ export const Toolbar = () => {
             src={logo}
             alt="Thai Food Thai Cook Restaurant"
           /></Link>
+          <LanguageSwitcher />
       </div>
     </div>
   );
