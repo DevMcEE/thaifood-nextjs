@@ -6,4 +6,8 @@
   height: 8rem;
   background-color: $bg-dark;
   cursor: pointer;
+  
+  &__logo-image {
+    padding-top: 0.5rem;
+  }
 }

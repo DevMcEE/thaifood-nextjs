@@ -8,10 +8,16 @@ export interface IMenuItem {
   code: string;
   groupId: string;
 }
-
-export interface IMenuGroup {
+export interface IMenuGroupBase {
   id: string;
   name: string;
   description: string;
+}
+
+export interface IMenuGroup extends IMenuGroupBase {
   items: IMenuItem[];
+}
+
+export interface IMenuNavGroup extends IMenuGroupBase {
+  href: string;
 }
