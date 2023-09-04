@@ -1,0 +1,51 @@
+.search-bar-block {
+  padding-top: 1rem;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  &__input {
+    padding: 0.8rem;
+    height: 3rem;
+    outline: none;
+    background-color: rgba(32, 33, 37, 0.12);
+    border-color: none;
+    border: none;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    padding-inline: 1rem;
+    border-radius: 1.25rem;
+    height: 2.5rem;
+    width: 100%;
+    max-width: 100%;
+    transition: background-color 70ms linear 0s;
+    caret-color: $primary-color;
+
+    &:focus {
+      width: 100%;
+      background-color: rgba(32, 33, 37, 0.16);
+      outline: 3px solid $primary-color;
+    }
+
+    &:hover {
+      background-color: rgba(32, 33, 37, 0.16);
+    }
+  }
+
+  &__icon {
+    width: 30%;
+    position: absolute;
+  }
+
+  .search {
+    height: 2rem;
+    color: $bg-dark;
+  }
+
+  @media (max-width: 768px) {
+    &__icon {
+      width: 10%;
+    }
+  }
+}

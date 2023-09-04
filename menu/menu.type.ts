@@ -20,4 +20,5 @@ export interface IMenuGroup extends IMenuGroupBase {
 
 export interface IMenuNavGroup extends IMenuGroupBase {
   href: string;
+  isDisabled: boolean;
 }

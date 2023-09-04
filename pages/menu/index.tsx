@@ -4,26 +4,40 @@ import { Meta } from '../../components/Meta';
 import { Toolbar } from '../../components/Toolbar';
 import { IMenuGroup, IMenuNavGroup } from '../../menu/menu.type';
 import { MenuGroup } from '../../components/MenuGroup';
-import { Maintenance } from '../../components/Maintenance';
+import { MenuPlaceHolder } from '../../components/MenuPlaceHolder';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { NavigationSideBar } from '../../components/NavigationSideBar';
-import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRefStorage } from '../../hooks/useRefStorage';
+import { SearchBar } from '../../components/SearchBar/SearchBar';
+import { filterMenu } from '../../components/MenuFilter/MenuFilter';
 
-interface MenuPageProps {
-  menu: IMenuGroup[];
+export interface MenuPageProps {
+  menuData: IMenuGroup[];
 }
 
-export default function Menu({ menu }: MenuPageProps) {
+export default function Menu({ menuData }: MenuPageProps) {
   const { t } = useTranslation();
-
+  const [menu, setMenu] = useState<IMenuGroup[]>(menuData);
   const [isSmallScreenWidth, setIsSmallScreenWidth] = useState(false);
+  const [searchText, setSearchText] = useState<string>('');
+  const [activeGroupId, setActiveGroupId] = useState('');
 
   const { refCollection: menuGroupsRefs, addToRefs: addDivToRefs } = useRefStorage();
   const { refCollection: refLinks, addToRefs: addLinksToRefs } = useRefStorage();
 
-  const [activeGroupId, setActiveGroupId] = useState('');
+  const handleSearch = (searchText: string): void => {
+    setMenu(() => filterMenu(searchText, menuData));
+  }
+
+  useEffect(() => {
+    if (searchText.length) {
+      handleSearch(searchText)
+    } else {
+      setMenu(menuData)
+    }
+  }, [searchText])
 
   const scrollToLeft = (groupID: string) => {
     const activeElement = refLinks.current.find(item => item.id === `${groupID}-nav-link`);
@@ -45,7 +59,7 @@ export default function Menu({ menu }: MenuPageProps) {
   const [menuGroupItemsList, menuGroups] = useMemo(() => {
     const menuGroups: IMenuNavGroup[] = [];
 
-    const menuGroupItemsList = menu.map((menuGroupData) => {
+    menuData.map((menuGroupData) => {
       const { id, name, description } = menuGroupData;
 
       const groupAnchor = name.toLowerCase().replaceAll(/\s+/g, '-');
@@ -55,6 +69,19 @@ export default function Menu({ menu }: MenuPageProps) {
         name,
         description,
         href: groupAnchor,
+        isDisabled: true,
+      });
+    });
+
+    const menuGroupItemsList = menu.map((menuGroupData) => {
+      const { id, name } = menuGroupData;
+
+      const groupAnchor = name.toLowerCase().replaceAll(/\s+/g, '-');
+
+      menuGroups.forEach((group) => {
+        if (group.id === id) {
+          group.isDisabled = false;
+        }
       });
 
       return (<MenuGroup addToRefs={addDivToRefs} href={groupAnchor} menuGroupData={menuGroupData} key={`${id}-menu-group`} />)
@@ -67,14 +94,11 @@ export default function Menu({ menu }: MenuPageProps) {
     if (typeof window === 'undefined') {
       return;
     }
-    
+
     updateScreenWidth();
-    // reset all scrolls
-    // TODO: investigate the reason why Link doesn't scroll to top automatically as it should, when new page is opened after click
     document.body.scroll({ top: 0 });
 
     window.addEventListener('resize', updateScreenWidth);
-  
     return () => window.removeEventListener('resize', updateScreenWidth);
     ;
   }, []);
@@ -105,7 +129,6 @@ export default function Menu({ menu }: MenuPageProps) {
 
       if (isIntersecting) {
         setActiveGroupId(() => groupId);
-
         if (isSmallScreenWidth) {
           scrollToLeft(groupName);
         }
@@ -133,26 +156,27 @@ export default function Menu({ menu }: MenuPageProps) {
     return () => {
       observer.disconnect();
     };
-  }, [menuGroupsRefs, isSmallScreenWidth]);
+  }, [menuGroupsRefs, isSmallScreenWidth, menu]);
 
   return (
     <>
       <Meta />
-      <Toolbar />
+      <Toolbar/>
       <div className="menu-body-container">
         <main className="menu-content-container menu-page__content">
           <div className="menu-content-block">
             <div className="menu-content-block__title content-block__title">
-              <h2>{t('menu')}</h2>
+              <h2>{t('menu.title')}</h2>
             </div>
             <div className="menu-content-block__menu-list">
               <div className="menu-content-block__navigation">
+                <SearchBar returnSearchText={setSearchText} />
                 <NavigationSideBar activeId={activeGroupId} addToRefs={addLinksToRefs} menuGroups={menuGroups} setActiveId={handleClick} />
               </div>
               <div className="menu-content-block__menu-content">{
                 menu.length
                   ? menuGroupItemsList
-                  : <Maintenance />
+                  : <MenuPlaceHolder searchText={searchText} />
               }
               </div>
             </div>
@@ -181,7 +205,7 @@ export const getServerSideProps: GetServerSideProps<MenuPageProps> = async (cont
 
   return {
     props: {
-      menu: data || [],
+      menuData: data || [],
       ...translations,
     }
   }

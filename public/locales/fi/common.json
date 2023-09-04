@@ -1,26 +1,31 @@
-{
-  "menu": "Ruokalista",
-  "home": "KOTISIVULLE",
-  "maintenance": {
-    "greetings":"Hei siellä!",
-    "message": "UUDISTAMME VALIKKOJAMME...\nPYYDÄMME HETKEN KÄRISTILLISYYTTÄ!\nTÄMÄ VETÄÄ VAIN MUUTTA MINUUTTIA!"
-  },
-  "workingTime": {
-    "closed": "suljettu",
-    "open": "avoin",
-    "closes": "sulkee",
-    "opens": "avautuu",
-    "inBefore": "",
-    "inAfter": " kuluttua",
-    "hours": "t",
-    "minutes": "min",
-    "tomorrow": "huomenna",
-    "monday":"maanantai",
-    "tuesday":"tiistai",
-    "wednesday":"keskiviikko",
-    "thursday":"torstai",
-    "friday":"perjantai",
-    "saturday":"lauantai",
-    "sunday":"sunnuntai"
+  {
+    "menu": {
+      "title": "Ruokalista",
+      "emptyPage": {
+        "greetings": "Oho....",
+        "searchResult": "Ruokalistallamme ei ole %customWord%.\nKokeile etsiä toinen ruokalaji!",
+        "fetchError": "Mitä tahansa etsitkin, se puuttuu edelleen."
+      }
+    },
+    "workingTime": {
+      "closed": "suljettu",
+      "open": "avoin",
+      "closes": "sulkee",
+      "opens": "avautuu",
+      "inBefore": "",
+      "inAfter": " kuluttua",
+      "hours": "t",
+      "minutes": "min",
+      "tomorrow": "huomenna",
+      "monday": "maanantai",
+      "tuesday": "tiistai",
+      "wednesday": "keskiviikko",
+      "thursday": "torstai",
+      "friday": "perjantai",
+      "saturday": "lauantai",
+      "sunday": "sunnuntai"
+    },
+    "search": {
+      "placeholder": "Hae valikosta"
+    }
   }
-}
