@@ -2,9 +2,8 @@
   "menu": {
     "title": "Menu",
     "emptyPage": {
-      "greetings": "Ooops....",
-      "searchResult": "Seems that we don't have %customWord% on our menu.\nPlease try a different search word!",
-      "fetchError": "Whatever you've been looking for, it's still not there"
+      "noSearchResult": "No results found",
+      "fetchError": "No menu found"
     }
   },
   "home": "HOME PAGE",
@@ -28,6 +27,7 @@
     "Working Time": "Working time"
   },
   "search": {
-    "placeholder": "Search menu"
+    "placeholder": "Search menu",
+    "clearSearchButton": "Clear Search"
   }
 }

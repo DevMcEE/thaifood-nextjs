@@ -11,33 +11,20 @@ import { NavigationSideBar } from '../../components/NavigationSideBar';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRefStorage } from '../../hooks/useRefStorage';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
-import { filterMenu } from '../../components/MenuFilter/MenuFilter';
+import { useMenuFilter } from '../../menu/hooks/useMenuFilter';
 
 export interface MenuPageProps {
-  menuData: IMenuGroup[];
+  menuList: IMenuGroup[];
 }
 
-export default function Menu({ menuData }: MenuPageProps) {
+export default function Menu({ menuList }: MenuPageProps) {
   const { t } = useTranslation();
-  const [menu, setMenu] = useState<IMenuGroup[]>(menuData);
+  const [{ menu, searchText }, handleSearchText, clearSearch] = useMenuFilter(menuList);
   const [isSmallScreenWidth, setIsSmallScreenWidth] = useState(false);
-  const [searchText, setSearchText] = useState<string>('');
   const [activeGroupId, setActiveGroupId] = useState('');
 
   const { refCollection: menuGroupsRefs, addToRefs: addDivToRefs } = useRefStorage();
   const { refCollection: refLinks, addToRefs: addLinksToRefs } = useRefStorage();
-
-  const handleSearch = (searchText: string): void => {
-    setMenu(() => filterMenu(searchText, menuData));
-  }
-
-  useEffect(() => {
-    if (searchText.length) {
-      handleSearch(searchText)
-    } else {
-      setMenu(menuData)
-    }
-  }, [searchText])
 
   const scrollToLeft = (groupID: string) => {
     const activeElement = refLinks.current.find(item => item.id === `${groupID}-nav-link`);
@@ -59,7 +46,7 @@ export default function Menu({ menuData }: MenuPageProps) {
   const [menuGroupItemsList, menuGroups] = useMemo(() => {
     const menuGroups: IMenuNavGroup[] = [];
 
-    menuData.map((menuGroupData) => {
+    menuList.map((menuGroupData) => {
       const { id, name, description } = menuGroupData;
 
       const groupAnchor = name.toLowerCase().replaceAll(/\s+/g, '-');
@@ -69,7 +56,7 @@ export default function Menu({ menuData }: MenuPageProps) {
         name,
         description,
         href: groupAnchor,
-        isDisabled: true,
+        isDisabled: !menu.find(group => group.id === id),
       });
     });
 
@@ -78,17 +65,11 @@ export default function Menu({ menuData }: MenuPageProps) {
 
       const groupAnchor = name.toLowerCase().replaceAll(/\s+/g, '-');
 
-      menuGroups.forEach((group) => {
-        if (group.id === id) {
-          group.isDisabled = false;
-        }
-      });
-
       return (<MenuGroup addToRefs={addDivToRefs} href={groupAnchor} menuGroupData={menuGroupData} key={`${id}-menu-group`} />)
     });
 
     return [menuGroupItemsList, menuGroups]
-  }, [menu]);
+  }, [searchText]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -161,7 +142,7 @@ export default function Menu({ menuData }: MenuPageProps) {
   return (
     <>
       <Meta />
-      <Toolbar/>
+      <Toolbar />
       <div className="menu-body-container">
         <main className="menu-content-container menu-page__content">
           <div className="menu-content-block">
@@ -170,13 +151,13 @@ export default function Menu({ menuData }: MenuPageProps) {
             </div>
             <div className="menu-content-block__menu-list">
               <div className="menu-content-block__navigation">
-                <SearchBar returnSearchText={setSearchText} />
+                <SearchBar storedSearch={searchText} handleSearchText={handleSearchText} />
                 <NavigationSideBar activeId={activeGroupId} addToRefs={addLinksToRefs} menuGroups={menuGroups} setActiveId={handleClick} />
               </div>
               <div className="menu-content-block__menu-content">{
                 menu.length
                   ? menuGroupItemsList
-                  : <MenuPlaceHolder searchText={searchText} />
+                  : <MenuPlaceHolder clearSearch={clearSearch} searchText={searchText} />
               }
               </div>
             </div>
@@ -205,7 +186,7 @@ export const getServerSideProps: GetServerSideProps<MenuPageProps> = async (cont
 
   return {
     props: {
-      menuData: data || [],
+      menuList: data || [],
       ...translations,
     }
   }

@@ -1,85 +1,83 @@
 .menu-place-holder {
-
   &__body-container {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 2rem;
     width: 100%;
-
-    h1 {
-      padding: 1rem;
-    }
   }
 
-  &__message {
-
-    &-container {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: 23rem;
-      align-items: center;
-      padding: 0 1rem;
-    }
-
-    &-text {
-      padding-left: 1rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-
-      // div {
-      //   white-space: pre;
-      // }
-
-    }
-
-  }
-
-  &__image {
-    margin-top: 2rem;
-
+  &__message-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 1rem;
   }
 }
 
+.message-block {
+  &__image {
+    margin-top: 2rem;
+    padding: 1.5rem;
+  }
+
+  &__message {
+    &-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      &__button-wrapper {
+        padding-top: 1rem;
+      }
+    }
+
+    &-text,
+    &-search-word {
+      text-align: center;
+      font-size: x-large;
+      white-space: nowrap;
+      overflow: hidden;
+      max-width: 13rem;
+      text-overflow: ellipsis;
+      position: relative;
+    }
+
+    &-search-word::before {
+      content: '"';
+      position: absolute;
+      left: 0;
+    }
+
+    &-search-word::after {
+      font-size: x-large;
+      content: '"';
+      position: absolute;
+      right: 0;
+    }
+  }
+}
+
+
 @media (max-width: 768px) {
-
   .menu-place-holder {
-    &__message {
-
-      &-container {
-        align-items: center;
-      }
-
-      &-button {
-        margin: 1rem;
-      }
+    &__message-block {
+      align-items: center;
     }
 
     &__body-container {
       padding: 2rem;
-      display: flex;
-      flex-direction: column;
       justify-content: space-around;
       align-items: center;
-
-      h1 {
-        padding: 1rem;
-        display: flex;
-        justify-content: space-around;
-      }
-    }
-
-    &__image {
-      margin-top: 1rem;
     }
   }
 
-
-}
-
-.search-result {
-
-  strong {
-    font-size: larger;
+  .message-block {
+    &__image {
+      margin-top: 1rem;
+    }
   }
 }

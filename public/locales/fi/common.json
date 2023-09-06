@@ -2,9 +2,8 @@
     "menu": {
       "title": "Ruokalista",
       "emptyPage": {
-        "greetings": "Oho....",
-        "searchResult": "Ruokalistallamme ei ole %customWord%.\nKokeile etsiä toinen ruokalaji!",
-        "fetchError": "Mitä tahansa etsitkin, se puuttuu edelleen."
+        "noSearchResult": "Ei tuloksia",
+        "fetchError": "Ei valikkoa löytynyt"
       }
     },
     "workingTime": {
@@ -26,6 +25,7 @@
       "sunday": "sunnuntai"
     },
     "search": {
-      "placeholder": "Hae valikosta"
+      "placeholder": "Hae valikosta",
+      "clearSearchButton": "Tyhjennä haku"
     }
   }

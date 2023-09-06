@@ -2,9 +2,8 @@
   "menu": {
     "title": "Menüü",
     "emptyPage": {
-      "greetings": "Oih....",
-      "searchResult": "Näib, et meie menüüs pole %customWord%.\nProovige mõnda muud otsingusõna!",
-      "fetchError": "Mida iganes sa oled otsinud, pole seda veel siin!"
+      "noSearchResult": "Tulemusi ei leitud",
+      "fetchError": "Menüüd ei leitud"
     }
   },
   "workingTime": {
@@ -26,6 +25,7 @@
     "sunday": "pühapäev"
   },
   "search": {
-    "placeholder": "Otsi menüüs"
+    "placeholder": "Otsi menüüs",
+    "clearSearchButton": "Tühjenda otsing"
   }
 }

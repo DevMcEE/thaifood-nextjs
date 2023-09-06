@@ -2,9 +2,8 @@
   "menu": {
     "title": "เมนู",
     "emptyPage": {
-      "greetings": "อ๊ะ....",
-      "searchResult": "ดูเหมือนว่าเราไม่มี %customWord% ในเมนูของเรา.\nโปรดลองใช้คำค้นหาอื่น!",
-      "fetchError": "สิ่งใดที่คุณกำลังมองหาก็ยังคงไม่มี."
+      "noSearchResult": "ไม่พบผลลัพธ์",
+      "fetchError": "ไม่พบเมนู"
     }
   },
   "workingTime": {
@@ -26,6 +25,7 @@
     "sunday": "วันอาทิตย์"
   },
   "search": {
-    "placeholder": "ค้นหาในเมนู"
+    "placeholder": "ค้นหาในเมนู",
+    "clearSearchButton": "ค้นหาที่ชัดเจน"
   }
 }

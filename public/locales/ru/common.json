@@ -2,9 +2,8 @@
   "menu": {
     "title": "Меню",
     "emptyPage": {
-      "greetings": "Упс....",
-      "searchResult": "У нас в меню нет %customWord%.\nПопробуйте поискать другое блюдо!",
-      "fetchError": "Что бы вы ни искали, этого всё ещё нет."
+      "noSearchResult": "Результатов не найдено",
+      "fetchError": "Меню не найдено"
     }
   },
   "workingTime": {
@@ -27,6 +26,7 @@
     "Working Time": "Рабочее время"
   },
   "search": {
-    "placeholder": "Поиск в меню"
+    "placeholder": "Поиск в меню",
+    "clearSearchButton": "Очистить поиск"
   }
 }

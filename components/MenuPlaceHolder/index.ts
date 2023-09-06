@@ -1,1 +1,1 @@
-export { MenuPlaceHolder as MenuPlaceHolder } from './MenuPlaceHolder';
+export { MenuPlaceHolder } from './MenuPlaceHolder';
