@@ -5,13 +5,7 @@ export const useRefStorage = () => {
 
   const addToRefs = (element: HTMLAnchorElement | null) => {
 
-    if (element) {
-      const existingRefIndex = refCollection.current.findIndex(ref => ref.id === element.id);
-
-      if (existingRefIndex !== -1) {
-        refCollection.current.splice(existingRefIndex, 1);
-      }
-
+    if (element && !refCollection.current.find(item => item.id === element.id)) {
       refCollection.current.push(element);
     }
   };

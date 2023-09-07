@@ -2,7 +2,6 @@ import { useTranslation } from 'next-i18next';
 import Image from 'next/image'
 import NoResult from '../../public/assets/images/menuPlaceHolder/no_result.svg'
 import { useMemo } from 'react';
-import { Button } from '../Button';
 
 interface MenuPlaceHolderProps {
   searchText: string,
@@ -22,7 +21,7 @@ export const MenuPlaceHolder = ({ searchText, clearSearch }: MenuPlaceHolderProp
           <div className="message-block__message-search-word">{`"${searchText}"`}</div>
           <div className="message-block__message-text">{message}</div>
           <div className="message-block__message-content__button-wrapper">
-            <Button handleClick={clearSearch} buttonName={t('search.clearSearchButton')} />
+            <button className="button" onClick={clearSearch}>{t('search.clearSearchButton')}</button>
           </div>
         </div>
       </div>

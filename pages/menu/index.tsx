@@ -151,7 +151,7 @@ export default function Menu({ menuList }: MenuPageProps) {
             </div>
             <div className="menu-content-block__menu-list">
               <div className="menu-content-block__navigation">
-                <SearchBar storedSearch={searchText} handleSearchText={handleSearchText} />
+                <SearchBar clearSearch={clearSearch} storedSearch={searchText} handleSearchText={handleSearchText} />
                 <NavigationSideBar activeId={activeGroupId} addToRefs={addLinksToRefs} menuGroups={menuGroups} setActiveId={handleClick} />
               </div>
               <div className="menu-content-block__menu-content">{
