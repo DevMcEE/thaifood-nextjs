@@ -28,7 +28,7 @@ export default [
   {
     "index": 4,
     "weekday":"thursday",
-    "isOpen": false,
+    "isOpen": true,
     "start": "11:00",
     "end": "20:15",
     "comment": ""
@@ -36,7 +36,7 @@ export default [
   {
     "index": 5,
     "weekday":"friday",
-    "isOpen": true,
+    "isOpen": false,
     "start": "11:00",
     "end": "20:15",
     "comment": "",
