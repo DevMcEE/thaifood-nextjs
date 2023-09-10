@@ -1,10 +1,7 @@
 import { Meta } from '../Meta';
 import { HeaderHeroBlock } from './HeaderHeroBlock';
 import Image from 'next/image';
-import interior from '../../public/assets/images/landing/interior1_opt.jpg';
-import jenWithFood from '../../public/assets/images/landing/thaiFood.jpg';
 import food from '../../public/assets/images/landing/combo_thai_food_thai_cook.jpg';
-import kentmani from '../../public/assets/images/landing/kentmani.jpg';
 import Link from 'next/link';
 import { FooterBlock } from '../FooterBlock';
 
@@ -36,64 +33,6 @@ export function MainPageContainer() {
                 <p>Most of our dishes are spicy. There are 3 levels of spiciness offered: low, medium and super spicy. This is not a European, but a Thai measure of spiciness, so Super Spicy is a level that will be very spicy for the Thais themselves.</p>
                 <p><Link style={{textDecoration: 'underline'}} href="/menu">See the full menu</Link></p>
               </div>
-            </div>
-          </div>
-          <div className="content-block">
-            <div className="content-block__title">
-              <h2>About</h2>
-            </div>
-            <div className="content-block__content">
-
-              <div className="content-block__content-text">
-                <p>
-                  Thai Food Thai Cook appeared in 2020 as a Facebook group,
-                  where Jen, the founder,
-                  periodically posted photos and videos of her culinary
-                  experiments with Thai cuisine. These were mostly soups, which
-                  are still the most popular dishes in the menu. </p>
-                <p> At some point, subscribers began
-                  ordering food from Jen. When there were many
-                  such orders, Jen decided to rent a small place on the
-                  Kentmanni Street. That time Thai Food Thai Cook worked only on
-                  takeaway orders due to pandemic
-                  restrictions. When the pandemic ended and all restrictions
-                  were droped, many customers wanted to eat on the spot, but the
-                  room was not suitable for that.
-                </p>
-              </div>
-              <div className="content-block__content-image-container">
-                <Image
-                  className="content-block__content-image"
-                  src={kentmani}
-                  alt="Thai Food Thai Cook in Kentmanni"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="content-block">
-            <div className="content-block__content">
-              <div className="content-block__content-image-container">
-                <Image
-                  className="content-block__content-image"
-                  src={interior}
-                  alt="Thai Food Thai Cook restaurant"
-                />
-              </div>
-              <div className="content-block__content-text">
-                <p>
-                  In 2021 Thai Food Thai Cook moved to the bigger place on Gonsiori
-                  12a. Menu list became bigger as well. We hired more people. But
-                  <strong> Thai Food Thai Cook </strong> remained to be an authentic Thai
-                  restaurant. No, you won&apos;t find here any expensive Asian-style
-                  interior (as in the most restaurants in Thailand either). But
-                  you are guaranteed to get real spicy Thai food, without any
-                  adaptation to locals (although, there are not-spicy meals in the menu too).
-                  The key point is that all our chefs are native Thais, and they
-                  cook like they would cook for themselves and their families.
-                  Therefore the dishes are so delicious and authentic.
-                </p>
-              </div>
-     
             </div>
           </div>
         </main>

@@ -19,8 +19,16 @@
 
     &-image {
       top:0;
-      max-height: 90vh;
+      min-height: 100vh;
+      height: 100%;
       width: auto;
+    }
+
+    @media screen and (min-width: 960px) {
+      &-image {
+        height: auto;
+        width: auto;
+      }
     }
 
     &-overlay{
