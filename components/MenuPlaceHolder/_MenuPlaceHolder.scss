@@ -36,11 +36,14 @@
     }
 
     &-text,
-    &-search-word {
+    &-search-word{
       text-align: center;
       font-size: x-large;
-      white-space: nowrap;
       overflow: hidden;
+    }
+
+    &-search-word {
+      white-space: nowrap;
       max-width: 13rem;
       text-overflow: ellipsis;
       position: relative;

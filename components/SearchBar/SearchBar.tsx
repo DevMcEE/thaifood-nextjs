@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import magnifyingGlass from '../../public/assets/images/icons/magnifying-glass.svg';
 import close from '../../public/assets/images/icons/close-one.svg';
@@ -14,10 +14,16 @@ export const SearchBar = ({ handleSearchText, storedSearch, clearSearch }: Searc
   const { t } = useTranslation();
   const [inputValue, setInputValue] = useState('');
 
-  useEffect(() => { storedSearch === "" ? setInputValue("") : "" }, [storedSearch])
-  const iconImage = !storedSearch
-    ? (<Image alt="magnifying glass" className="search-bar__icon" src={magnifyingGlass} />)
-    : (<Image alt="close sign" onClick={clearSearch} className="search-bar__icon close-sign" src={close} />)
+  const handleClearSearch = () =>  {
+    clearSearch();
+    setInputValue('')
+  }
+
+  const imageProps = useMemo(() => ({
+    className: `search-bar__icon ${!storedSearch? '':  'close-sign'}`,
+    src: !storedSearch? magnifyingGlass : close,
+    onClick: !storedSearch? ()=> void(0) : handleClearSearch,
+  }), [storedSearch]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -27,7 +33,7 @@ export const SearchBar = ({ handleSearchText, storedSearch, clearSearch }: Searc
 
   return (
     <div className="search-bar-container">
-      {iconImage}
+      <Image alt=''  {...imageProps} />
       <input type="text" className="search-bar__input" value={inputValue} placeholder={t('search.placeholder')} onChange={handleChange} />
     </div>
   )
