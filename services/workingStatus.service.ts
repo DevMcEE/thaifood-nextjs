@@ -17,6 +17,9 @@ import {
   MessageSplitter,
 } from './workingTimeService.type';
 import { capitalize } from '../utils/text.utils';
+import { DateTime, Settings, Interval } from 'luxon';
+
+Settings.defaultZone = 'Europe/Tallinn';
 
 dayjs.extend(UTC);
 dayjs.extend(timeZone);
@@ -30,8 +33,8 @@ export class WorkingStatusService {
   static getStatus() {
     throw new Error("Method not implemented.");
   }
-  private currentWorkingStartDateTime: Dayjs;
-  private currentWorkingEndDateTime: Dayjs;
+  private currentWorkingStartDateTime: DateTime;
+  private currentWorkingEndDateTime: DateTime;
   private currentWorkingDayData: IWeekdayWorkingData;
   private allOpenWorkingDaysDataArray: IWeekdayWorkingData[];
   private todaysWeekdayIndex: number;
@@ -49,7 +52,7 @@ export class WorkingStatusService {
   }
 
   getStatus(): IWorkingStatus {
-    this.todaysWeekdayIndex = dayjs().day();
+    this.todaysWeekdayIndex = DateTime.now().weekday;
     this.allOpenWorkingDaysDataArray = this.workingWeekDataArray.filter(
       ({ isOpen }) => isOpen
     );
@@ -57,8 +60,8 @@ export class WorkingStatusService {
       ({ index }) => index === this.todaysWeekdayIndex
     );
 
-    this.currentWorkingStartDateTime = this.getCurrentDateTime(this.currentWorkingDayData.start);
-    this.currentWorkingEndDateTime = this.getCurrentDateTime(this.currentWorkingDayData.end);
+    this.currentWorkingStartDateTime = DateTime.fromISO(this.currentWorkingDayData.start);//this.getCurrentDateTime(this.currentWorkingDayData.start);
+    this.currentWorkingEndDateTime = DateTime.fromISO(this.currentWorkingDayData.end);
 
     if (!this.allOpenWorkingDaysDataArray.length) {
       return this.getStatusOnAllDaysClosed();
@@ -68,20 +71,15 @@ export class WorkingStatusService {
       return this.getStatusOnClosedState();
     }
 
-    if (dayjs().isSameOrBefore(this.currentWorkingStartDateTime)) {
+    if (DateTime.now() <= this.currentWorkingStartDateTime) {
       return this.getStatusOnOpenStateTimeBefore();
     }
 
-    if (
-      dayjs().isBetween(
-        this.currentWorkingStartDateTime,
-        this.currentWorkingEndDateTime
-      )
-    ) {
+    if ( this.currentWorkingStartDateTime < DateTime.now() && DateTime.now() < this.currentWorkingEndDateTime) {
       return this.getStatusOnOpenStateTimeBetween();
     }
 
-    if (dayjs().isSameOrAfter(this.currentWorkingEndDateTime)) {
+    if (DateTime.now() >= this.currentWorkingEndDateTime) {
       return this.getStatusOnOpenStateTimeAfter();
     }
   }
@@ -116,7 +114,7 @@ export class WorkingStatusService {
 
   private getStatusOnOpenStateTimeBetween(): IWorkingStatus {
     let nextStatusDetails = this.getNextStatusDetails(this.currentWorkingEndDateTime);
-    const isLessThanHour = nextStatusDetails && nextStatusDetails.unit === DurationTimeUnit.minutes;
+    const isLessThanHour = this.currentWorkingEndDateTime.diff(DateTime.now()).as('hours') < 1;
 
     return {
       isOpen: true,
@@ -163,34 +161,20 @@ export class WorkingStatusService {
   }
 
   private getNextStatusDetails(
-    nextStatusDateTime: Dayjs,
+    nextStatusDateTime: DateTime,
     hoursBeforeToStartShowingDetails = this.detailedTimeoutBeforeWorkingStatusChangedHours
-  ): INextStatusDatails | undefined {
-    const timeDiff = nextStatusDateTime.diff(dayjs());
-    const timeDiffAmountHours = dayjs.duration(timeDiff).asHours();
-
-    let timeDiffAmount = Math.round(timeDiffAmountHours);
-    let timeDiffUnit = DurationTimeUnit.hours;
-
-    const isLessThanHour = timeDiffAmountHours < 1;
-
-    if (isLessThanHour) {
-      const timeDiffAmountMinutes = dayjs.duration(timeDiff).asMinutes();
-
-      timeDiffAmount = Math.round(timeDiffAmountMinutes);
-      timeDiffUnit = DurationTimeUnit.minutes;
+  ): string {
+    const { hours, minutes } = nextStatusDateTime.diff(DateTime.now(),['hours','minutes']).toObject();
+    if(hours > hoursBeforeToStartShowingDetails){
+      return ``;
     }
-
-    let nextStatusDetails: INextStatusDatails;
-
-    if (timeDiffAmountHours <= hoursBeforeToStartShowingDetails) {
-      nextStatusDetails = {
-        duration: timeDiffAmount,
-        unit: this.t(timeDiffUnit) as DurationTimeUnit,
-      };
+    if(hours === 0){
+      return `${minutes}m`
     }
-
-    return nextStatusDetails;
+    if(minutes === 0){
+      return `${hours}h`
+    }
+    return `${hours}h ${minutes}m`
   }
 
   private buildStatusMessage({
@@ -216,9 +200,9 @@ export class WorkingStatusService {
     let nextStatusDetailsMessage = '';
 
     if (nextStatusDetails) {
-      nextStatusDetailsMessage = `, ${this.t('inBefore')}${Object.values(
-        nextStatusDetails
-      ).join(' ')}${this.t('inAfter')}`.trim();
+      console.log(nextStatusDetails)
+      nextStatusDetailsMessage = `, ${this.t('inBefore')}${
+        nextStatusDetails}${this.t('inAfter')}`.trim();
     }
 
     if (!nextStatusDetailsMessage && this.nextWorkingDayData) {
@@ -242,13 +226,5 @@ export class WorkingStatusService {
     }
 
     return key;
-  }
-
-  private getCurrentDateTime(time: string): Dayjs {
-    const [endHours, endMinutes] = time.split(':');
-    return dayjs()
-      .clone()
-      .hour(parseInt(endHours))
-      .minute(parseInt(endMinutes));
   }
 }

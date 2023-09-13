@@ -4,10 +4,9 @@ import timeZone from 'dayjs/plugin/timezone';
 import workingTime from '../../__mocks__/dataSets/workingTime';
 import { WorkingStatusColor } from "../../components/mainPage/mainPage.type";
 import { WorkingStatusService } from '../../services/workingStatus.service';
+import {DateTime, Settings} from 'luxon';
 
-dayjs.extend(UTC)
-dayjs.extend(timeZone)
-dayjs.tz.setDefault("Europe/Tallinn");
+Settings.defaultZone = "Europe/Tallinn";
 
 // mock
 const translator = (key: string) => {
@@ -29,10 +28,12 @@ describe('WorkingTimeService.getStatus', () => {
   });
   describe('1.1 when time 13:00 in the middle of working day on monday', () => {
     beforeAll(() => {
-      const dateTime = dayjs().day(1).hour(13).minute(0)
+      // const dateTime = dayjs().day(1).hour(13).minute(0)
+      const dateTime = DateTime.fromObject({weekday:1, hour:13, minute:0});
+
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
     })
     it('should show open status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
@@ -44,55 +45,55 @@ describe('WorkingTimeService.getStatus', () => {
   })
   describe('1.2 when time is 2 hours 15min before close (monday)', () => {
     beforeAll(() => {
-      const dateTime = dayjs().day(1).hour(18).minute(0)
+      const dateTime = DateTime.fromObject({weekday:1, hour:18, minute:0});
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
     })
     it('should show open status and closes in 2 hours', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: true,
-        comment: 'open · closes 20:15, in 2 hours',
+        comment: 'open · closes 20:15, in 2h 15m',
         statusColor: WorkingStatusColor.green
       })
     })
   })
   describe('1.2 when time is 2 hours 45 min before close (monday)', () => {
     beforeAll(() => {
-      const dateTime = dayjs().day(1).hour(17).minute(25)
+      const dateTime = DateTime.fromObject({weekday:1, hour:17, minute:25});
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
     })
-    it('should show open status and closes in 3 hours', () => {
+    it('should show open status and closes in 2 hours', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: true,
-        comment: 'open · closes 20:15, in 3 hours',
+        comment: 'open · closes 20:15, in 2h 50m',
         statusColor: WorkingStatusColor.green
       })
     })
   })
   describe('1.3 when time is less than 1 hour before close (monday)', () => {
     beforeAll(() => {
-      const dateTime = dayjs().day(1).hour(20).minute(0)
+      const dateTime = DateTime.fromObject({weekday:1, hour:20, minute:0});
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
     })
     it('should show open status and closes in 15 minutes', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: true,
-        comment: 'open · closes 20:15, in 15 minutes',
+        comment: 'open · closes 20:15, in 15m',
         statusColor: WorkingStatusColor.yellow
       })
     })
   })
   describe('when time 1 hour after end of working day on wednesday', () => {
     beforeAll(() => {
-      const dateTime = dayjs().day(1).hour(21).minute(0)
+      const dateTime = DateTime.fromObject({weekday:1, hour:21, minute:0});
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
@@ -105,10 +106,10 @@ describe('WorkingTimeService.getStatus', () => {
   describe('when time 1 hour after end of working day on wednesday', () => {
     let workingTimeService;
     beforeAll(() => {
-      const dateTime = dayjs().day(1).hour(21).minute(0)
+      const dateTime = DateTime.fromObject({weekday:1, hour:21, minute:0});
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
       const testData = workingTime.map((weekdayData) => {
         return {
           ...weekdayData,
@@ -132,16 +133,16 @@ describe('WorkingTimeService.getStatus', () => {
   describe('when time 2 hours before start on thursday', () => {
     let workingTimeService;
     beforeAll(() => {
-      const dateTime = dayjs().day(4).hour(9).minute(0)
+      const dateTime = DateTime.fromObject({weekday:4, hour:9, minute:0});
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
       workingTimeService = new WorkingStatusService(workingTime, translator)
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
-        comment: 'closed · opens 11:00, in 2 hours',
+        comment: 'closed · opens 11:00, in 2h',
         statusColor: WorkingStatusColor.yellow
       })
     })
@@ -149,43 +150,44 @@ describe('WorkingTimeService.getStatus', () => {
   describe('when time 1h 15min before start on thursday', () => {
     let workingTimeService;
     beforeAll(() => {
-      const dateTime = dayjs().day(4).hour(9).minute(45)
+      const dateTime = DateTime.fromObject({weekday:4, hour:9, minute:45});
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
       workingTimeService = new WorkingStatusService(workingTime, translator)
     });
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
-        comment: 'closed · opens 11:00, in 1 hours',
+        comment: 'closed · opens 11:00, in 1h 15m',
         statusColor: WorkingStatusColor.yellow
       })
     })
   })
-  describe('when time 25min before start on thursday', () => {
+  describe('when time 15min before start on thursday', () => {
     let workingTimeService;
     beforeAll(() => {
-      const dateTime = dayjs().day(4).hour(10).minute(45)
+      const dateTime = DateTime.fromObject({weekday:4, hour:10, minute:45});
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
       workingTimeService = new WorkingStatusService(workingTime, translator)
     });
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
         isOpen: false,
-        comment: 'closed · opens 11:00, in 15 minutes',
+        comment: 'closed · opens 11:00, in 15m',
         statusColor: WorkingStatusColor.yellow
       })
     })
   })
+  
   describe('when it is closed due to public holiday', () => {
     beforeAll(() => {
-      const dateTime = dayjs().day(5).hour(13).minute(0)
+      const dateTime = DateTime.fromObject({weekday:5, hour:13, minute:0});
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
     })
     it('should show closed status', () => {
       expect(workingTimeService.getStatus()).toMatchObject({
@@ -198,10 +200,10 @@ describe('WorkingTimeService.getStatus', () => {
   describe('when it is closed due to public holiday', () => {
     let workingTimeService;
     beforeAll(() => {
-      const dateTime = dayjs().day(4).hour(13).minute(0)
+      const dateTime = DateTime.fromObject({weekday:4, hour:13, minute:0});
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
       const testData = workingTime.map((weekdayData) => {
         return {
           ...weekdayData,
@@ -224,10 +226,10 @@ describe('WorkingTimeService.getStatus', () => {
   describe('when it is closed due to public holiday', () => {
     let workingTimeService;
     beforeAll(() => {
-      const dateTime = dayjs().day(5).hour(13).minute(0)
+      const dateTime = DateTime.fromObject({weekday:5, hour:13, minute:0});
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
       const testData = workingTime.map((weekdayData) => {
         return {
           ...weekdayData,
@@ -249,10 +251,10 @@ describe('WorkingTimeService.getStatus', () => {
   describe('when all days are closed in the data', () => {
     let workingTimeService;
     beforeAll(() => {
-      const dateTime = dayjs().day(5).hour(13).minute(0)
+      const dateTime = DateTime.fromObject({weekday:5, hour:13, minute:0});
       jest
         .useFakeTimers()
-        .setSystemTime(dateTime.toDate());
+        .setSystemTime(dateTime.toJSDate());
       const testData = workingTime.map((weekdayData) => {
         return {
           ...weekdayData,
