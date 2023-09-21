@@ -33,9 +33,9 @@ export default function Menu({ menuList }: MenuPageProps) {
       activeElement.parentElement.scrollTo({
         left: activeElement?.offsetLeft - 5,
         behavior: 'smooth'
-      })
+      });
     }
-  }
+  };
 
   const updateScreenWidth = () => {
     const minScreenWidth: number = 768;
@@ -65,10 +65,10 @@ export default function Menu({ menuList }: MenuPageProps) {
 
       const groupAnchor = name.toLowerCase().replaceAll(/\s+/g, '-');
 
-      return (<MenuGroup addToRefs={addDivToRefs} href={groupAnchor} menuGroupData={menuGroupData} key={`${id}-menu-group`} />)
+      return (<MenuGroup addToRefs={addDivToRefs} href={groupAnchor} menuGroupData={menuGroupData} key={`${id}-menu-group`} />);
     });
 
-    return [menuGroupItemsList, menuGroups]
+    return [menuGroupItemsList, menuGroups];
   }, [searchText]);
 
   useEffect(() => {
@@ -124,7 +124,7 @@ export default function Menu({ menuList }: MenuPageProps) {
     }
 
     const observerOptions: IntersectionObserverInit = {
-      rootMargin: "0% 0% -85% 0%",
+      rootMargin: '0% 0% -85% 0%',
       threshold: 0.1
     };
 
@@ -189,5 +189,5 @@ export const getServerSideProps: GetServerSideProps<MenuPageProps> = async (cont
       menuList: data || [],
       ...translations,
     }
-  }
+  };
 };

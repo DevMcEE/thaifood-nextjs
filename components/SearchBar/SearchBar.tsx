@@ -16,8 +16,8 @@ export const SearchBar = ({ handleSearchText, storedSearch, clearSearch }: Searc
 
   const handleClearSearch = () =>  {
     clearSearch();
-    setInputValue('')
-  }
+    setInputValue('');
+  };
 
   const imageProps = useMemo(() => ({
     className: `search-bar__icon ${!storedSearch? '':  'close-sign'}`,
@@ -29,12 +29,12 @@ export const SearchBar = ({ handleSearchText, storedSearch, clearSearch }: Searc
     const { value } = event.target;
     setInputValue(() => value);
     handleSearchText(value);
-  }
+  };
 
   return (
     <div className="search-bar-container">
-      <Image alt=''  {...imageProps} />
+      <Image alt=""  {...imageProps} />
       <input type="text" className="search-bar__input" value={inputValue} placeholder={t('search.placeholder')} onChange={handleChange} />
     </div>
-  )
-}
+  );
+};

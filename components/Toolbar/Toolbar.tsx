@@ -10,7 +10,7 @@ export const Toolbar = () => {
   return (
     <div className="toolbar-block">
       <div className="toolbar-logo-block">
-        <Link href='/' locale={locale}>
+        <Link href="/" locale={locale}>
           <Image
             className="toolbar-block__logo-image"
             src={logo}

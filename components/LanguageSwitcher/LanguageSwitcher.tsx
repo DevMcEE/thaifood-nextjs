@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export const LanguageSwitcher = (): JSX.Element => {
   const {locales} = useRouter();
@@ -11,8 +11,8 @@ export const LanguageSwitcher = (): JSX.Element => {
           <div className="language-switcher-button-wrapper" key={language}>
             <Link className="language-switcher-link" href="/menu" locale={language}>{language}</Link>
           </div>
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};

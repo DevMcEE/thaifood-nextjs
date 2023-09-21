@@ -1,5 +1,5 @@
-import { IMenuGroup } from "../../menu/menu.type"
-import { MenuItem } from "../MenuItem";
+import { IMenuGroup } from '../../menu/menu.type';
+import { MenuItem } from '../MenuItem';
 
 interface MenuGroupProps {
   menuGroupData: IMenuGroup;
@@ -15,7 +15,7 @@ export const MenuGroup = ({ menuGroupData, addToRefs, href }: MenuGroupProps): J
       <h3 >{name}</h3>
       <div id={href} data-group-id={id} ref={addToRefs}>
         {items.map((item) => {
-          return <MenuItem key={item.id} menuItemData={item} />
+          return <MenuItem key={item.id} menuItemData={item} />;
         })}
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { IMenuItem } from "../../menu/menu.type";
+import { IMenuItem } from '../../menu/menu.type';
 
 interface MenuItemProps {
   menuItemData: IMenuItem;
