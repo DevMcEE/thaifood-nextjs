@@ -1,9 +1,10 @@
 {
-  "menu": "เมนู",
-  "home": "หน้าแรก",
-  "maintenance": {
-    "greetings":"สวัสดี!",
-    "message": "เรากำลังอัปเดตเมนูของเรา...\nโปรดอดทนรอด้วย!\nใช้เวลาเพียงไม่กี่นาทีเท่านั้น"
+  "menu": {
+    "title": "เมนู",
+    "emptyPage": {
+      "noSearchResult": "ไม่พบผลลัพธ์",
+      "fetchError": "ไม่พบเมนู"
+    }
   },
   "workingTime": {
     "closed": "ปิด",
@@ -15,12 +16,16 @@
     "hours": "ชม",
     "minutes": "นาที",
     "tomorrow": "พรุ่งนี้",
-    "monday":"วันจันทร์",
-    "tuesday":"วันอังคาร",
-    "wednesday":"วันพุธ",
-    "thursday":"วันพฤหัสบดี",
-    "friday":"วันศุกร์",
-    "saturday":"วันเสาร์",
-    "sunday":"วันอาทิตย์"
+    "monday": "วันจันทร์",
+    "tuesday": "วันอังคาร",
+    "wednesday": "วันพุธ",
+    "thursday": "วันพฤหัสบดี",
+    "friday": "วันศุกร์",
+    "saturday": "วันเสาร์",
+    "sunday": "วันอาทิตย์"
+  },
+  "search": {
+    "placeholder": "ค้นหาในเมนู",
+    "clearSearchButton": "ค้นหาที่ชัดเจน"
   }
 }

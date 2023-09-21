@@ -1,9 +1,10 @@
 {
-  "menu": "Меню",
-  "home": "НА ГЛАВНУЮ",
-  "maintenance": {
-    "greetings":"Привет!",
-    "message": "МЫ ОБНОВЛЯЕМ НАШЕ МЕНЮ...\nПРОСИМ ЧУТОЧКУ ПОТЕРПЕТЬ!\nЭТО ЗАЙМЁТ ВСЕГО НЕСКОЛЬКО МИНУТ!"
+  "menu": {
+    "title": "Меню",
+    "emptyPage": {
+      "noSearchResult": "Результатов не найдено",
+      "fetchError": "Меню не найдено"
+    }
   },
   "workingTime": {
     "closed": "закрыто",
@@ -15,13 +16,17 @@
     "hours": "ч",
     "minutes": "мин",
     "tomorrow": "завтра",
-    "monday":"понедельник",
-    "tuesday":"вторник",
-    "wednesday":"среда",
-    "thursday":"четверг",
-    "friday":"пятница",
-    "saturday":"суббота",
-    "sunday":"воскресенье",
-    "Working Time":"Рабочее время"
+    "monday": "понедельник",
+    "tuesday": "вторник",
+    "wednesday": "среда",
+    "thursday": "четверг",
+    "friday": "пятница",
+    "saturday": "суббота",
+    "sunday": "воскресенье",
+    "Working Time": "Рабочее время"
+  },
+  "search": {
+    "placeholder": "Поиск в меню",
+    "clearSearchButton": "Очистить поиск"
   }
 }

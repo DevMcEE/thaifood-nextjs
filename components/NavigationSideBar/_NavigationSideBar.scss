@@ -19,6 +19,13 @@
         background-color: #dfa02311;
         border-radius: 1rem;
       }
+      
+      &-disabled {
+        color: grey;
+        background-color: light-grey;
+        pointer-events: none;
+        cursor: default;
+      }
     }
   }
 }

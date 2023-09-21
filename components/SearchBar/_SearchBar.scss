@@ -1,0 +1,63 @@
+.search-bar {
+  &-container {
+    padding-top: 1rem;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  &__input {
+    padding: 0.8rem;
+    padding-right: 3rem;
+    height: 3rem;
+    outline: none;
+    background-color: rgba(32, 33, 37, 0.12);
+    border-color: none;
+    border: none;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    border-radius: 1.25rem;
+    height: 2.5rem;
+    width: 100%;
+    max-width: 100%;
+    transition: background-color 70ms linear 0s;
+    caret-color: $primary-color;
+
+    &:focus {
+      width: 100%;
+      background-color: rgba(32, 33, 37, 0.16);
+      outline: 3px solid $primary-color;
+    }
+
+    &:hover {
+      background-color: rgba(32, 33, 37, 0.16);
+    }
+  }
+
+  &__icon {
+    right: 13px;
+    position: absolute;
+  }
+}
+
+.close-sign{
+  animation: loader 0.1s;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+
+  &:hover {
+    opacity: 0.7; 
+  }
+}
+
+@keyframes loader {
+  0% {
+    rotate: 0deg;
+    transform: scale(0);
+  }
+  100% {
+      transform: scale(1);
+      rotate: 180deg;
+  }
+}
