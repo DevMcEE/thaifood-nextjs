@@ -3,5 +3,5 @@ export interface HeroBlockProps {
 }
 
 export const HeroBlock = ({ children}: HeroBlockProps): JSX.Element => {
-  return <div className='hero-block'>{children}</div>
-}
+  return <div className="hero-block">{children}</div>;
+};

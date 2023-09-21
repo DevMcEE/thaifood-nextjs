@@ -3,15 +3,15 @@ import { FooterBlock } from '../../components/FooterBlock';
 import { Meta } from '../../components/Meta';
 import { Toolbar } from '../../components/Toolbar';
 import { IMenuGroup, IMenuNavGroup } from '../../menu/menu.type';
-import { MenuGroup } from '../../components/MenuGroup';
-import { MenuPlaceHolder } from '../../components/MenuPlaceHolder';
+import { MenuGroup } from '../../menu/MenuGroup';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { NavigationSideBar } from '../../components/NavigationSideBar';
+import { NavigationSideBar } from '../../menu/MenuNavigationSideBar';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRefStorage } from '../../hooks/useRefStorage';
-import { SearchBar } from '../../components/SearchBar/SearchBar';
+import { SearchBar } from '../../menu/SearchBar/SearchBar';
 import { useMenuFilter } from '../../menu/hooks/useMenuFilter';
+import { MenuPlaceHolder } from '../../menu/MenuPlaceHolder';
 
 export interface MenuPageProps {
   menuList: IMenuGroup[];
@@ -33,9 +33,9 @@ export default function Menu({ menuList }: MenuPageProps) {
       activeElement.parentElement.scrollTo({
         left: activeElement?.offsetLeft - 5,
         behavior: 'smooth'
-      })
+      });
     }
-  }
+  };
 
   const updateScreenWidth = () => {
     const minScreenWidth: number = 768;
@@ -65,10 +65,10 @@ export default function Menu({ menuList }: MenuPageProps) {
 
       const groupAnchor = name.toLowerCase().replaceAll(/\s+/g, '-');
 
-      return (<MenuGroup addToRefs={addDivToRefs} href={groupAnchor} menuGroupData={menuGroupData} key={`${id}-menu-group`} />)
+      return (<MenuGroup addToRefs={addDivToRefs} href={groupAnchor} menuGroupData={menuGroupData} key={`${id}-menu-group`} />);
     });
 
-    return [menuGroupItemsList, menuGroups]
+    return [menuGroupItemsList, menuGroups];
   }, [searchText]);
 
   useEffect(() => {
@@ -124,7 +124,7 @@ export default function Menu({ menuList }: MenuPageProps) {
     }
 
     const observerOptions: IntersectionObserverInit = {
-      rootMargin: "0% 0% -85% 0%",
+      rootMargin: '0% 0% -85% 0%',
       threshold: 0.1
     };
 
@@ -150,10 +150,11 @@ export default function Menu({ menuList }: MenuPageProps) {
               <h2>{t('menu.title')}</h2>
             </div>
             <div className="menu-content-block__menu-list">
+              { menuList?.length ? 
               <div className="menu-content-block__navigation">
                 <SearchBar clearSearch={clearSearch} storedSearch={searchText} handleSearchText={handleSearchText} />
                 <NavigationSideBar activeId={activeGroupId} addToRefs={addLinksToRefs} menuGroups={menuGroups} setActiveId={handleClick} />
-              </div>
+              </div> : <></>}
               <div className="menu-content-block__menu-content">{
                 menu.length
                   ? menuGroupItemsList
@@ -189,5 +190,5 @@ export const getServerSideProps: GetServerSideProps<MenuPageProps> = async (cont
       menuList: data || [],
       ...translations,
     }
-  }
+  };
 };

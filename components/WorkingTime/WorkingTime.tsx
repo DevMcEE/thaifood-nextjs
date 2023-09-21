@@ -1,6 +1,6 @@
 import { useTranslation } from 'next-i18next';
 import workingTime from '../../assets/workingTime';
-import { WorkingTimeService } from "../../services/workingTime.service";
+import { WorkingTimeService } from '../../services/workingTime.service';
 import { useEffect, useState } from 'react';
 import { IWorkingTime } from '../mainPage/mainPage.type';
 
@@ -15,7 +15,7 @@ export const WorkingTime = (): JSX.Element => {
     setStatus(() => workingTimeService.getList());
   }, [t]);
 
-  return (<div className='working-time'>
+  return (<div className="working-time">
     {
       status.map(
         (item) => (
@@ -27,5 +27,5 @@ export const WorkingTime = (): JSX.Element => {
       )
     }
   </div>);
-}
+};
 

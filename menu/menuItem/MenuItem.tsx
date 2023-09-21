@@ -1,27 +1,18 @@
-import Image, { StaticImageData } from 'next/image';
-import styles from './MenuItem.module.css';
+import { IMenuItem } from '../../menu/menu.type';
 
-export interface MenuItemProps {
-  imageSrc: string  | StaticImageData;
-  title?: string;
-};
+interface MenuItemProps {
+  menuItemData: IMenuItem;
+}
 
-export function MenuItem ({ title, imageSrc }: MenuItemProps) {
+export const MenuItem = ({ menuItemData }: MenuItemProps): JSX.Element => {
+  const { code, name, price } = menuItemData;
+
   return (
-    <div className={styles.menuItem}>
-      <div className={styles.menuItemImageContainer}>
-        <Image 
-          alt={title}
-          fill
-          style={{
-            objectFit: 'cover',
-          }}
-          src={imageSrc}
-        />
-      </div>
-      <div className="menu-item__title">
-        <h3 className="menu-item__title-text">{title}</h3>
-      </div>
+    <div className="menu-item">
+      <span className="item-code">{code}</span>
+      <span className="item-name" dangerouslySetInnerHTML={{ __html: name }} />
+      <span className="item-spacer"></span>
+      <span className="item-price">{price}€</span>
     </div>
   );
 };

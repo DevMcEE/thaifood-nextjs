@@ -21,7 +21,7 @@ export const Modal = ({ isOpen, close, title, children }: IModalProps) => {
       <Box className="modal-content">
         <Typography className="modal-content-title" variant="h5" component="h3">
           {title} 
-          <IconButton disableFocusRipple={true} className='modal-content-title__icon-button' onClick={close}>
+          <IconButton disableFocusRipple={true} className="modal-content-title__icon-button" onClick={close}>
             <CloseIcon />
           </IconButton>
         </Typography>
@@ -30,5 +30,5 @@ export const Modal = ({ isOpen, close, title, children }: IModalProps) => {
         </Typography>
       </Box>
     </MUIModal>
-  )
-}
+  );
+};

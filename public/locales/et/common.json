@@ -3,7 +3,7 @@
     "title": "Menüü",
     "emptyPage": {
       "noSearchResult": "Tulemusi ei leitud",
-      "fetchError": "Menüüd ei leitud"
+      "fetchError": "Menüü on valmistamisel!"
     }
   },
   "workingTime": {

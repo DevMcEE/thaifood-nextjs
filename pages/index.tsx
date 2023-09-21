@@ -22,5 +22,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       ...translations,
     }
-  }
+  };
 };
