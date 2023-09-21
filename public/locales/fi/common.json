@@ -3,7 +3,7 @@
       "title": "Ruokalista",
       "emptyPage": {
         "noSearchResult": "Ei tuloksia",
-        "fetchError": "Ei valikkoa löytynyt"
+        "fetchError": "Menu tulee pian..."
       }
     },
     "workingTime": {

@@ -3,7 +3,7 @@
     "title": "เมนู",
     "emptyPage": {
       "noSearchResult": "ไม่พบผลลัพธ์",
-      "fetchError": "ไม่พบเมนู"
+      "fetchError": "เมนูกำลังจะมาเร็ว ๆ นี้"
     }
   },
   "workingTime": {

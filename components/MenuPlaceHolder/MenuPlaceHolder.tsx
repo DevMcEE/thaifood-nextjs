@@ -1,6 +1,6 @@
 import { useTranslation } from 'next-i18next';
-import Image from 'next/image'
-import NoResult from '../../public/assets/images/menuPlaceHolder/no_result.svg'
+import Image from 'next/image';
+import { useMemo } from 'react';
 
 interface MenuPlaceHolderProps {
   searchText: string,
@@ -10,20 +10,22 @@ interface MenuPlaceHolderProps {
 export const MenuPlaceHolder = ({ searchText, clearSearch }: MenuPlaceHolderProps): JSX.Element => {
   const { t } = useTranslation();
 
-  const message = searchText ? t('menu.emptyPage.noSearchResult') : t('menu.emptyPage.fetchError');
+  const url = useMemo(() => `/assets/images/menuPlaceHolder/${searchText ? 'no_result' : 'ninja_chef'}.svg`, [searchText]);
 
   return (
     <div className="menu-place-holder__body-container">
       <div className="menu-place-holder__message-block">
-        <Image className='message-block__image' alt="No Result Found" src={NoResult}></Image>
+        <Image className="message-block__image" alt="No Result Found" src={url} width={400} height={400} />
         <div className="message-block__message-content">
           {searchText && <div className="message-block__message-search-word">{`"${searchText}"`}</div>}
-          <div className="message-block__message-text">{message}</div>
-          <div className="message-block__message-content__button-wrapper">
-            <button className="button" onClick={clearSearch}>{t('search.clearSearchButton')}</button>
+          <div className="message-block__message-text">
+            {t(`menu.emptyPage.${searchText ? 'noSearchResult' : 'fetchError'}`)}
           </div>
+          {searchText && <div className="message-block__message-content__button-wrapper">
+            <button className="button" onClick={clearSearch}>{t('search.clearSearchButton')}</button>
+          </div>}
         </div>
       </div>
     </div>
   );
-}
+};
