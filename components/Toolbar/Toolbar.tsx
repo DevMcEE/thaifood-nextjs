@@ -13,8 +13,10 @@ export const Toolbar = () => {
         <Link href="/" locale={locale}>
           <Image
             className="toolbar-block__logo-image"
-            src={logo}
+            src="/assets/images/logo/Taiwaya-logo-cut3.jpg"
             alt="Thai Food Thai Cook Restaurant"
+            width={100}
+            height={100}
           /></Link>
           <LanguageSwitcher />
       </div>

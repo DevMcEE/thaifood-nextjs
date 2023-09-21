@@ -3,7 +3,7 @@
     "title": "Menu",
     "emptyPage": {
       "noSearchResult": "No results found",
-      "fetchError": "Menu is coming soon..."
+      "fetchError": "Menu is coming soon!"
     }
   },
   "home": "HOME PAGE",

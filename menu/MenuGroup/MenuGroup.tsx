@@ -1,4 +1,4 @@
-import { IMenuGroup } from '../../menu/menu.type';
+import { IMenuGroup } from '../menu.type';
 import { MenuItem } from '../MenuItem';
 
 interface MenuGroupProps {

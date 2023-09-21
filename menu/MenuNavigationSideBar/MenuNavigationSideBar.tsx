@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { IMenuNavGroup } from '../../menu/menu.type';
-import { MenuItemLink } from '../MenuItemLink';
+import { IMenuNavGroup } from '../menu.type';
 
 import classnames from 'classnames';
+import { MenuItemLink } from '../MenuItemLink';
 interface NavigationSideBarProps {
   menuGroups: IMenuNavGroup[];
   activeId: string;
@@ -10,7 +10,7 @@ interface NavigationSideBarProps {
   addToRefs: (element: HTMLAnchorElement) => void;
 }
 
-export const NavigationSideBar = ({ menuGroups, activeId, setActiveId, addToRefs }: NavigationSideBarProps): JSX.Element => {
+export const MenuNavigationSideBar = ({ menuGroups, activeId, setActiveId, addToRefs }: NavigationSideBarProps): JSX.Element => {
   const navMenu = useMemo(() => menuGroups.map(({ id, name, href, isDisabled }) => {
     return (  
       <MenuItemLink 
