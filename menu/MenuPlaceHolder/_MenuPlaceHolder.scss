@@ -17,6 +17,10 @@
 }
 
 .message-block {
+  &__image {
+    width: 100%;
+    height: 50vh;
+  }
   &__message {
     &-content {
       display: flex;
@@ -91,7 +95,6 @@
   .message-block {
     &__image {
       margin-top: 1rem;
-      width: 100%;
     }
   }
 }

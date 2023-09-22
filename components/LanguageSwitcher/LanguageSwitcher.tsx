@@ -2,14 +2,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 export const LanguageSwitcher = (): JSX.Element => {
-  const {locales} = useRouter();
-
+  const router = useRouter();
+  const {locales, locale } = router;
+  console.log(router)
   return (
     <div className="language-switcher-main-block">
       {locales.map((language: string) => {
         return (
           <div className="language-switcher-button-wrapper" key={language}>
-            <Link className="language-switcher-link" href="/menu" locale={language}>{language}</Link>
+            <Link className={`language-switcher-link ${ language.includes(locale) ? 'language-switcher-link--active' : '' }`} href="/menu" locale={language}>{language}</Link>
           </div>
         );
       })}
