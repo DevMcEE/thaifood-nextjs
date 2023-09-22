@@ -1,19 +1,14 @@
 import { Html, Head, Main, NextScript } from 'next/document';
+import Script from 'next/script';
 
 export default function Document() {
+  console.log(process.env.NODE_ENV);
+
   return (
     <Html>
       <Head />
       <body>
-        {/* <!-- Google Tag Manager (noscript) --> */}
-        <noscript
-          dangerouslySetInnerHTML={{
-            __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-59CSMT6"
-height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
-          }}
-        >
-          {/* <!-- End Google Tag Manager (noscript) --> */}
-        </noscript>
+        { process?.env?.NODE_ENV === 'production' ? <Script src="https://www.googletagmanager.com/ns.html?id=GTM-59CSMT6" /> : null }
         <Main />
         <NextScript />
       </body>
