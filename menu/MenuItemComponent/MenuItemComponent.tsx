@@ -1,10 +1,10 @@
-import { IMenuItem } from '../../menu/menu.type';
+import { IMenuItem } from '../menu.type';
 
 interface MenuItemProps {
   menuItemData: IMenuItem;
 }
 
-export const MenuItem = ({ menuItemData }: MenuItemProps): JSX.Element => {
+export const MenuItemComponent = ({ menuItemData }: MenuItemProps): JSX.Element => {
   const { code, name, price } = menuItemData;
 
   return (

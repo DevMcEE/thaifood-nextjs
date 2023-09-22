@@ -1,5 +1,5 @@
 import { IMenuGroup } from '../menu.type';
-import { MenuItem } from '../MenuItem';
+import { MenuItem } from '../MenuItemComponent';
 
 interface MenuGroupProps {
   menuGroupData: IMenuGroup;
