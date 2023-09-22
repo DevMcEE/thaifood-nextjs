@@ -15,7 +15,7 @@ export const MenuPlaceHolder = ({ searchText, clearSearch }: MenuPlaceHolderProp
   return (
     <div className="menu-place-holder__body-container">
       <div className="menu-place-holder__message-block">
-        <Image className="message-block__image" alt="No Result Found" src={url} width={400} height={400} />
+        <Image className="message-block__image" alt="No Result Found" src={url} width={200} height={200} />
         <div className="message-block__message-content">
           {searchText && <div className="message-block__message-search-word">{`"${searchText}"`}</div>}
           <div className="message-block__message-text">
