@@ -31,7 +31,7 @@ dayjs.extend(duration);
 
 export class WorkingStatusService {
   static getStatus() {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
   private currentWorkingStartDateTime: DateTime;
   private currentWorkingEndDateTime: DateTime;
@@ -165,16 +165,15 @@ export class WorkingStatusService {
     hoursBeforeToStartShowingDetails = this.detailedTimeoutBeforeWorkingStatusChangedHours
   ): string {
     const { hours, minutes } = nextStatusDateTime.diff(DateTime.now(),['hours','minutes']).toObject();
-    if(hours > hoursBeforeToStartShowingDetails){
-      return ``;
+
+    if(hours > hoursBeforeToStartShowingDetails - 1){
+      return '';
     }
-    if(hours === 0){
-      return `${minutes}m`
-    }
-    if(minutes === 0){
-      return `${hours}h`
-    }
-    return `${hours}h ${minutes}m`
+  
+    const hoursResult = hours > 0 ? hours + this.t('hours') : '';
+    const minutesResult = minutes > 0 ? Math.round(minutes) + this.t('minutes') : '';
+
+    return `${hoursResult} ${minutesResult}`.trim();
   }
 
   private buildStatusMessage({
@@ -200,7 +199,6 @@ export class WorkingStatusService {
     let nextStatusDetailsMessage = '';
 
     if (nextStatusDetails) {
-      console.log(nextStatusDetails)
       nextStatusDetailsMessage = `, ${this.t('inBefore')}${
         nextStatusDetails}${this.t('inAfter')}`.trim();
     }
