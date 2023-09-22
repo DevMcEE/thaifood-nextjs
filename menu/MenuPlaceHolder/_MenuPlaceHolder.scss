@@ -83,7 +83,6 @@
     }
 
     &__body-container {
-      padding: 2rem;
       justify-content: space-around;
       align-items: center;
     }
@@ -92,6 +91,7 @@
   .message-block {
     &__image {
       margin-top: 1rem;
+      width: 100%;
     }
   }
 }
