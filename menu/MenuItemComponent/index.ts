@@ -1,1 +1,0 @@
-export { MenuItemComponent as MenuItem } from './MenuItemComponent';

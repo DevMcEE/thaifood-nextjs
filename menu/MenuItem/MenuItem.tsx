@@ -4,7 +4,7 @@ interface MenuItemProps {
   menuItemData: IMenuItem;
 }
 
-export const MenuItemComponent = ({ menuItemData }: MenuItemProps): JSX.Element => {
+export const MenuItem = ({ menuItemData }: MenuItemProps): JSX.Element => {
   const { code, name, price } = menuItemData;
 
   return (
