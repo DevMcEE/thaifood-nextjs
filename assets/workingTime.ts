@@ -36,10 +36,10 @@ export default [
   {
     'index': 5,
     'weekday':'friday',
-    'isOpen': true,
+    'isOpen': false,
     'start': '12:00',
     'end': '21:30',
-    'comment': '',
+    'comment': 'SuperVeryLongStatus dfasdfadsffsafs asdfsadf',
   }, 
   {
     'index': 6,
