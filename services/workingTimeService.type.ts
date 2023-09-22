@@ -1,6 +1,6 @@
 export enum DurationTimeUnit {
-  hours = 'hours',
-  minutes = 'minutes'
+  hours = 'h',
+  minutes = 'm'
 }
 
 export enum MessageSplitter {
@@ -10,13 +10,15 @@ export enum MessageSplitter {
 export interface IBuildStatusProps {
   isOpenNow: boolean;
   nextStatusTime: string;
-  nextStatusDetails?:INextStatusDatails;
+  nextStatusDetails?:string;
   splitter?: string;
   isItTomorrow?: boolean;
   hasNextWorkingDay?: boolean;
 }
 
 export interface INextStatusDatails {
-  duration: number;
-  unit: DurationTimeUnit;
+  durationInMinutes: number;
+  durationInHours?: number;
+  unitHours?: DurationTimeUnit;
+  unitMinutes: DurationTimeUnit;
 }
