@@ -2,8 +2,6 @@ import { Html, Head, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 
 export default function Document() {
-  console.log(process.env.NODE_ENV);
-
   return (
     <Html>
       <Head />
