@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 export const LanguageSwitcher = (): JSX.Element => {
   const router = useRouter();
   const {locales, locale } = router;
-  console.log(router)
+  
   return (
     <div className="language-switcher-main-block">
       {locales.map((language: string) => {
