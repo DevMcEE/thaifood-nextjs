@@ -79,8 +79,13 @@
     }
 
     &-contacts {
+      &-container {
+        background: radial-gradient(closest-side, #000, #00000000);
+        padding: 2rem;
+      }
       &-address {
         display: flex;
+        justify-content: center;
         padding: 0.5rem;
         &-text {
           padding-left: 0.5rem;

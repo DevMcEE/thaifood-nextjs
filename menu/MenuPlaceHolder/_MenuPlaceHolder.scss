@@ -4,7 +4,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
     width: 100%;
   }
 
@@ -18,11 +17,6 @@
 }
 
 .message-block {
-  &__image {
-    margin-top: 2rem;
-    padding: 1.5rem;
-  }
-
   &__message {
     &-content {
       display: flex;
