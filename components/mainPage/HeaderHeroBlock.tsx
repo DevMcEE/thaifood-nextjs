@@ -1,6 +1,5 @@
 import Image from 'next/image';
-import bgImage from '../../public/assets/images/landing/tomYamShrimp.png';
-import logo from '../../public/assets/images/logo/logo_contrast.svg';
+import bgImage from '../../public/assets/images/landing/taiwaya_bg.jpeg';
 import mapPin from '../../public/assets/images/icons/map-pin.svg';
 import { StatusIndicator } from './StatusIndicator';
 
@@ -16,16 +15,10 @@ export const HeaderHeroBlock = (): JSX.Element => {
         />
         <div className="header-hero-block__bg-overlay"></div>
       </div>
-      <div className="header-hero-block__logo">
-        <Image
-          className="header-hero-block__logo-image"
-          src={logo}
-          alt="Thai Food Thai Cook Restaurant"
-        />
-      </div>
       <div className="header-hero-block__content">
+      <div className="header-hero-block__content-title">
+        </div>
         <div className="header-hero-block__content-title">
-          <h1>Thai Restaurant</h1>
         </div>
         <div className="header-hero-block__content-contacts">
           <p className="header-hero-block__content-contacts-address">
@@ -40,7 +33,7 @@ export const HeaderHeroBlock = (): JSX.Element => {
                 src={mapPin}
                 alt="Thai Food Thai Cook address"
               />
-              <span className='header-hero-block__content-contacts-address-text'>Gonsiori 12a, Tallinn</span> 
+              <span className="header-hero-block__content-contacts-address-text">Gonsiori 12a, Tallinn</span> 
               
             </a>
           </p>

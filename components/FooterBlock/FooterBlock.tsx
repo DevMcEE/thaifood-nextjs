@@ -32,7 +32,7 @@ export const FooterBlock = () => {
         </div>
         <div className="page-footer__block page-footer__block--right-aligned">
           <h2>Delivery</h2>
-          <div className='ptb-1'>
+          <div className="ptb-1">
             <Image
               className="page-footer__block-delivery-wolt-link-image"
               src={bolt}

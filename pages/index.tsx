@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Thai Food - Thai Cook</title>
+        <title>Taiwaya</title>
       </Head>
       <MainPageContainer />
     </>
@@ -22,5 +22,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       ...translations,
     }
-  }
+  };
 };

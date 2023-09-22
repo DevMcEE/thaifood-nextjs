@@ -5,11 +5,14 @@
 @import '../components/FooterBlock/FooterBlock';
 @import '../pages/menu/index.scss';
 @import '../components/Toolbar/Toolbar.scss';
-@import '../components/MenuItem/MenuItem.scss';
-@import '../components/MenuGroup/MenuGroup.scss';
-@import '../components/Maintenance/Maintenance.scss';
 @import '../components/LanguageSwitcher/LanguageSwitcher.scss';
 @import '../components/Modal.scss';
 @import '../components/WorkingTime/WorkingTime.scss';
-@import '../components/NavigationSideBar/NavigationSideBar.scss';
 @import '../components/mainPage/StatusIndicator/StatusIndicator';
+
+@import '../menu/MenuItem/MenuItem';
+@import '../menu/MenuPlaceHolder/MenuPlaceHolder';
+@import '../menu/MenuGroup/MenuGroup';
+@import '../menu/MenuGroup/MenuGroup';
+@import '../menu/MenuNavigationSideBar/MenuNavigationSideBar.scss';
+@import '../menu/SearchBar/SearchBar';

@@ -4,7 +4,7 @@ module.exports = {
       name: 'thaifood',
       script: 'npm run start',
       autorestart: true,
-      max_memory_restart: "300M",
+      max_memory_restart: '300M',
     },
   ],
 

@@ -1,9 +1,10 @@
 {
-  "menu": "Menüü",
-  "home": "AVALAHELE",
-  "maintenance": {
-    "greetings":"Hei, hei!",
-    "message": "ME UUENDAME OMA MENÜÜD..\nPALUME VEIDI KANNATLIKKUST!\nSEE VÕTAB AINULT PAAR MINUTID!"
+  "menu": {
+    "title": "Menüü",
+    "emptyPage": {
+      "noSearchResult": "Tulemusi ei leitud",
+      "fetchError": "Menüü on valmistamisel!"
+    }
   },
   "workingTime": {
     "closed": "suletud",
@@ -15,12 +16,16 @@
     "hours": "t",
     "minutes": "min",
     "tomorrow": "homme",
-    "monday":"esmaspäev",
-    "tuesday":"teisipäev",
-    "wednesday":"kolmapäev",
-    "thursday":"neljapäev",
-    "friday":"reede",
-    "saturday":"laupäev",
-    "sunday":"pühapäev"
+    "monday": "esmaspäev",
+    "tuesday": "teisipäev",
+    "wednesday": "kolmapäev",
+    "thursday": "neljapäev",
+    "friday": "reede",
+    "saturday": "laupäev",
+    "sunday": "pühapäev"
+  },
+  "search": {
+    "placeholder": "Otsi menüüs",
+    "clearSearchButton": "Tühjenda otsing"
   }
 }

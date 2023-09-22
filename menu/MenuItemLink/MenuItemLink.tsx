@@ -10,14 +10,15 @@ interface MenuLinkProps {
 
 export const MenuItemLink = ({ onClick, href, title, className, addToRefs }: MenuLinkProps): JSX.Element => {
   return (
-      <Link
-        id={`${href}-nav-link`}
-        ref={addToRefs} 
-        href={`#${href}`}
-        onClick={onClick}
-        className={className}
-      >
-        {title}
-      </Link>
+        <Link
+          id={`${href}-nav-link`}
+          ref={addToRefs}
+          href={`#${href}`}
+          onClick={onClick}
+          className={className}
+        >
+          {title}
+        </Link>
+  
   );
 };
