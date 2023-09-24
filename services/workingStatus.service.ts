@@ -11,9 +11,7 @@ import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import duration from 'dayjs/plugin/duration';
 import {
-  DurationTimeUnit,
   IBuildStatusProps,
-  INextStatusDatails,
   MessageSplitter,
 } from './workingTimeService.type';
 import { capitalize } from '../utils/text.utils';
@@ -46,7 +44,7 @@ export class WorkingStatusService {
     private workingWeekDataArray: IWeekdayWorkingData[],
     private translator?: (key: string) => string
   ) {
-    if (!Array.isArray(workingWeekDataArray)) {
+    if (!Array.isArray(workingWeekDataArray) || workingWeekDataArray.length !== 7) {
       throw new TypeError('Invalid workingWeekDataArray type');
     }
   }

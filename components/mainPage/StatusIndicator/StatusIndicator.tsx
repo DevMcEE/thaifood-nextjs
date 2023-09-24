@@ -1,16 +1,17 @@
 import { InfoIcon } from '../../../assets/icons/InfoIcon';
 import { useTranslation } from 'next-i18next';
-import workingTime from '../../../assets/workingTime';
 import { WorkingStatusService } from '../../../services/workingStatus.service';
 import { Modal } from '../../Modal';
 import { WorkingTime } from '../../WorkingTime/WorkingTime';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IWorkingStatus } from '../mainPage.type';
+import { WorkingTimeContext } from '../../Providers';
 
 
 
 export const StatusIndicator = () => {
   const { t } = useTranslation();
+  const { workingTime } = useContext(WorkingTimeContext);
 
   const [status, setStatus] = useState<IWorkingStatus>();
   const [open, setOpen] = useState(true);
@@ -19,9 +20,11 @@ export const StatusIndicator = () => {
   const handleClose = () => setOpen(() => false);
   
   useEffect(() => {
-    const workingStatusService = new WorkingStatusService(workingTime, t);
-    setStatus(()=> workingStatusService.getStatus());
-  }, []);
+    if (workingTime.length) {
+      const workingStatusService = new WorkingStatusService(workingTime, t);
+      setStatus(()=> workingStatusService.getStatus());
+    }
+  }, [workingTime.length]);
 
   if (!status) {
     return <></>;
