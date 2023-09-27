@@ -92,8 +92,10 @@ export default function Menu({ menuList }: MenuPageProps) {
     const menuGroup = menuGroups.find(({ id: menuGroupId }) => menuGroupId === id);
     const menuGroupHref = menuGroupsRefs.current.find((item) => item.id === menuGroup.href);
 
+    const offset = isSmallScreenWidth ? 140 : 70;
+
     document.body.scrollTo({
-      top: menuGroupHref.offsetTop - 70,
+      top: menuGroupHref.offsetTop - offset,
       behavior: 'smooth',
     });
 
@@ -137,7 +139,7 @@ export default function Menu({ menuList }: MenuPageProps) {
     return () => {
       observer.disconnect();
     };
-  }, [menuGroupsRefs, isSmallScreenWidth, menu]);
+  }, [menuGroupsRefs, isSmallScreenWidth, menu, searchText]);
 
   return (
     <>
@@ -178,7 +180,7 @@ export const getServerSideProps: GetServerSideProps<MenuPageProps> = async (cont
   const translations = await serverSideTranslations(locale, ['common']);
 
   try {
-    const res = await fetch(`https://api.milicity.eu/resto/v1/menu?lang=${locale}`);
+    const res = await fetch(`${process.env.apiUrl}/resto/v1/menu?lang=${locale}`);
     data = await res.json();
 
   } catch (error) {

@@ -7,22 +7,28 @@ export const useMenuFilter = (menuList: IMenuGroup[]) => {
   const [searchText, setSearchText] = useState('');
 
   const handleFilter = (searchText: string) => {
+    const searchTextLowerCased = searchText.toLowerCase();
+
     let filteredMenu = menuList.map((menuGroup) => {
       const { items } = menuGroup;
       let filteredItems = items
-        .filter(item => item.name.toLowerCase().includes(searchText.toLowerCase()))
-        .map(item => { return { ...item, name: highlightText(item.name, searchText) } })
+        .filter(({ name, description }) => name.toLowerCase().includes(searchTextLowerCased) || description.toLowerCase().includes(searchTextLowerCased))
+        .map(item => ({
+          ...item,
+          name: highlightText(item.name, searchText),
+          description: highlightText(item.description, searchText)
+        }));
       return { ...menuGroup, items: filteredItems };
-    }).filter(group => group.items.length)
+    }).filter(group => group.items.length);
 
     setSearchText(searchText);
     setMenu(filteredMenu);
-  }
+  };
 
   const clearSearch = () => {
     setSearchText('');
     setMenu(menuList);
-  }
+  };
 
   return [{ menu, searchText }, handleFilter, clearSearch] as const;
-} 
+}; 

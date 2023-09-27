@@ -1,28 +1,33 @@
 .menu-item {
   display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 .item {
-  &-code {
-    margin-right: 1rem;
+  &-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
   }
-
-  &-price {
-    padding-left: 5px;
-    
-  }
-
+  &-code ,
+  &-price ,
   &-name {
     margin-right: 5px;
   }
 
+  &-description {
+    font-size: 12px;
+    color: gray;
+    padding-right: 5px;
+  }
+
   &-spacer {
     margin-right: 5px;
-    border-bottom: 2px dotted;
+    border-bottom: 1px dotted lightgray;
     flex-grow: 1;
+    height: 10px;
   }
 
 }

@@ -5,14 +5,17 @@ interface MenuItemProps {
 }
 
 export const MenuItem = ({ menuItemData }: MenuItemProps): JSX.Element => {
-  const { code, name, price } = menuItemData;
+  const { name, price, description } = menuItemData;
 
   return (
     <div className="menu-item">
-      <span className="item-code">{code}</span>
-      <span className="item-name" dangerouslySetInnerHTML={{ __html: name }} />
-      <span className="item-spacer"></span>
-      <span className="item-price">{price}€</span>
+      <div className="item-details">
+        <div className="item-name" dangerouslySetInnerHTML={{ __html: name }} />
+        <div className="item-spacer"></div>
+        <div className="item-price">{price}€</div>
+      </div>
+      <div className="item-description" dangerouslySetInnerHTML={{ __html: description }} />
+
     </div>
   );
 };
