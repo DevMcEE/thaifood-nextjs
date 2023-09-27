@@ -8,11 +8,15 @@ interface MenuGroupProps {
 }
 
 export const MenuGroup = ({ menuGroupData, addToRefs, href }: MenuGroupProps): JSX.Element => {
-  const { name, items, id } = menuGroupData;
+  const { name, items, id, description } = menuGroupData;
 
   return (
     <div className="menu-group">
-      <h3 >{name}</h3>
+      <div className="menu-group-title">
+        <h2 >{name}</h2>
+        <h5 >{description}</h5>
+      </div>
+
       <div id={href} data-group-id={id} ref={addToRefs}>
         {items.map((item) => {
           return <MenuItem key={item.id} menuItemData={item} />;

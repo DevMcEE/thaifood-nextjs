@@ -6,7 +6,7 @@ module.exports = {
   poweredByHeader: false,
   i18n,
   env: {
-    apiUrl: 'https://api.milicity.eu',
+    apiUrl: process.env.NODE_ENV === 'production' ? 'https://api.milicity.eu' : 'http://localhost:5003',
     localApiUrl: 'http://localhost:5003' ,
   },
 };
