@@ -54,3 +54,12 @@
 .highlight-text{
   background-color: $primary-color
 }
+
+.button {
+  &-primary {
+    padding: 1rem;
+    border-radius: 6px;
+    color: $primary-color;
+    background-color: #dfa02311;
+  }
+}
