@@ -27,7 +27,7 @@ export function MainPageContainer() {
               </div>
               <div className="content-block__content-text">
                 <p className="mb-1">At Taiwaya, we&apos;ve taken the best flavors from the Northeast of Thailand, and added a touch of Japanese- inspired seasoning to create our unique <strong>Taiwaya</strong> style cuisine</p>
-                <p className="content-block__content-text-paragraph content-block__content-text-paragraph--centered"><Link className="button-primary" style={{textDecoration: 'underline'}} href="/menu">See the full menu</Link></p>
+                <p className="content-block__content-text-paragraph content-block__content-text-paragraph--centered"><Link className="button-primary" href="/menu">SEE MENU</Link></p>
               </div>
             </div>
           </div>
