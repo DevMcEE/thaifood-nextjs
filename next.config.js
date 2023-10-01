@@ -8,7 +8,7 @@ module.exports = {
   env: {
     apiUrl: process.env.NODE_ENV === 'production' ? 'https://api.milicity.eu' : 'http://localhost:5003',
     localApiUrl: 'http://localhost:5003',
-    cdnName: 'dt7jbtkxo',
+    cdnName: process.env.NODE_ENV === 'production' ? 'dqpl2cxxa' : 'dt7jbtkxo',
     defaultImageId: 'no_image_placeholder',
   },
 };
