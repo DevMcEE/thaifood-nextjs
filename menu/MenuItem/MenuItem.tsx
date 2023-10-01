@@ -39,7 +39,7 @@ export const MenuItem = ({ menuItemData }: MenuItemProps): JSX.Element => {
       <div className="item-details">
         <div className="item-image">
           <AdvancedImage cldImg={cdnImg}  style={{ display: 'none' }}  plugins={[ lazyload(), placeholder({ mode: 'blur'}) ]}/>
-          <AdvancedImage cldImg={cdnThumbnail}  style={{ display: 'block' }}   plugins={[ lazyload(), placeholder({ mode: 'blur'}) ]}/>
+          <AdvancedImage cldImg={cdnThumbnail}  style={{ display: 'none' }}   plugins={[ lazyload(), placeholder({ mode: 'blur'}) ]}/>
         </div>
         <div className="item-name" dangerouslySetInnerHTML={{ __html: name }} />
         <div className="item-spacer"></div>
