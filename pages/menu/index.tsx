@@ -69,7 +69,7 @@ export default function Menu({ menuList }: MenuPageProps) {
     });
 
     return [menuGroupItemsList, menuGroups];
-  }, [searchText]);
+  }, [searchText, menu]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {

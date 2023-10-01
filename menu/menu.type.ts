@@ -7,6 +7,7 @@ export interface IMenuItem {
   price: number;
   code: string;
   groupId: string;
+  image: string;
 }
 export interface IMenuGroupBase {
   id: string;
