@@ -12,14 +12,14 @@ export const useMenuFilter = (menuList: IMenuGroup[]) => {
     let filteredMenu = menuList.map((menuGroup) => {
       const { items } = menuGroup;
       let filteredItems = items
-        .filter(({ name, description }) => name.toLowerCase().includes(searchTextLowerCased) || description.toLowerCase().includes(searchTextLowerCased))
         .map(item => ({
           ...item,
           name: highlightText(item.name, searchText),
-          description: highlightText(item.description, searchText)
+          description: highlightText(item.description, searchText),
+          hidden: (!item.name.toLowerCase().includes(searchTextLowerCased) && !item.description.toLowerCase().includes(searchTextLowerCased))
         }));
-      return { ...menuGroup, items: filteredItems };
-    }).filter(group => group.items.length);
+      return { ...menuGroup, hidden: !filteredItems.filter(item => !item.hidden).length, items: filteredItems };
+    });
 
     setSearchText(searchText);
     setMenu(filteredMenu);

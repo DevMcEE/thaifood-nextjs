@@ -6,22 +6,35 @@ import { IMenuGroup, IMenuNavGroup } from '../../menu/menu.type';
 import { MenuGroup } from '../../menu/MenuGroup';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { NavigationSideBar } from '../../menu/MenuNavigationSideBar';
+import { NavigationBar } from '../../menu/MenuNavigationBar';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRefStorage } from '../../hooks/useRefStorage';
 import { SearchBar } from '../../menu/SearchBar/SearchBar';
 import { useMenuFilter } from '../../menu/hooks/useMenuFilter';
 import { MenuPlaceHolder } from '../../menu/MenuPlaceHolder';
+import Image from 'next/image';
 
 export interface MenuPageProps {
   menuList: IMenuGroup[];
 }
 
+export const VIEW_MODE_TYPE = {
+  grid: 'grid',
+  list: 'list',
+} as const;
+
+type ViewModeType = typeof VIEW_MODE_TYPE[keyof typeof VIEW_MODE_TYPE];
+
 export default function Menu({ menuList }: MenuPageProps) {
   const { t } = useTranslation();
+  const { grid, list } = VIEW_MODE_TYPE;
   const [{ menu, searchText }, handleSearchText, clearSearch] = useMenuFilter(menuList);
-  const [isSmallScreenWidth, setIsSmallScreenWidth] = useState(false);
   const [activeGroupId, setActiveGroupId] = useState('');
+  const [viewMode, setViewMode] = useState<ViewModeType>(grid);
+  
+  const toggleViewMode = () => {
+    setViewMode((prevViewMode) => (prevViewMode === grid ? list : grid));
+  };
 
   const { refCollection: menuGroupsRefs, addToRefs: addDivToRefs } = useRefStorage();
   const { refCollection: refLinks, addToRefs: addLinksToRefs } = useRefStorage();
@@ -37,18 +50,21 @@ export default function Menu({ menuList }: MenuPageProps) {
     }
   };
 
-  const updateScreenWidth = () => {
-    const minScreenWidth: number = 768;
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
 
-    setIsSmallScreenWidth(() => window.innerWidth < minScreenWidth);
-  };
+    document.body.scroll({ top: 0 });
+
+  }, []);
+
 
   const [menuGroupItemsList, menuGroups] = useMemo(() => {
     const menuGroups: IMenuNavGroup[] = [];
 
-    menuList.map((menuGroupData) => {
-      const { id, name, description } = menuGroupData;
-
+    const menuGroupItemsList = menu.map((menuGroupData) => {
+      const { id, name, description, hidden } = menuGroupData;
       const groupAnchor = name.toLowerCase().replaceAll(/\s+/g, '-');
 
       menuGroups.push({
@@ -56,33 +72,15 @@ export default function Menu({ menuList }: MenuPageProps) {
         name,
         description,
         href: groupAnchor,
-        isDisabled: !menu.find(group => group.id === id),
+        isDisabled: hidden,
       });
-    });
 
-    const menuGroupItemsList = menu.map((menuGroupData) => {
-      const { id, name } = menuGroupData;
-
-      const groupAnchor = name.toLowerCase().replaceAll(/\s+/g, '-');
-
-      return (<MenuGroup addToRefs={addDivToRefs} href={groupAnchor} menuGroupData={menuGroupData} key={`${id}-menu-group`} />);
+      return (<MenuGroup hidden={hidden} addToRefs={addDivToRefs} href={groupAnchor} viewMode={viewMode} menuGroupData={menuGroupData} key={`${id}-menu-group`} />);
     });
 
     return [menuGroupItemsList, menuGroups];
-  }, [searchText, menu]);
+  }, [menu, addDivToRefs, viewMode]);
 
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    updateScreenWidth();
-    document.body.scroll({ top: 0 });
-
-    window.addEventListener('resize', updateScreenWidth);
-    return () => window.removeEventListener('resize', updateScreenWidth);
-    ;
-  }, []);
 
   const handleClick = (id: string, event: SyntheticEvent<HTMLAnchorElement>) => {
     event.preventDefault();
@@ -92,16 +90,14 @@ export default function Menu({ menuList }: MenuPageProps) {
     const menuGroup = menuGroups.find(({ id: menuGroupId }) => menuGroupId === id);
     const menuGroupHref = menuGroupsRefs.current.find((item) => item.id === menuGroup.href);
 
-    const offset = isSmallScreenWidth ? 140 : 70;
+    const offset = 135;
 
     document.body.scrollTo({
       top: menuGroupHref.offsetTop - offset,
       behavior: 'smooth',
     });
 
-    if (isSmallScreenWidth) {
-      scrollToLeft(menuGroup.name);
-    }
+    scrollToLeft(menuGroup.id);
   };
 
   const observerCallback = useCallback((entries: IntersectionObserverEntry[]) => {
@@ -112,24 +108,30 @@ export default function Menu({ menuList }: MenuPageProps) {
 
       if (isIntersecting) {
         setActiveGroupId(() => groupId);
-        if (isSmallScreenWidth) {
-          scrollToLeft(groupName);
-        }
+        scrollToLeft(groupName);
       }
     }
     );
-  }, [isSmallScreenWidth]);
+  }, []);
+
 
   useEffect(() => {
     if (typeof window === 'undefined') {
       return;
     }
 
-    const observerOptions: IntersectionObserverInit = {
-      rootMargin: '0% 0% -85% 0%',
-      threshold: 0.1
+    const viewObserverOptions = {
+      list: {
+        rootMargin: '-20% 0% -80% 0%',
+        threshold: 0
+      },
+      grid: {
+        rootMargin: '5% 0% -50% 0%',
+        threshold: 0.1,
+      }
     };
 
+    const observerOptions: IntersectionObserverInit = viewObserverOptions[viewMode];
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
     menuGroupsRefs.current.forEach((group) => {
@@ -139,7 +141,12 @@ export default function Menu({ menuList }: MenuPageProps) {
     return () => {
       observer.disconnect();
     };
-  }, [menuGroupsRefs, isSmallScreenWidth, menu, searchText]);
+  }, [menuGroupsRefs, menu, searchText, viewMode, observerCallback]);
+
+  console.log({refLinks});
+  console.log({menuGroupsRefs});
+
+  const url = useMemo(() => `/assets/images/icons/${viewMode === grid ? 'list' : 'grid'}.svg`, [grid, viewMode]);
 
   return (
     <>
@@ -152,13 +159,18 @@ export default function Menu({ menuList }: MenuPageProps) {
               <h2>{t('menu.title')}</h2>
             </div>
             <div className="menu-content-block__menu-list">
-              { menuList?.length ? 
-              <div className="menu-content-block__navigation">
-                <SearchBar clearSearch={clearSearch} storedSearch={searchText} handleSearchText={handleSearchText} />
-                <NavigationSideBar activeId={activeGroupId} addToRefs={addLinksToRefs} menuGroups={menuGroups} setActiveId={handleClick} />
-              </div> : <></>}
+              {menuList?.length ?
+                <div className="menu-content-block__navigation">
+                  <div className="menu-content-block__search-bar">
+                    <SearchBar clearSearch={clearSearch} storedSearch={searchText} handleSearchText={handleSearchText} />
+                    <button className="view-mode-toggle-button" onClick={toggleViewMode}>
+                      <Image alt="toggle view button" src={url} width={24} height={24}></Image>
+                    </button>
+                  </div>
+                  <NavigationBar activeId={activeGroupId} addToRefs={addLinksToRefs} menuGroups={menuGroups} setActiveId={handleClick} />
+                </div> : <></>}
               <div className="menu-content-block__menu-content">{
-                menu.length
+                menu.find(group => !group.hidden)
                   ? menuGroupItemsList
                   : <MenuPlaceHolder clearSearch={clearSearch} searchText={searchText} />
               }
@@ -171,7 +183,6 @@ export default function Menu({ menuList }: MenuPageProps) {
     </>
   );
 }
-
 
 export const getServerSideProps: GetServerSideProps<MenuPageProps> = async (context) => {
   let data: IMenuGroup[] = [];

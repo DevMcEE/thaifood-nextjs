@@ -1,13 +1,21 @@
-.nav-side-bar {
+.nav-bar {
   display: flex;
   white-space: nowrap;
   position: sticky;
   top: 0;
   margin: 0 2rem;
   padding: 1rem 0;
-  flex-direction: column;
+  overflow: hidden;
+  margin: 0;
+  flex-direction: row;
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &__list {
+    display: flex;
     list-style: none;
 
     &-item {
@@ -19,30 +27,13 @@
         background-color: #dfa02311;
         border-radius: 1rem;
       }
-      
+
       &-disabled {
         color: grey;
         background-color: light-grey;
         pointer-events: none;
         cursor: default;
       }
-    }
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .nav-side-bar {
-    display: flex;
-    overflow: hidden;
-    margin: 0;
-    flex-direction: row;
-    overflow-x: scroll;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    &__list {
-      display: flex;
     }
   }
 }

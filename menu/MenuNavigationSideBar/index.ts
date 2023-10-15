@@ -1,1 +1,0 @@
-export { MenuNavigationSideBar as NavigationSideBar } from './MenuNavigationSideBar';

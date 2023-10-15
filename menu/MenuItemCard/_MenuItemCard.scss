@@ -1,0 +1,40 @@
+.menu-item-card {
+  display: flex;
+  border-radius: 16px;
+  padding: 12px;
+
+  &--hidden {
+    display: none;
+  }
+}
+
+.card-item {
+  &-details {
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  &-info-container {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &-price {
+    font-weight: bolder;
+  }
+
+  &-description {
+    font-size: 12px;
+    color: gray;
+    padding-right: 5px;
+  }
+}
+
+.image-cdn-thumbnail {
+  height: 100%;
+}
