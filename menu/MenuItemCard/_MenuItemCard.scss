@@ -33,6 +33,13 @@
     color: gray;
     padding-right: 5px;
   }
+  &-image {
+
+    &__placeholder {
+      border: 2px solid rgba(178, 178, 178, 50%);
+      border-radius: 10px;
+    }
+  }
 }
 
 .image-cdn-thumbnail {

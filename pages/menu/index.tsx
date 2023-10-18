@@ -143,9 +143,6 @@ export default function Menu({ menuList }: MenuPageProps) {
     };
   }, [menuGroupsRefs, menu, searchText, viewMode, observerCallback]);
 
-  console.log({refLinks});
-  console.log({menuGroupsRefs});
-
   const url = useMemo(() => `/assets/images/icons/${viewMode === grid ? 'list' : 'grid'}.svg`, [grid, viewMode]);
 
   return (
