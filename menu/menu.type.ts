@@ -17,6 +17,7 @@ export interface IMenuGroupBase {
 
 export interface IMenuGroup extends IMenuGroupBase {
   items: IMenuItem[];
+  hidden: boolean;
 }
 
 export interface IMenuNavGroup extends IMenuGroupBase {
