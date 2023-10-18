@@ -97,7 +97,7 @@ export default function Menu({ menuList }: MenuPageProps) {
     });
 
     return [menuGroupItemsList, menuGroups];
-  }, [menu, addDivToRefs, viewMode]);
+  }, [menu, addDivToRefs, viewMode, cdn]);
 
 
   const handleClick = (id: string, event: SyntheticEvent<HTMLAnchorElement>) => {
