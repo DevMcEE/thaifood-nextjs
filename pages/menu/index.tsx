@@ -13,6 +13,7 @@ import { SearchBar } from '../../menu/SearchBar/SearchBar';
 import { useMenuFilter } from '../../menu/hooks/useMenuFilter';
 import { MenuPlaceHolder } from '../../menu/MenuPlaceHolder';
 import Image from 'next/image';
+import { Cloudinary } from '@cloudinary/url-gen';
 
 export interface MenuPageProps {
   menuList: IMenuGroup[];
@@ -31,7 +32,7 @@ export default function Menu({ menuList }: MenuPageProps) {
   const [{ menu, searchText }, handleSearchText, clearSearch] = useMenuFilter(menuList);
   const [activeGroupId, setActiveGroupId] = useState('');
   const [viewMode, setViewMode] = useState<ViewModeType>(grid);
-  
+
   const toggleViewMode = () => {
     setViewMode((prevViewMode) => (prevViewMode === grid ? list : grid));
   };
@@ -59,6 +60,13 @@ export default function Menu({ menuList }: MenuPageProps) {
 
   }, []);
 
+  const cdn = useMemo(() => {
+    return new Cloudinary({
+      cloud: {
+        cloudName: process.env.cdnName,
+      }
+    });
+  }, []);
 
   const [menuGroupItemsList, menuGroups] = useMemo(() => {
     const menuGroups: IMenuNavGroup[] = [];
@@ -75,7 +83,17 @@ export default function Menu({ menuList }: MenuPageProps) {
         isDisabled: hidden,
       });
 
-      return (<MenuGroup hidden={hidden} addToRefs={addDivToRefs} href={groupAnchor} viewMode={viewMode} menuGroupData={menuGroupData} key={`${id}-menu-group`} />);
+      return (
+        <MenuGroup
+          hidden={hidden} 
+          addToRefs={addDivToRefs} 
+          href={groupAnchor} 
+          viewMode={viewMode} 
+          menuGroupData={menuGroupData} 
+          key={`${id}-menu-group`}
+          cdn={cdn}
+        />
+      );
     });
 
     return [menuGroupItemsList, menuGroups];

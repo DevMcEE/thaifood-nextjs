@@ -5,25 +5,17 @@ import { thumbnail } from '@cloudinary/url-gen/actions/resize';
 import { format, quality } from '@cloudinary/url-gen/actions/delivery';
 import { auto } from '@cloudinary/url-gen/qualifiers/quality';
 import { byRadius } from '@cloudinary/url-gen/actions/roundCorners';
-import { artisticFilter, grayscale } from '@cloudinary/url-gen/actions/effect';
+import { grayscale } from '@cloudinary/url-gen/actions/effect';
 import classnames from 'classnames';
-import { useMemo } from 'react';
 import { opacity } from '@cloudinary/url-gen/actions/adjust';
 
 interface MenuItemCardProps {
   menuItemData: IMenuItem;
+  cdn: Cloudinary;
 }
 
-export const MenuItemCard = ({ menuItemData }: MenuItemCardProps): JSX.Element => {
+export const MenuItemCard = ({ menuItemData, cdn }: MenuItemCardProps): JSX.Element => {
   const { name, price, description, image, hidden } = menuItemData;
-
-  const cdn = useMemo(() => {
-    return new Cloudinary({
-      cloud: {
-        cloudName: process.env.cdnName,
-      }
-    });
-  }, []);
 
   const cdnThumbnail = cdn
     .image(image || 'no_image_placeholder')
