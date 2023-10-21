@@ -42,7 +42,7 @@ export const FooterBlock = () => {
           </div>
           <div>
             <a
-              href="https://wolt.com/et/est/tallinn/restaurant/thai-food-thai-cook"
+              href="https://wolt.com/et/est/tallinn/restaurant/taiwaya"
               target="_blank"
               rel="noreferrer"
               className="page-footer__block-delivery-wolt-link"
