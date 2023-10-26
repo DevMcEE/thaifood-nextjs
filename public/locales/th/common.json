@@ -27,5 +27,10 @@
   "search": {
     "placeholder": "ค้นหาในเมนู",
     "clearSearchButton": "ค้นหาที่ชัดเจน"
-  }
+  },
+  "tourist-groups": {
+    "title": "Special offer for Tourist Groups",
+    "offer": "<p>For groups more than 10 persons,<b> 2 sets are for FREE</b>! Every set includes water. </p><p class='mb-1'>Taiwaya restaurant is able to serve a group max. of 35 people at a time</p><p>Booking via phone <a href='tel:+37258805056'>+37258805056</a> (at least 30 minutes before coming)  </p><p>Booking via email <a href='mailto:info@thaifood.ee'>info@thaifood.ee</a> or Facebook (at least 3-4 hours in advance) </p>",
+    "set1": "<h3 class='content-block__content-text-header'>Set N1 - 16 €</h3><p>* Laib pork - spicy (optional) pork salad</p><p>* Tom yum Gai - spicy coconut milk soup with chicken</p><p>* jasmine rice</p>"
+ }
 }

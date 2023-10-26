@@ -27,5 +27,11 @@
   "search": {
     "placeholder": "Otsi menüüs",
     "clearSearchButton": "Tühjenda otsing"
+  },
+  "tourist-groups": {
+    "title": "Eripakkumine turismigruppidele",
+    "offer": "<p>Üle 10-liikmelistele gruppidele<b> 2 komplekti on TASUTA</b>!</p><p class='mb-1'>Taiwaya restoran on korraga saab teenindada gruppi kuni 35 inimest</p><p>Broneerimine telefoni teel <a href='tel:+37258805056'>+37258805056</a> (vähemalt 30 minutit enne tulekut) </p><p>Broneerimine meili <a href='mailto:info@thaifood.ee'>info@thaifood.ee</a> kaudu või Facebooki teel (vähemalt 3-4 tundi ette) </p>",
+    "set1":"<h3 class='content-block__content-text-header'>Komplekt N1 – 16 €</h3><p>* Laib sealiha – vürtsikas (valikuline) sealihasalat</p><p>* Tom yum Gai – vürtsikas kookospähkel piimasupp kanalihaga</p><p>* jasmiiniriis</p><p>+ vesi</p>",
+    "set2":"<h3 class='content-block__content-text-header'>Komplekt N2 – 22 €</h3><p>* <b>Larb Beef </b> – vürtsikas veiseliha salat </p><p>*<b >Tom Jum Goong </b>- Tai rahvuslik krevetisupp </p><p>* Praetud köögiviljad austrikastmega </p><p>* jasmiini riis </p><p>* Saago magustoit kookospiima ja melon </p><p>+ vesi</p>"
   }
 }

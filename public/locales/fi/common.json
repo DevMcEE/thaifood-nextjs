@@ -27,5 +27,12 @@
     "search": {
       "placeholder": "Hae valikosta",
       "clearSearchButton": "Tyhjennä haku"
+    },
+    "tourist-groups": {
+      "title": "Erikoistarjous turistiryhmille",
+      "offer": "<p>Yli 10 hengen ryhmille<b> 2 settiä ILMAISEKSI</b>! </p><p class='mb-1'>Taiwaya-ravintola on pystyy palvelemaan enintään 35 hengen ryhmää kerrallaan</p><p>Varaukset puhelimitse <a href='tel:+37258805056'>+37258805056</a> (vähintään 30 minuuttia ennen saapumista) </p><p>Varaus sähköpostitse <a href='mailto:info@thaifood.ee'>info@thaifood.ee</a> tai Facebookissa (vähintään 3-4 tuntia etukäteen) </p>",
+      "set1":"<h3 class='content-block__content-text-header'>Setti N1 - 16 €</h3><p>* Laib porsaan - mausteinen (valinnainen) sianlihasalaatti</p><p>* Tom yum Gai - mausteinen kookos maitokeitto kanan kera</p><p>* jasmiiniriisiä</p><p>+ vesi</p>",
+      "set2":"<h3 class='content-block__content-text-header'>Setti N2 - 22 €</h3><p>* <b>Larb Beef </b> - mausteinen naudanlihasalaatti </p><p>*<b >Tom Jum Goong </b>- kansallinen thaimaalainen katkarapukeitto </p><p>* Paistettuja vihanneksia osterikastikkeella </p><p>* jasmiiniriisiä </p><p>* Saago-jälkiruoka kookosmaidolla ja meloni </p><p>+ vesi</p>"
+   
     }
   }

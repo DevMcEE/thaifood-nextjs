@@ -1,6 +1,9 @@
 import Head from 'next/head';
 
-export function Meta() {
+interface Props {
+  description?: string;
+}
+export function Meta({ description }: Props) {
   return (
     <Head>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,7 +20,7 @@ export function Meta() {
       />
       <meta
         name="description"
-        content="Taiwaya"
+        content={ description || 'Taiwaya'}
       />
       {/* <meta property="og:image" content={HOME_OG_IMAGE_URL} /> */}
 

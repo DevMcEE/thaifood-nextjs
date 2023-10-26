@@ -1,4 +1,5 @@
 .main-page__content {
+  margin-top: 2rem;
   & .content-block {
     &:nth-child(even) .content-block__content{
       display: flex;
@@ -30,6 +31,7 @@
           display: flex;
           flex-direction: column;
           justify-content: center;
+          padding-left: 3rem!important;
         }
       }
       &-text {
