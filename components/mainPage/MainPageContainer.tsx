@@ -67,10 +67,10 @@ export function MainPageContainer({ cdn }: Props) {
                 <p><b>Atikhun Kakaew</b> is the leader behind Taiwaya, a brand-new Thai restaurant in the very center of Tallinn.</p>
                 <p>Chef Atikhun spanning nearly a decade as a chef in Estonia, including a prestigious stint as a master chef at the 5-star Radisson Collection Hotel in Tallinn.</p>
                 <p>
-                  His inspiration for Taiwaya grew from the deep roots of his family's heritage in North and Northeastern Thailand. His goal is to introduce the world to the incredible flavors of Northern and E-san cuisine.
-                  What's more, he's added a dash of Japanese culinary finesse, personally loving the art of Japanese cooking.
+                  His inspiration for Taiwaya grew from the deep roots of his family`&apos;`s heritage in North and Northeastern Thailand. His goal is to introduce the world to the incredible flavors of Northern and E-san cuisine.
+                  What`&apos;`s more, he`&apos;`s added a dash of Japanese culinary finesse, personally loving the art of Japanese cooking.
                   With a background from his home cuisine, he creates a gastronomic medley that not only tastes amazing but looks fantastic too.
-                  Although the primary ingredients are Thai, there's a sprinkling of other Asian elements in some dishes.</p>
+                  Although the primary ingredients are Thai, there`&apos;`s a sprinkling of other Asian elements in some dishes.</p>
                 <p className="content-block__content-text-paragraph content-block__content-text-paragraph--centered"><Link className="button-primary" href="/menu">SEE MENU</Link></p>
               </div>
             </div>
