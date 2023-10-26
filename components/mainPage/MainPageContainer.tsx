@@ -48,18 +48,28 @@ export function MainPageContainer({ cdn }: Props) {
         <main className="content-container main-page__content">
           <div className="content-block">
             <div className="content-block__title">
-              <h2>Lunch offer</h2>
+              <h2>Special offers</h2>
             </div>
             <div className="content-block__content">
               <div className="content-block__content-image-container">
                 <AdvancedImage className="content-block__content-image" cldImg={cousineImage} plugins={[lazyload(), placeholder({ mode: 'blur' })]} />
               </div>
               <div className="content-block__content-text">
+              <p>Taiwaya is a flavor fusion adventure, serving up authentic Northern and E-san Thai cuisine with a delightful twist of Japanese influence in every dish.</p>
+
+              <h3 className="content-block__content-text-header">Lunch menu</h3>
                 <p>On every Tuesday - Friday at 12:00 - 14:00</p>
                 <p><b>Pad Thai Chicken</b> - 8.90€</p>
                 <p><b>Pad Kra Pao Chicken</b> - 8.90€</p>
-
-                <p>Taiwaya is a flavor fusion adventure, serving up authentic Northern and E-san Thai cuisine with a delightful twist of Japanese influence in every dish.</p>
+                <br />
+                <h3 className="content-block__content-text-header mb-1">Tourist Groups offer</h3>
+                <p>Our restaurant offers special menu for tourist groups. </p>
+                <p>Feel free to contact us for special events and bookings!</p><br />
+                <p className="content-block__content-text-paragraph content-block__content-text-paragraph--centered  mb-1">
+                  <Link className="button-primary" href="/tourist-groups">SEE OFFER</Link>
+                </p>
+           
+              
               </div>
 
             </div>
