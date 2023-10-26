@@ -1,7 +1,5 @@
 import { Meta } from '../Meta';
 import { HeaderHeroBlock } from './HeaderHeroBlock';
-import Image from 'next/image';
-import food from '../../public/assets/images/landing/combo_thai_food_thai_cook.jpg';
 import Link from 'next/link';
 import { FooterBlock } from '../FooterBlock';
 import { Cloudinary } from '@cloudinary/url-gen';
