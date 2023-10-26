@@ -2,14 +2,23 @@ import Head from 'next/head';
 import { MainPageContainer } from '../components/mainPage/MainPageContainer';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useMemo } from 'react';
+import { Cloudinary } from '@cloudinary/url-gen';
 
 export default function Home() {
+  const cdn = useMemo(() => {
+    return new Cloudinary({
+      cloud: {
+        cloudName: process.env.cdnName,
+      }
+    });
+  }, []);
   return (
     <>
       <Head>
         <title>Taiwaya</title>
       </Head>
-      <MainPageContainer />
+      <MainPageContainer cdn={cdn} />
     </>
   );
 }

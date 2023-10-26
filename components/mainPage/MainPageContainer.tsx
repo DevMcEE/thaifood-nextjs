@@ -4,8 +4,34 @@ import Image from 'next/image';
 import food from '../../public/assets/images/landing/combo_thai_food_thai_cook.jpg';
 import Link from 'next/link';
 import { FooterBlock } from '../FooterBlock';
+import { Cloudinary } from '@cloudinary/url-gen';
+import { format, quality } from '@cloudinary/url-gen/actions/delivery';
+import { auto } from '@cloudinary/url-gen/qualifiers/quality';
+import { byRadius } from '@cloudinary/url-gen/actions/roundCorners';
+import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
+import { crop } from '@cloudinary/url-gen/actions/resize';
+import { ar1X1 } from '@cloudinary/url-gen/qualifiers/aspectRatio';
+import { contrast, improve } from '@cloudinary/url-gen/actions/adjust';
+import { useMemo } from 'react';
 
-export function MainPageContainer() {
+interface Props {
+  cdn: Cloudinary;
+}
+
+const prepareImage = (publicId: string, cdn: Cloudinary) => cdn.image(publicId)
+  .adjust(improve().mode('indoor'))
+  .delivery(quality(auto()))
+  .delivery(format(auto()))
+  .roundCorners(byRadius(10));
+
+export function MainPageContainer({ cdn }: Props) {
+  const cousineImage = useMemo(() => prepareImage('taiwaya-cousine', cdn).resize(
+    crop()
+      .aspectRatio(ar1X1())
+  ), [cdn]);
+
+  const chefImage = useMemo(() => prepareImage('taiwaya-main-chef', cdn), [cdn]);
+
   return (
     <>
       <Meta />
@@ -18,15 +44,33 @@ export function MainPageContainer() {
               <h2>Cuisine</h2>
             </div>
             <div className="content-block__content">
+
+              <div className="content-block__content-text">
+                <p className="mb-1">Taiwaya is a flavor fusion adventure, serving up authentic Northern and E-san Thai cuisine with a delightful twist of Japanese influence in every dish.</p>
+                <p className="content-block__content-text-paragraph content-block__content-text-paragraph--centered"><Link className="button-primary" href="/menu">SEE MENU</Link></p>
+              </div>
               <div className="content-block__content-image-container">
-                <Image
-                  className="content-block__content-image"
-                  src={food}
-                  alt="Thai Food"
-                />
+                <AdvancedImage className="content-block__content-image" cldImg={cousineImage} plugins={[lazyload(), placeholder({ mode: 'blur' })]} />
+              </div>
+            </div>
+          </div>
+          <div className="content-block">
+            <div className="content-block__title">
+              <h2>About</h2>
+            </div>
+            <div className="content-block__content">
+              <div className="content-block__content-image-container">
+
+                <AdvancedImage className="content-block__content-image" cldImg={chefImage} plugins={[lazyload(), placeholder({ mode: 'blur' })]} />
               </div>
               <div className="content-block__content-text">
-                <p className="mb-1">At Taiwaya, we&apos;ve taken the best flavors from the Northeast of Thailand, and added a touch of Japanese- inspired seasoning to create our unique <strong>Taiwaya</strong> style cuisine</p>
+                <p><b>Atikhun Kakaew</b> is the leader behind Taiwaya, a brand-new Thai restaurant in the very center of Tallinn.</p>
+                <p>Chef Atikhun spanning nearly a decade as a chef in Estonia, including a prestigious stint as a master chef at the 5-star Radisson Collection Hotel in Tallinn.</p>
+                <p>
+                  His inspiration for Taiwaya grew from the deep roots of his family's heritage in North and Northeastern Thailand. His goal is to introduce the world to the incredible flavors of Northern and E-san cuisine.
+                  What's more, he's added a dash of Japanese culinary finesse, personally loving the art of Japanese cooking.
+                  With a background from his home cuisine, he creates a gastronomic medley that not only tastes amazing but looks fantastic too.
+                  Although the primary ingredients are Thai, there's a sprinkling of other Asian elements in some dishes.</p>
                 <p className="content-block__content-text-paragraph content-block__content-text-paragraph--centered"><Link className="button-primary" href="/menu">SEE MENU</Link></p>
               </div>
             </div>
