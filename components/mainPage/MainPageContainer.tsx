@@ -61,6 +61,8 @@ export function MainPageContainer({ cdn }: Props) {
                 <p>On every Tuesday - Friday at 12:00 - 14:00</p>
                 <p><b>Pad Thai Chicken</b> - 8.90€</p>
                 <p><b>Pad Kra Pao Chicken</b> - 8.90€</p>
+                <p><b> Green curry chicken</b> - 8.90€</p>
+                <p><b>Khao Soi Chicken.</b> - 8.90€</p>
                 <br />
                 <h3 className="content-block__content-text-header mb-1">Tourist Groups offer</h3>
                 <p>Our restaurant offers special menu for tourist groups. </p>
