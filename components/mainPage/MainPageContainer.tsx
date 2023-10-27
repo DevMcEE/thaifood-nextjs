@@ -65,9 +65,9 @@ export function MainPageContainer({ cdn }: Props) {
                 <p><b>Khao Soi Chicken.</b> - 8.90€</p>
                 <br />
                 <h3 className="content-block__content-text-header mb-1">Tourist Groups offer</h3>
-                <p>Our restaurant offers special menu for tourist groups. </p>
-                <p>Feel free to contact us for special events and bookings!</p><br />
-                <p className="content-block__content-text-paragraph content-block__content-text-paragraph--centered  mb-1">
+                <p className="mb-1">Our restaurant offers special menu for tourist groups.
+                Feel free to contact us for special events and bookings!</p><br />
+                <p className="content-block__content-text-paragraph content-block__content-text-paragraph--centered  ">
                   <Link className="button-primary" href="/tourist-groups">SEE OFFER</Link>
                 </p>
            
