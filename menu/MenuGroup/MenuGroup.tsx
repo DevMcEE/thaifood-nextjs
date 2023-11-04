@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { IMenuGroup } from '../menu.type';
+import { IMenuGroup, IMenuItem } from '../menu.type';
 import { MenuItem } from '../MenuItem';
 import { useMemo } from 'react';
 import { MenuItemCard } from '../MenuItemCard';
@@ -13,16 +13,17 @@ interface MenuGroupProps {
   hidden: boolean;
   addToRefs: (element: HTMLElement) => void;
   cdn: Cloudinary;
+  handleClick: (item:IMenuItem) => void;
 }
 
-export const MenuGroup = ({ menuGroupData, addToRefs, href, viewMode, hidden, cdn }: MenuGroupProps): JSX.Element => {
+export const MenuGroup = ({ menuGroupData, addToRefs, href, viewMode, hidden, cdn, handleClick }: MenuGroupProps): JSX.Element => {
   const { name, items, id, description } = menuGroupData;
   const { grid, list } = VIEW_MODE_TYPE;
 
   const menuView = useMemo(() => {
     const menuView = items.map(item => {
       if (viewMode === grid) {
-        return (<MenuItemCard key={item.id} cdn={cdn} menuItemData={item} />);
+        return (<MenuItemCard key={item.id} cdn={cdn} menuItemData={item} handleClick={handleClick} />);
       } else {
         return (<MenuItem key={item.id} menuItemData={item} />);
       }

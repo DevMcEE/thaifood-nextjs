@@ -1,11 +1,33 @@
 .menu-item-card {
   display: flex;
-  border-radius: 16px;
   padding: 12px;
+  border-radius: 16px;
 
   &--hidden {
     display: none;
   }
+
+  &--modal-view {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  &--standard-view {
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.01);
+    }
+
+    @media (min-width: 768px) {
+      &:hover {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+  }
+
 }
 
 .card-item {
@@ -17,6 +39,14 @@
     align-items: baseline;
   }
 
+  &-name {
+    font-size: 1rem;
+
+    &--modal-view {
+      font-size: larger;
+    }
+  }
+
   &-info-container {
     display: flex;
     flex: 1 1 0%;
@@ -25,7 +55,12 @@
   }
 
   &-price {
+    margin-top: 1rem;
     font-weight: bolder;
+
+    &--modal-view {
+      margin: 1rem 0;
+    }
   }
 
   &-description {
@@ -33,15 +68,102 @@
     color: gray;
     padding-right: 5px;
   }
+
   &-image {
+    &--modal-view {
+      padding-bottom: 59%;
+      height: 0;
+      width: 600px;
+      position: relative;
+    }
 
     &__placeholder {
-      border: 3px solid rgb(217 217 217);
-      border-radius: 10px;
+      &--modal-view {
+        padding-top: 1rem;
+        border: none;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+      }
     }
   }
 }
 
-.image-cdn-thumbnail {
-  height: 100%;
+
+
+.card-item-image__placeholder--modal-view.card-item-image--modal-view {
+  border-radius: 10px 10px 0 0;
+  padding-bottom: calc(59% - 2rem);
+  margin-bottom: 1rem;
+  background-color: rgba(211, 211, 211, 0.2);
+}
+
+
+.image-cdn {
+  mix-blend-mode: multiply;
+
+  &--standard-view {
+    height: 100%;
+    width: auto;
+  }
+
+  &--modal-view {
+    border-radius: 10px 10px 0 0;
+    position: absolute;
+    height: auto;
+
+    &__placeholder {
+      height: auto;
+      width: 50%;
+    }
+  }
+
+  &__placeholder {
+    border: 0.185rem solid rgb(217 217 217);
+    border-radius: 10px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .card-item-image__placeholder--modal-view {
+    padding-top: 0.3rem;
+  }
+
+  .card-item-image__placeholder--modal-view.card-item-image--modal-view {
+    border-radius: 10px 10px 0 0;
+    padding-bottom: calc(59% - 1.5rem);
+    margin-bottom: 1rem;
+    background-color: rgba(211, 211, 211, 0.2);
+  }
+
+  .image-cdn--modal-view,
+  .card-item-image--modal-view,
+  .menu-item-card--modal-view {
+    width: 455px;
+  }
+}
+
+@media only screen and (max-width: 455px) {
+  .image-cdn__placeholder--modal-view {
+    width: 12.5rem;
+  }
+
+  .image-cdn--modal-view,
+  .card-item-image--modal-view,
+  .menu-item-card--modal-view {
+    width: 100vw;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+
+  .image-cdn--standard-view {
+    max-height: 90px;
+    width: auto;
+  }
+
+  .card-item-details {
+    display: block;
+  }
+
 }

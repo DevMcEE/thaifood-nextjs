@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next';
 import { FooterBlock } from '../../components/FooterBlock';
 import { Meta } from '../../components/Meta';
 import { Toolbar } from '../../components/Toolbar';
-import { IMenuGroup, IMenuNavGroup } from '../../menu/menu.type';
+import { IMenuGroup, IMenuItem, IMenuNavGroup } from '../../menu/menu.type';
 import { MenuGroup } from '../../menu/MenuGroup';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -14,6 +14,8 @@ import { useMenuFilter } from '../../menu/hooks/useMenuFilter';
 import { MenuPlaceHolder } from '../../menu/MenuPlaceHolder';
 import Image from 'next/image';
 import { Cloudinary } from '@cloudinary/url-gen';
+import { MenuItemCard } from '../../menu/MenuItemCard';
+import { Modal } from '../../components/Modal';
 
 export interface MenuPageProps {
   menuList: IMenuGroup[];
@@ -32,6 +34,7 @@ export default function Menu({ menuList }: MenuPageProps) {
   const [{ menu, searchText }, handleSearchText, clearSearch] = useMenuFilter(menuList);
   const [activeGroupId, setActiveGroupId] = useState('');
   const [viewMode, setViewMode] = useState<ViewModeType>(grid);
+  const [modalItemProps, setModalItemProps] = useState<IMenuItem | null>(null);
 
   const toggleViewMode = () => {
     setViewMode((prevViewMode) => (prevViewMode === grid ? list : grid));
@@ -92,6 +95,7 @@ export default function Menu({ menuList }: MenuPageProps) {
           menuGroupData={menuGroupData} 
           key={`${id}-menu-group`}
           cdn={cdn}
+          handleClick={setModalItemProps}
         />
       );
     });
@@ -144,8 +148,8 @@ export default function Menu({ menuList }: MenuPageProps) {
         threshold: 0
       },
       grid: {
-        rootMargin: '5% 0% -50% 0%',
-        threshold: 0.1,
+        rootMargin: '-5% 0% -80% 0%',
+        threshold: 0,
       }
     };
 
@@ -162,11 +166,14 @@ export default function Menu({ menuList }: MenuPageProps) {
   }, [menuGroupsRefs, menu, searchText, viewMode, observerCallback]);
 
   const url = useMemo(() => `/assets/images/icons/${viewMode === grid ? 'list' : 'grid'}.svg`, [grid, viewMode]);
+  
+  const handleClose = () => setModalItemProps(() => null);  
 
   return (
     <>
       <Meta />
       <Toolbar />
+      <Modal isOpen={!!modalItemProps} close={handleClose} isConstrained={!modalItemProps}><MenuItemCard isModal={!!modalItemProps} menuItemData={modalItemProps} cdn={cdn}/></Modal>
       <div className="menu-body-container">
         <main className="menu-content-container menu-page__content">
           <div className="menu-content-block">
@@ -220,3 +227,8 @@ export const getServerSideProps: GetServerSideProps<MenuPageProps> = async (cont
     }
   };
 };
+
+
+
+
+      
