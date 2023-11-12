@@ -6,7 +6,6 @@ import { WorkingTime } from '../../WorkingTime/WorkingTime';
 import { useContext, useEffect, useState } from 'react';
 import { IWorkingStatus } from '../mainPage.type';
 import { WorkingTimeContext } from '../../Providers';
-import workingTime from '../../../__mocks__/dataSets/workingTime';
 
 export const StatusIndicator = () => {
   const { t } = useTranslation();

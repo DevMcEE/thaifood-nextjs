@@ -4,7 +4,6 @@ import MUIModal from '@mui/material/Modal';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import classnames from 'classnames';
-import { useMemo } from 'react';
 
 interface IModalProps {
   isOpen: boolean,
@@ -15,13 +14,6 @@ interface IModalProps {
 }
 
 export const Modal = ({ isOpen, close, title, children, isConstrained = true }: IModalProps) => {
-  
-  const modalTitle = useMemo(() => {
-    if (title) return (
-      <Typography className="modal-content-title" variant="h5" component="h3">
-        {title}
-      </Typography>);
-  }, [title]);
 
   return (
     <MUIModal
@@ -33,7 +25,9 @@ export const Modal = ({ isOpen, close, title, children, isConstrained = true }: 
         <IconButton disableFocusRipple={true} className="modal-content-title__icon-button" onClick={close}>
           <CloseIcon />
         </IconButton>
-        {modalTitle}
+        <Typography className="modal-content-title" variant="h5" component="h3">
+          {title || ''}
+        </Typography>
         <Typography component="div" className="modal-content-description">
           {children}
         </Typography>

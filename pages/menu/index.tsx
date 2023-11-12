@@ -14,8 +14,8 @@ import { useMenuFilter } from '../../menu/hooks/useMenuFilter';
 import { MenuPlaceHolder } from '../../menu/MenuPlaceHolder';
 import Image from 'next/image';
 import { Cloudinary } from '@cloudinary/url-gen';
-import { MenuItemCard } from '../../menu/MenuItemCard';
 import { Modal } from '../../components/Modal';
+import { MenuItemCardModal } from '../../menu/MenuItemCardModal';
 
 export interface MenuPageProps {
   menuList: IMenuGroup[];
@@ -88,11 +88,11 @@ export default function Menu({ menuList }: MenuPageProps) {
 
       return (
         <MenuGroup
-          hidden={hidden} 
-          addToRefs={addDivToRefs} 
-          href={groupAnchor} 
-          viewMode={viewMode} 
-          menuGroupData={menuGroupData} 
+          hidden={hidden}
+          addToRefs={addDivToRefs}
+          href={groupAnchor}
+          viewMode={viewMode}
+          menuGroupData={menuGroupData}
           key={`${id}-menu-group`}
           cdn={cdn}
           handleClick={setModalItemProps}
@@ -136,7 +136,6 @@ export default function Menu({ menuList }: MenuPageProps) {
     );
   }, []);
 
-
   useEffect(() => {
     if (typeof window === 'undefined') {
       return;
@@ -166,14 +165,14 @@ export default function Menu({ menuList }: MenuPageProps) {
   }, [menuGroupsRefs, menu, searchText, viewMode, observerCallback]);
 
   const url = useMemo(() => `/assets/images/icons/${viewMode === grid ? 'list' : 'grid'}.svg`, [grid, viewMode]);
-  
-  const handleClose = () => setModalItemProps(() => null);  
+
+  const handleClose = () => setModalItemProps(() => null);
 
   return (
     <>
       <Meta />
       <Toolbar />
-      <Modal isOpen={!!modalItemProps} close={handleClose} isConstrained={!modalItemProps}><MenuItemCard isModal={!!modalItemProps} menuItemData={modalItemProps} cdn={cdn}/></Modal>
+      <Modal isOpen={!!modalItemProps} close={handleClose} isConstrained={!modalItemProps}><MenuItemCardModal menuItemData={modalItemProps} cdn={cdn} /></Modal>
       <div className="menu-body-container">
         <main className="menu-content-container menu-page__content">
           <div className="menu-content-block">
@@ -227,8 +226,3 @@ export const getServerSideProps: GetServerSideProps<MenuPageProps> = async (cont
     }
   };
 };
-
-
-
-
-      
