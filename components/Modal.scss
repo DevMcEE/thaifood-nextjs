@@ -1,25 +1,59 @@
-.modal-content{
+.modal-content {
+  position: relative;
   background-color: $primary-contrast-color;
   margin: 1rem;
-  width: 400px;
   padding: 22px;
 
+  &--constrained {
+    width: 400px;
+  }
+
+  &:focus {
+    outline: none;
+    outline-color: none;
+  }
+
+  &__item-card, &-description {
+    margin-top: 0;
+  }
+
+  &__item-card {
+    max-width: 600px;
+    border-radius: 10px;
+    padding: 0;
+  }
+
   &-title {
+    margin-bottom: 16px;
     font-size: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     &__icon-button {
-      transform: translateX(10px);
+      position: absolute;
+      top: 1rem;
+      right: 1.375rem;
     }
   }
-} 
-.modal-container{
-  display:flex;
+}
+
+.MuiButtonBase-root.MuiIconButton-root {
+  z-index: 120;
+  position: absolute;
+  background-color: rgba(226, 226, 226, 0.627);
+
+  &:hover{
+    background-color: rgba(226, 226, 226, 0.8);
+  }
+}
+
+.modal-container {
+  display: flex;
   align-items: center;
 }
-.MuiModal-root{
+
+.MuiModal-root {
   display: flex;
   justify-content: center;
   align-items: center;

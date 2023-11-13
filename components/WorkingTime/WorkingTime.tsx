@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from 'react';
 import { IWorkingTime } from '../mainPage/mainPage.type';
 import { WorkingTimeContext } from '../Providers';
 
-
 export const WorkingTime = (): JSX.Element => {
   const { workingTime } = useContext(WorkingTimeContext);
 

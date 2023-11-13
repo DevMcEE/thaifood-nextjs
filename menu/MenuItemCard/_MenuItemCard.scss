@@ -1,10 +1,22 @@
 .menu-item-card {
   display: flex;
-  border-radius: 16px;
   padding: 12px;
+  border-radius: 16px;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
 
   &--hidden {
     display: none;
+  }
+
+  &:hover {
+    transform: scale(1.01);
+  }
+
+  @media (min-width: 768px) {
+    &:hover {
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
   }
 }
 
@@ -17,6 +29,10 @@
     align-items: baseline;
   }
 
+  &-name {
+    font-size: 1rem;
+  }
+
   &-info-container {
     display: flex;
     flex: 1 1 0%;
@@ -25,6 +41,7 @@
   }
 
   &-price {
+    margin-top: 1rem;
     font-weight: bolder;
   }
 
@@ -33,15 +50,28 @@
     color: gray;
     padding-right: 5px;
   }
-  &-image {
+}
 
-    &__placeholder {
-      border: 3px solid rgb(217 217 217);
-      border-radius: 10px;
-    }
+.image-cdn {
+  mix-blend-mode: multiply;
+  height: 100%;
+  width: auto;
+
+  &__placeholder {
+    border: 0.185rem solid rgb(217 217 217);
+    border-radius: 10px;
   }
 }
 
-.image-cdn-thumbnail {
-  height: 100%;
+@media only screen and (max-width: 400px) {
+
+  .image-cdn {
+    max-height: 90px;
+    width: auto;
+  }
+
+  .card-item-details {
+    display: block;
+  }
+
 }

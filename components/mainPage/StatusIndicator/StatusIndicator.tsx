@@ -7,8 +7,6 @@ import { useContext, useEffect, useState } from 'react';
 import { IWorkingStatus } from '../mainPage.type';
 import { WorkingTimeContext } from '../../Providers';
 
-
-
 export const StatusIndicator = () => {
   const { t } = useTranslation();
   const { workingTime } = useContext(WorkingTimeContext);

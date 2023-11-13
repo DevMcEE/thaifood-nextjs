@@ -16,7 +16,6 @@ export const MenuItem = ({ menuItemData }: MenuItemProps): JSX.Element => {
         <div className="item-price">{price}€</div>
       </div>
       <div className="item-description" dangerouslySetInnerHTML={{ __html: description }} />
-
     </div>
   );
 };

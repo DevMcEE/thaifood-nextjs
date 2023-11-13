@@ -12,26 +12,31 @@ import { opacity } from '@cloudinary/url-gen/actions/adjust';
 interface MenuItemCardProps {
   menuItemData: IMenuItem;
   cdn: Cloudinary;
+  handleClick: (item: IMenuItem) => void;
 }
 
-export const MenuItemCard = ({ menuItemData, cdn }: MenuItemCardProps): JSX.Element => {
+export const MenuItemCard = ({ menuItemData, cdn, handleClick }: MenuItemCardProps): JSX.Element => {
   const { name, price, description, image, hidden } = menuItemData;
 
   const cdnThumbnail = cdn
     .image(image || 'no_image_placeholder')
-    .resize(thumbnail().width(150).height(150))
     .delivery(quality(auto()))
     .delivery(format(auto()))
+    .resize(image ? thumbnail().width(150).height(150) : thumbnail().width(144).height(144))
     .roundCorners(byRadius(10));
 
   if (!image) {
-     cdnThumbnail.effect(grayscale()).adjust(opacity(15)).roundCorners(byRadius(10));
+    cdnThumbnail.effect(grayscale()).adjust(opacity(15));
   }
 
+  const handleItemClick = () => {
+    handleClick(menuItemData);
+  };
+
   return (
-    <div className={classnames('menu-item-card', { 'menu-item-card--hidden': hidden })}>
-      <div className={classnames('card-item-image', {'card-item-image__placeholder': !image})}>
-        <AdvancedImage className="image-cdn-thumbnail" cldImg={cdnThumbnail} plugins={[lazyload(), placeholder({ mode: 'blur' })]}   />
+    <div onClick={handleItemClick} className={classnames('menu-item-card', { 'menu-item-card--hidden': hidden })}>
+      <div className={classnames('card-item-image', { 'card-item-image__placeholder': !image })}>
+        <AdvancedImage className={classnames('image-cdn', { 'image-cdn__placeholder': !image })} cldImg={cdnThumbnail} plugins={[lazyload(), placeholder({ mode: 'blur' })]} />
       </div>
       <div className="card-item-details">
         <div className="card-item-info-container">
@@ -40,6 +45,6 @@ export const MenuItemCard = ({ menuItemData, cdn }: MenuItemCardProps): JSX.Elem
         </div>
         <div className="card-item-price">{price}€</div>
       </div>
-    </div>
+    </div >
   );
 };
